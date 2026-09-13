@@ -1,0 +1,63 @@
+Aplikasi Pengelola Anggaran Bulanan (Monthly Budgeting App)
+
+A. Deskripsi Masalah
+Banyak mahasiswa dan pekerja muda mengalami kesulitan dalam mengelola keuangan bulanan karena pengeluaran sering tidak tercatat dengan baik. 
+Akibatnya, anggaran untuk kebutuhan penting seperti makanan, transportasi, atau tagihan sering habis sebelum akhir bulan. Selain itu, 
+pengguna sering tidak menyadari bahwa pengeluaran pada kategori tertentu sudah melebihi batas yang direncanakan.
+Aplikasi ini dirancang untuk membantu pengguna mencatat pemasukan dan pengeluaran, memantau penggunaan anggaran pada setiap kategori, 
+serta memberikan peringatan ketika pengeluaran mendekati batas yang telah ditentukan.
+
+B. Target Pengguna
+* Mahasiswa yang menerima uang saku bulanan.
+* Anak kos yang perlu mengatur pengeluaran sehari-hari.
+* Pekerja muda dengan pendapatan bulanan tetap.
+* Pengguna yang ingin mulai menerapkan kebiasaan mengelola keuangan pribadi.
+
+C. Manfaat Aplikasi
+1. Membantu pengguna mencatat pemasukan dan pengeluaran secara teratur.
+2. Memudahkan pemantauan kondisi keuangan bulanan.
+3. Membantu mengontrol pengeluaran agar tidak melebihi anggaran.
+4. Memberikan peringatan dini ketika suatu kategori pengeluaran mendekati batas anggaran.
+5. Menumbuhkan kebiasaan pengelolaan keuangan yang lebih disiplin.
+
+D. Daftar Fitur Inti
+1. Input Pemasukan
+   * Menambahkan data pemasukan bulanan.
+
+2. Input Pengeluaran
+   * Mencatat pengeluaran harian.
+
+3. Kategori Pengeluaran
+   * Makanan
+   * Transportasi
+   * Kos/Kontrakan
+   * Hiburan
+   * Lain-lain
+
+4. Pengaturan Anggaran
+   * Menentukan batas anggaran untuk setiap kategori.
+
+5. Monitoring Anggaran
+   * Menampilkan total pengeluaran dan sisa anggaran.
+
+6. Peringatan 80% Anggaran
+   * Sistem memberikan notifikasi ketika pengeluaran suatu kategori mencapai 80% dari batas yang ditetapkan.
+
+7. Laporan Bulanan Sederhana
+   * Menampilkan ringkasan pemasukan, pengeluaran, dan sisa saldo.
+
+E. Fitur yang Tidak Dikerjakan
+1. Integrasi dengan rekening bank atau e-wallet.
+2. Sinkronisasi antar perangkat.
+3. Fitur investasi atau perencanaan keuangan lanjutan.
+4. Prediksi pengeluaran menggunakan Artificial Intelligence.
+5. Fitur pembayaran langsung melalui aplikasi.
+6. Multi-user atau aplikasi berbasis organisasi.
+
+D. Kriteria Aplikasi Dinyatakan Berhasil
+1. Pengguna dapat menambahkan pemasukan dan pengeluaran tanpa error.
+2. Sistem dapat menghitung total pengeluaran dan sisa anggaran dengan benar.
+3. Pengeluaran dapat dikelompokkan sesuai kategori yang dipilih.
+4. Peringatan muncul ketika pengeluaran mencapai minimal 80% dari batas anggaran kategori.
+5. Laporan bulanan dapat ditampilkan dengan data yang akurat.
+6. Seluruh fitur inti dapat berjalan dan diuji dengan baik dalam batas waktu 12 pertemuan pengembangan.
