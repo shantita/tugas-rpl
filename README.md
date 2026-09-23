@@ -1,7 +1,6 @@
 # Monthly Budgeting App
 
 Aplikasi web pengelola anggaran bulanan untuk mahasiswa, dengan fitur pembeda **Daily Spending Limit**.
-Proyek mata kuliah Rekayasa Perangkat Lunak (RPL).
 
 ## Deskripsi Proyek
 
@@ -110,8 +109,3 @@ monthly-budgeting-app/
 - [ ] Keterbatasan
 - [ ] Pengembangan selanjutnya
 
-## Tim Pengembang
-
-| Nama | NIM | Peran |
-|---|---|---|
-| (isi) | (isi) | (isi) |
