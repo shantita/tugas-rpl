@@ -95,9 +95,9 @@ monthly-budgeting-app/
 
 | Dokumen | Isi |
 |---|---|
-| [docs/01-IDE_AWAL.md](docs/01-IDE_AWAL.md) | Tiga ide awal dan alasan pemilihan |
-| [docs/02-PROJECT_SPEC.md](docs/02-PROJECT_SPEC.md) | Spesifikasi teknis lengkap |
-| [docs/03-DEFINISI_MASALAH.md](docs/03-DEFINISI_MASALAH.md) | Definisi masalah, fitur inti, dan kriteria keberhasilan |
+| [catatan/01-IDE_AWAL.md](catatan/01-IDE_AWAL.md) | Tiga ide awal dan alasan pemilihan |
+| [catatan/02-PROJECT_SPEC.md](catatan/02-PROJECT_SPEC.md) | Spesifikasi teknis lengkap |
+| [catatan/03-DEFINISI_MASALAH.md](catatan/03-DEFINISI_MASALAH.md) | Definisi masalah, fitur inti, dan kriteria keberhasilan |
 
 ## Bagian yang Akan Ditambahkan Setelah Aplikasi Jadi
 
