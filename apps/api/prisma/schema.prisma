@@ -1,0 +1,62 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  Id           Int       @id @default(autoincrement())
+  Name         String
+  Email        String    @unique
+  PasswordHash String
+  CreatedAt    DateTime  @default(now())
+  Budgets      Budget[]
+  Incomes      Income[]
+  Expenses     Expense[]
+}
+
+model Category {
+  Id       Int       @id @default(autoincrement())
+  Name     String    @unique
+  Budgets  Budget[]
+  Expenses Expense[]
+}
+
+model Budget {
+  Id         Int      @id @default(autoincrement())
+  UserId     Int
+  CategoryId Int
+  Amount     Decimal  @db.Decimal(12, 2)
+  Month      Int
+  Year       Int
+  CreatedAt  DateTime @default(now())
+  User       User     @relation(fields: [UserId], references: [Id], onDelete: Cascade)
+  Category   Category @relation(fields: [CategoryId], references: [Id], onDelete: Restrict)
+
+  @@unique([UserId, CategoryId, Month, Year])
+}
+
+model Income {
+  Id          Int      @id @default(autoincrement())
+  UserId      Int
+  Amount      Decimal  @db.Decimal(12, 2)
+  Date        DateTime
+  Description String
+  CreatedAt   DateTime @default(now())
+  User        User     @relation(fields: [UserId], references: [Id], onDelete: Cascade)
+}
+
+model Expense {
+  Id          Int      @id @default(autoincrement())
+  UserId      Int
+  CategoryId  Int
+  Amount      Decimal  @db.Decimal(12, 2)
+  Date        DateTime
+  Description String
+  CreatedAt   DateTime @default(now())
+  User        User     @relation(fields: [UserId], references: [Id], onDelete: Cascade)
+  Category    Category @relation(fields: [CategoryId], references: [Id], onDelete: Restrict)
+}
