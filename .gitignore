@@ -1,0 +1,40 @@
+# OS generated files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Editor / IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*.tmp
+
+# Logs
+*.log
+logs/
+
+# Node / frontend artifacts (if any later)
+node_modules/
+.npm/
+.pnpm-store/
+coverage/
+.dist/
+build/
+dist/
+.env
+.env.*
+!.env.example
+
+# Python artifacts (in case it's used later)
+__pycache__/
+*.py[cod]
+venv/
+.venv/
+
+# Temporary files
+*.bak
+*.orig
+
+# Git metadata
+*.rej
