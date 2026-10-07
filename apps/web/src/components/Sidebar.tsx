@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { LayoutDashboard, TrendingUp, TrendingDown, PiggyBank, BarChart3, LogOut, Wallet } from "lucide-react";
+import { LayoutDashboard, TrendingUp, TrendingDown, PiggyBank, BarChart3, LogOut, Wallet, User as UserIcon } from "lucide-react";
 import { useAuth } from "../contexts/AuthContext";
 
 export const Sidebar: React.FC = () => {
@@ -12,6 +12,7 @@ export const Sidebar: React.FC = () => {
     { label: "Pengeluaran", to: "/expenses", icon: <TrendingDown className="w-5 h-5" /> },
     { label: "Anggaran", to: "/budgets", icon: <PiggyBank className="w-5 h-5" /> },
     { label: "Laporan", to: "/reports", icon: <BarChart3 className="w-5 h-5" /> },
+    { label: "Profil Saya", to: "/profile", icon: <UserIcon className="w-5 h-5" /> },
   ];
 
   return (
@@ -46,12 +47,21 @@ export const Sidebar: React.FC = () => {
       </nav>
 
       <div className="p-4 border-t border-slate-100">
-        <div className="flex items-center justify-between p-3 bg-slate-50 rounded-xl mb-2">
+        <NavLink
+          to="/profile"
+          className="flex items-center justify-between p-3 bg-slate-50 hover:bg-indigo-50/60 rounded-xl mb-2 transition-colors group cursor-pointer border border-transparent hover:border-indigo-100"
+          title="Buka Pengaturan Profil & Password"
+        >
           <div className="truncate">
-            <p className="text-xs font-semibold text-slate-900 truncate">{User?.Name || "Mahasiswa"}</p>
-            <p className="text-xs text-slate-500 truncate">{User?.Email}</p>
+            <p className="text-xs font-bold text-slate-900 group-hover:text-indigo-700 truncate transition-colors">
+              {User?.Name || "Mahasiswa"}
+            </p>
+            <p className="text-[11px] text-slate-500 truncate">{User?.Email}</p>
           </div>
-        </div>
+          <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-indigo-100 text-indigo-700 opacity-0 group-hover:opacity-100 transition-opacity">
+            Edit
+          </span>
+        </NavLink>
         <button
           type="button"
           onClick={Logout}

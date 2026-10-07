@@ -9,6 +9,7 @@ import { IncomesPage } from "./pages/IncomesPage";
 import { ExpensesPage } from "./pages/ExpensesPage";
 import { BudgetsPage } from "./pages/BudgetsPage";
 import { ReportsPage } from "./pages/ReportsPage";
+import { ProfilePage } from "./pages/ProfilePage";
 
 const ProtectedRoute: React.FC<{ children: React.ReactElement }> = ({ children }) => {
   const { User, IsLoading } = useAuth();
@@ -103,6 +104,14 @@ export const App: React.FC = () => {
             element={
               <ProtectedRoute>
                 <ReportsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <ProfilePage />
               </ProtectedRoute>
             }
           />

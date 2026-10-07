@@ -14,6 +14,7 @@ export const Navbar: React.FC = () => {
     { label: "Pengeluaran", to: "/expenses", icon: <TrendingDown className="w-5 h-5" /> },
     { label: "Anggaran", to: "/budgets", icon: <PiggyBank className="w-5 h-5" /> },
     { label: "Laporan", to: "/reports", icon: <BarChart3 className="w-5 h-5" /> },
+    { label: "Profil Saya", to: "/profile", icon: <Wallet className="w-5 h-5" /> },
   ];
 
   return (
@@ -52,7 +53,13 @@ export const Navbar: React.FC = () => {
             </Link>
           ))}
           <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
-            <span className="text-xs font-semibold text-slate-700">{User?.Name}</span>
+            <Link
+              to="/profile"
+              onClick={() => setIsOpen(false)}
+              className="text-xs font-semibold text-indigo-600 hover:underline"
+            >
+              {User?.Name || "Profil Akun"}
+            </Link>
             <button
               type="button"
               onClick={Logout}

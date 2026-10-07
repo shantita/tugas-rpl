@@ -83,6 +83,20 @@ class ApiServiceClass {
     return this.Request<User>("/auth/me");
   }
 
+  public async UpdateProfile(data: { Name: string }): Promise<ApiResponse<User>> {
+    return this.Request<User>("/auth/profile", {
+      method: "PUT",
+      body: JSON.stringify(data),
+    });
+  }
+
+  public async ChangePassword(data: { OldPassword: string; NewPassword: string }): Promise<ApiResponse<void>> {
+    return this.Request<void>("/auth/password", {
+      method: "PUT",
+      body: JSON.stringify(data),
+    });
+  }
+
   public async GetCategories(): Promise<ApiResponse<Category[]>> {
     return this.Request<Category[]>("/categories");
   }

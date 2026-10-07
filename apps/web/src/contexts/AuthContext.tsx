@@ -8,6 +8,7 @@ interface AuthContextType {
   IsLoading: boolean;
   Login: (email: string, password: string) => Promise<void>;
   Register: (name: string, email: string, password: string) => Promise<void>;
+  UpdateProfile: (name: string) => Promise<void>;
   Logout: () => void;
 }
 
@@ -63,6 +64,13 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     }
   };
 
+  const updateProfile = async (name: string) => {
+    const res = await ApiService.UpdateProfile({ Name: name });
+    if (res.Success && res.Data) {
+      setUser(res.Data);
+    }
+  };
+
   const logout = () => {
     setUser(null);
     setToken(null);
@@ -77,6 +85,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         IsLoading: isLoading,
         Login: login,
         Register: register,
+        UpdateProfile: updateProfile,
         Logout: logout,
       }}
     >
