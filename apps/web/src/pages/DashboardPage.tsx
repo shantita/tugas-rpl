@@ -92,7 +92,11 @@ export const DashboardPage: React.FC = () => {
 
       {dailyLimit && (
         <div>
-          <DailyLimitCard Item={dailyLimit.Total} />
+          <DailyLimitCard
+            Item={dailyLimit.Total}
+            Balance={summary?.Balance}
+            TotalBudget={summary?.TotalBudget}
+          />
         </div>
       )}
 
