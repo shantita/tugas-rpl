@@ -3,7 +3,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { prisma } from "../config/prisma";
 import { JwtConfig } from "../config/jwt";
-import { RegisterSchema, LoginSchema } from "../validators/auth.validator";
+import { RegisterSchema, LoginSchema, UpdateProfileSchema, ChangePasswordSchema } from "../validators/auth.validator";
 import { HttpException } from "../middlewares/error.middleware";
 import { AuthenticatedRequest } from "../middlewares/auth.middleware";
 import { AuthResponse, User } from "@monthly-budgeting-app/shared";
@@ -127,6 +127,74 @@ export class AuthController {
         Success: true,
         Message: "Data pengguna berhasil diambil",
         Data: userDto,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async UpdateProfile(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+    try {
+      const userId = req.User?.Id;
+      if (!userId) {
+        throw new HttpException(401, "Pengguna tidak terautentikasi");
+      }
+
+      const parsed = UpdateProfileSchema.parse(req.body);
+
+      const updatedUser = await prisma.user.update({
+        where: { Id: userId },
+        data: { Name: parsed.Name },
+      });
+
+      const userDto: User = {
+        Id: updatedUser.Id,
+        Name: updatedUser.Name,
+        Email: updatedUser.Email,
+        CreatedAt: updatedUser.CreatedAt,
+      };
+
+      return res.status(200).json({
+        Success: true,
+        Message: "Profil berhasil diperbarui",
+        Data: userDto,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async ChangePassword(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+    try {
+      const userId = req.User?.Id;
+      if (!userId) {
+        throw new HttpException(401, "Pengguna tidak terautentikasi");
+      }
+
+      const parsed = ChangePasswordSchema.parse(req.body);
+
+      const user = await prisma.user.findUnique({
+        where: { Id: userId },
+      });
+
+      if (!user) {
+        throw new HttpException(404, "Data pengguna tidak ditemukan");
+      }
+
+      const isMatch = await bcrypt.compare(parsed.OldPassword, user.PasswordHash);
+      if (!isMatch) {
+        throw new HttpException(400, "Password lama tidak sesuai");
+      }
+
+      const newPasswordHash = await bcrypt.hash(parsed.NewPassword, 10);
+      await prisma.user.update({
+        where: { Id: userId },
+        data: { PasswordHash: newPasswordHash },
+      });
+
+      return res.status(200).json({
+        Success: true,
+        Message: "Password berhasil diubah",
       });
     } catch (error) {
       next(error);
