@@ -97,6 +97,7 @@ monthly-budgeting-app/
 | [01-IDE_AWAL.md](catatan/ide_judul.md) | Tiga ide awal dan alasan pemilihan |
 | [02-DEFINISI_MASALAH.md](catatan/definisi_masalah.md) | Definisi masalah, fitur inti, dan kriteria keberhasilan |
 | [03-PROJECT_SPEC.md](catatan/project_spec.md) | Spesifikasi teknis lengkap |
+| [04-USER_STORIES_MVP.md](catatan/user_stories_mvp.md) | 5 User Story inti MVP beserta Acceptance Criteria |
 
 
 ## Bagian yang Akan Ditambahkan Setelah Aplikasi Jadi
