@@ -39,8 +39,8 @@ export const Sidebar: React.FC = () => {
             className={({ isActive }) =>
               `flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium text-sm transition-all duration-200 ${
                 isActive
-                  ? "bg-indigo-50 text-indigo-700 shadow-sm"
-                  : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+                  ? "bg-gradient-to-r from-orange-50 to-amber-50/70 text-orange-600 font-bold border-r-2 border-orange-500 shadow-xs"
+                  : "text-slate-600 hover:bg-orange-50/40 hover:text-slate-900"
               }`
             }
           >
@@ -53,16 +53,16 @@ export const Sidebar: React.FC = () => {
       <div className="p-4 border-t border-slate-100">
         <NavLink
           to="/profile"
-          className="flex items-center justify-between p-3 bg-slate-50 hover:bg-indigo-50/60 rounded-xl mb-2 transition-colors group cursor-pointer border border-transparent hover:border-indigo-100"
+          className="flex items-center justify-between p-3 bg-slate-50/80 hover:bg-orange-50/70 rounded-xl mb-2 transition-all group cursor-pointer border border-slate-100 hover:border-orange-200/60"
           title="Buka Pengaturan Profil & Password"
         >
           <div className="truncate">
-            <p className="text-xs font-bold text-slate-900 group-hover:text-indigo-700 truncate transition-colors">
+            <p className="text-xs font-bold text-slate-900 group-hover:text-orange-600 truncate transition-colors">
               {User?.Name || "Mahasiswa"}
             </p>
             <p className="text-[11px] text-slate-500 truncate">{User?.Email}</p>
           </div>
-          <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-indigo-100 text-indigo-700 opacity-0 group-hover:opacity-100 transition-opacity">
+          <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-orange-100 text-orange-700 opacity-0 group-hover:opacity-100 transition-opacity">
             Edit
           </span>
         </NavLink>

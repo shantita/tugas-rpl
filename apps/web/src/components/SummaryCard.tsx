@@ -17,19 +17,19 @@ export const SummaryCard: React.FC<SummaryCardProps> = ({
   Description,
 }) => {
   return (
-    <div className="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+    <div className="bg-white rounded-2xl p-5 border border-slate-200/90 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 flex flex-col justify-between">
       <div className="flex items-center justify-between">
-        <span className="text-sm font-medium text-slate-500">{Title}</span>
+        <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">{Title}</span>
         <div className={`p-2.5 rounded-xl ${ColorClass}`}>
           {Icon}
         </div>
       </div>
       <div className="mt-4">
-        <h3 className="text-2xl font-bold tracking-tight text-slate-900">
+        <h3 className="text-2xl font-black tracking-tight text-slate-900">
           {FormatRupiah(Amount)}
         </h3>
         {Description && (
-          <p className="mt-1 text-xs text-slate-500 font-medium">
+          <p className="mt-1 text-[11px] text-slate-400 font-medium">
             {Description}
           </p>
         )}

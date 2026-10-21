@@ -6,6 +6,22 @@
   body {
     @apply bg-slate-50 text-slate-800 antialiased font-sans;
   }
+
+  /* Custom Modern Warm Scrollbar */
+  ::-webkit-scrollbar {
+    width: 7px;
+    height: 7px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #f8fafc;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 9999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #fb923c;
+  }
 }
 
 @keyframes float-mascot {

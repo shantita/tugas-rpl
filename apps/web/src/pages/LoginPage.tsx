@@ -52,10 +52,14 @@ export const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-slate-100">
-      <div className="bg-white rounded-3xl p-8 max-w-md w-full shadow-xl border border-slate-200">
+    <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-amber-50/60 via-slate-50 to-orange-50/50 relative overflow-hidden">
+      {/* Ambient background blur */}
+      <div className="absolute top-1/4 -left-20 w-80 h-80 bg-amber-400/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-1/4 -right-20 w-80 h-80 bg-orange-400/10 rounded-full blur-3xl pointer-events-none" />
+
+      <div className="bg-white/95 backdrop-blur-md rounded-3xl p-8 max-w-md w-full shadow-xl shadow-orange-500/5 border border-slate-200/90 relative z-10">
         <div className="flex flex-col items-center text-center">
-          <div className="p-3 bg-gradient-to-br from-amber-400 to-orange-500 rounded-3xl shadow-xl border border-amber-300/40 mb-3 animate-mascot-bounce">
+          <div className="p-3 bg-gradient-to-br from-amber-400 to-orange-500 rounded-3xl shadow-xl shadow-orange-500/20 border border-amber-300/40 mb-3 animate-mascot-bounce">
             <MascotHeadLogo className="w-12 h-12" withCrown />
           </div>
           <div className="flex items-center gap-1 mb-1">
@@ -86,7 +90,7 @@ export const LoginPage: React.FC = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="nama@mahasiswa.ac.id"
-              className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none text-sm transition-all"
+              className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-orange-500/25 focus:border-orange-500 outline-none text-sm transition-all"
             />
           </div>
 
@@ -100,14 +104,14 @@ export const LoginPage: React.FC = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
-              className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none text-sm transition-all"
+              className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-orange-500/25 focus:border-orange-500 outline-none text-sm transition-all"
             />
           </div>
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full mt-2 flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-white font-semibold text-sm bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 disabled:opacity-50 transition-colors shadow-md"
+            className="w-full mt-2 flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-white font-bold text-sm bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 active:scale-[0.99] disabled:opacity-50 transition-all shadow-lg shadow-orange-500/25"
           >
             <span>{loading ? "Memproses..." : "Masuk"}</span>
             <ArrowRight className="w-4 h-4" />
@@ -127,7 +131,7 @@ export const LoginPage: React.FC = () => {
           type="button"
           onClick={handleDemoLogin}
           disabled={loading}
-          className="w-full py-2.5 px-4 rounded-xl text-indigo-700 font-semibold text-sm bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 transition-colors"
+          className="w-full py-2.5 px-4 rounded-xl text-orange-700 font-bold text-sm bg-orange-50 hover:bg-orange-100/80 border border-orange-200/80 transition-colors"
         >
           Masuk Sebagai Akun Demo
         </button>
@@ -135,7 +139,7 @@ export const LoginPage: React.FC = () => {
         <div className="mt-6 text-center">
           <p className="text-sm text-slate-600">
             Belum memiliki akun?{" "}
-            <Link to="/register" className="font-semibold text-indigo-600 hover:text-indigo-700 hover:underline">
+            <Link to="/register" className="font-bold text-orange-600 hover:text-orange-700 hover:underline">
               Daftar sekarang
             </Link>
           </p>

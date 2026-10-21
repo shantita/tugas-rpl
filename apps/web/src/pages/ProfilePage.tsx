@@ -124,14 +124,14 @@ export const ProfilePage: React.FC = () => {
   return (
     <div className="space-y-6 pb-12">
       {/* HEADER BANNER */}
-      <div className="bg-gradient-to-r from-indigo-700 via-indigo-600 to-violet-700 rounded-3xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden">
+      <div className="bg-gradient-to-r from-orange-600 via-amber-600 to-amber-500 rounded-3xl p-6 sm:p-8 text-white shadow-xl shadow-orange-500/15 relative overflow-hidden">
         {/* Ambient background blur circles */}
-        <div className="absolute -right-8 -bottom-8 w-60 h-60 bg-white/10 rounded-full blur-2xl pointer-events-none" />
-        <div className="absolute top-0 right-1/4 w-40 h-40 bg-indigo-400/20 rounded-full blur-xl pointer-events-none" />
+        <div className="absolute -right-8 -bottom-8 w-60 h-60 bg-white/15 rounded-full blur-2xl pointer-events-none" />
+        <div className="absolute top-0 right-1/4 w-40 h-40 bg-amber-300/20 rounded-full blur-xl pointer-events-none" />
 
         <div className="relative z-10 flex flex-col sm:flex-row items-center sm:items-start gap-5 text-center sm:text-left">
           {/* Avatar initial circle */}
-          <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-white/15 border-2 border-white/30 backdrop-blur-md flex items-center justify-center text-3xl sm:text-4xl font-black text-white shadow-lg flex-shrink-0">
+          <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-white/20 border-2 border-white/35 backdrop-blur-md flex items-center justify-center text-3xl sm:text-4xl font-black text-white shadow-lg flex-shrink-0">
             {userInitial}
           </div>
 
@@ -140,19 +140,19 @@ export const ProfilePage: React.FC = () => {
               <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
                 {User?.Name || "Mahasiswa"}
               </h1>
-              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/20 text-emerald-200 border border-emerald-400/30">
+              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/25 text-emerald-100 border border-emerald-400/40">
                 <ShieldCheck className="w-3.5 h-3.5" />
                 Mahasiswa Terverifikasi
               </span>
             </div>
 
-            <p className="text-sm text-indigo-100 flex items-center justify-center sm:justify-start gap-1.5">
-              <Mail className="w-4 h-4 opacity-75" />
+            <p className="text-sm text-orange-100 flex items-center justify-center sm:justify-start gap-1.5">
+              <Mail className="w-4 h-4 opacity-80" />
               <span>{User?.Email}</span>
             </p>
 
-            <p className="text-xs text-indigo-200 flex items-center justify-center sm:justify-start gap-1.5 pt-1">
-              <Calendar className="w-3.5 h-3.5 opacity-75" />
+            <p className="text-xs text-amber-100 flex items-center justify-center sm:justify-start gap-1.5 pt-1">
+              <Calendar className="w-3.5 h-3.5 opacity-80" />
               <span>Bergabung sejak {formatDate(User?.CreatedAt)}</span>
             </p>
           </div>
@@ -164,7 +164,7 @@ export const ProfilePage: React.FC = () => {
         <div className="lg:col-span-6 space-y-6">
           <div className="bg-white rounded-3xl p-6 sm:p-7 shadow-sm border border-slate-200">
             <div className="flex items-center gap-3 pb-5 border-b border-slate-100">
-              <div className="p-2.5 rounded-xl bg-indigo-50 text-indigo-600">
+              <div className="p-2.5 rounded-xl bg-orange-50 text-orange-600">
                 <UserIcon className="w-5 h-5" />
               </div>
               <div>
@@ -199,7 +199,7 @@ export const ProfilePage: React.FC = () => {
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="Masukkan nama lengkap Anda"
-                    className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none text-sm transition-all"
+                    className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-orange-500/25 focus:border-orange-500 outline-none text-sm transition-all"
                   />
                   <UserIcon className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
                 </div>
@@ -233,7 +233,7 @@ export const ProfilePage: React.FC = () => {
                 <button
                   type="submit"
                   disabled={profileLoading}
-                  className="w-full sm:w-auto flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-white font-semibold text-sm bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 disabled:opacity-50 transition-colors shadow-sm"
+                  className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl text-white font-bold text-sm bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 active:scale-95 disabled:opacity-50 transition-all shadow-md shadow-orange-500/20"
                 >
                   <Save className="w-4 h-4" />
                   <span>{profileLoading ? "Menyimpan..." : "Simpan Profil"}</span>
@@ -247,7 +247,7 @@ export const ProfilePage: React.FC = () => {
         <div className="lg:col-span-6 space-y-6">
           <div className="bg-white rounded-3xl p-6 sm:p-7 shadow-sm border border-slate-200">
             <div className="flex items-center gap-3 pb-5 border-b border-slate-100">
-              <div className="p-2.5 rounded-xl bg-violet-50 text-violet-600">
+              <div className="p-2.5 rounded-xl bg-amber-50 text-amber-600">
                 <KeyRound className="w-5 h-5" />
               </div>
               <div>
@@ -282,7 +282,7 @@ export const ProfilePage: React.FC = () => {
                     value={oldPassword}
                     onChange={(e) => setOldPassword(e.target.value)}
                     placeholder="Masukkan password lama"
-                    className="w-full pl-10 pr-10 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none text-sm transition-all"
+                    className="w-full pl-10 pr-10 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-orange-500/25 focus:border-orange-500 outline-none text-sm transition-all"
                   />
                   <KeyRound className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
                   <button
@@ -307,7 +307,7 @@ export const ProfilePage: React.FC = () => {
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
                     placeholder="Minimal 8 karakter"
-                    className="w-full pl-10 pr-10 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none text-sm transition-all"
+                    className="w-full pl-10 pr-10 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-orange-500/25 focus:border-orange-500 outline-none text-sm transition-all"
                   />
                   <KeyRound className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
                   <button
@@ -332,7 +332,7 @@ export const ProfilePage: React.FC = () => {
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     placeholder="Ulangi password baru"
-                    className="w-full pl-10 pr-10 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none text-sm transition-all"
+                    className="w-full pl-10 pr-10 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-orange-500/25 focus:border-orange-500 outline-none text-sm transition-all"
                   />
                   <KeyRound className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
                   <button
@@ -350,7 +350,7 @@ export const ProfilePage: React.FC = () => {
                 <button
                   type="submit"
                   disabled={passwordLoading}
-                  className="w-full sm:w-auto flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-white font-semibold text-sm bg-violet-600 hover:bg-violet-700 active:bg-violet-800 disabled:opacity-50 transition-colors shadow-sm"
+                  className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl text-white font-bold text-sm bg-slate-900 hover:bg-slate-800 active:scale-95 disabled:opacity-50 transition-all shadow-md"
                 >
                   <KeyRound className="w-4 h-4" />
                   <span>{passwordLoading ? "Mengubah..." : "Ganti Password"}</span>

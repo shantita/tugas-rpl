@@ -46,10 +46,10 @@ export const Navbar: React.FC = () => {
               key={item.to}
               to={item.to}
               onClick={() => setIsOpen(false)}
-              className={`flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-sm ${
+              className={`flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-sm transition-colors ${
                 location.pathname === item.to
-                  ? "bg-indigo-50 text-indigo-700"
-                  : "text-slate-600 hover:bg-slate-50"
+                  ? "bg-gradient-to-r from-orange-50 to-amber-50 text-orange-600 font-bold border-l-2 border-orange-500"
+                  : "text-slate-600 hover:bg-orange-50/40"
               }`}
             >
               {item.icon}
@@ -60,7 +60,7 @@ export const Navbar: React.FC = () => {
             <Link
               to="/profile"
               onClick={() => setIsOpen(false)}
-              className="text-xs font-semibold text-indigo-600 hover:underline"
+              className="text-xs font-semibold text-orange-600 hover:text-orange-700 hover:underline"
             >
               {User?.Name || "Profil Akun"}
             </Link>
