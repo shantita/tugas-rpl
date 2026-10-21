@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
-import { Wallet, AlertCircle, ArrowRight } from "lucide-react";
+import { AlertCircle, ArrowRight } from "lucide-react";
+import { MascotHeadLogo } from "../components/MascotHeadLogo";
 
 export const LoginPage: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -54,12 +55,16 @@ export const LoginPage: React.FC = () => {
     <div className="min-h-screen flex items-center justify-center p-4 bg-slate-100">
       <div className="bg-white rounded-3xl p-8 max-w-md w-full shadow-xl border border-slate-200">
         <div className="flex flex-col items-center text-center">
-          <div className="p-3.5 bg-indigo-600 text-white rounded-2xl shadow-lg mb-4">
-            <Wallet className="w-8 h-8" />
+          <div className="p-3 bg-gradient-to-br from-amber-400 to-orange-500 rounded-3xl shadow-xl border border-amber-300/40 mb-3 animate-mascot-bounce">
+            <MascotHeadLogo className="w-12 h-12" withCrown />
           </div>
-          <h2 className="text-2xl font-bold text-slate-900">Masuk ke Akun Anda</h2>
-          <p className="mt-1 text-sm text-slate-500">
-            Kelola pengeluaran dan anggaran bulanan mahasiswa dengan hemat dan terencana.
+          <div className="flex items-center gap-1 mb-1">
+            <span className="text-2xl font-black text-slate-900 tracking-tight">Bud</span>
+            <span className="text-2xl font-black text-orange-500 tracking-tight">Cat</span>
+          </div>
+          <h2 className="text-base font-bold text-slate-700">Masuk ke Akun Anda</h2>
+          <p className="mt-1 text-xs text-slate-500">
+            Kelola uang saku dan anggaran bulanan mahasiswa bersama Si Oyen.
           </p>
         </div>
 

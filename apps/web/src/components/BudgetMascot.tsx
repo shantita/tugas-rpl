@@ -1,6 +1,41 @@
 import React, { useState } from "react";
 
-export type BudgetMood = "ecstatic" | "happy" | "warning" | "sad" | "crying" | "neutral";
+export type BudgetMood =
+  | "ecstatic"
+  | "happy"
+  | "warning"
+  | "sad"
+  | "crying"
+  | "neutral"
+  | "bangga"
+  | "senang"
+  | "waspada"
+  | "sedih"
+  | "murung"
+  | "normal"
+  | "pingsan";
+
+export type MascotMoodKey = "bangga" | "senang" | "waspada" | "sedih" | "pingsan";
+
+export const NORMALIZE_MOOD: Record<BudgetMood, MascotMoodKey> = {
+  ecstatic: "bangga",
+  bangga: "bangga",
+
+  happy: "senang",
+  senang: "senang",
+
+  warning: "waspada",
+  waspada: "waspada",
+  normal: "waspada",
+  neutral: "waspada",
+
+  sad: "sedih",
+  sedih: "sedih",
+  murung: "sedih",
+
+  crying: "pingsan",
+  pingsan: "pingsan",
+};
 
 interface BudgetMascotProps {
   mood: BudgetMood;
@@ -8,68 +43,77 @@ interface BudgetMascotProps {
   size?: "sm" | "md" | "lg";
 }
 
-const QUOTES: Record<BudgetMood, string[]> = {
-  ecstatic: [
-    "Miaww! Saldomu melimpah ruah! Kamu sultan bulan ini! 👑🐱",
-    "Purrr... Keuangan sultan! Dompetmu gemuk kayak kucing kenyang! ✨🐾",
-    "Ngeongg! Pengeluaran terkendali banget, kamu majikan idaman! 💰🍣",
+const QUOTES: Record<MascotMoodKey, string[]> = {
+  bangga: [
+    "Miaww! Saldomu melimpah ruah! Kamu sultan paling keren bulan ini! 👑✨",
+    "Purrr... Keuangan sultan! Dompet tebal, hati tenang, hidup santai! 🌟🐾",
+    "Ngeongg! Pengeluaran super terkendali, majikan sultan panutan! 💰🍣",
+    "Sultan mah bebas miaw, tapi tetap sisihkan buat cemilan Si Oyen ya! 👑🐱",
   ],
-  happy: [
-    "Miaw~ Keuangan aman sentosa! Nikmati harimu santai sambil purring. 😊🐾",
-    "Kondisi sehat walafiat! Belanja harian masih leluasa banget. 🌟🐱",
-    "Purrr... Anggaranmu aman terkendali! Good job, meow! 👍✨",
+  senang: [
+    "Miaw~ Keuangan aman sentosa! Nikmati harimu santai sambil senyum riang! 😊🐾",
+    "Kondisi sehat walafiat! Belanja harian masih leluasa banget miaw! 🌟🐱",
+    "Purrr... Anggaranmu aman terkendali! Semangat terus meow! 👍✨",
+    "Senang banget lihat dompetmu sehat meong! Pertahankan ya! 🐾😸",
   ],
-  warning: [
-    "Meong... Telingaku bergerak cemas! Kurangi jajan berlebih ya! 😅🐟",
-    "Waspada miaw! Anggaran mulai menipis, tahan dulu godaan checkout! ⚠️🐾",
-    "Purr.. rem dulu belanja impulsifnya, yuk lebih hemat miaw! ⏳🐱",
+  waspada: [
+    "Meong... Tetap waspada & cermat ya! Jaga ritme belanja harianmu. 🐱🐾",
+    "Waspada miaw! Anggaran mulai diperhatikan, tahan dulu checkout impulsif! ⚠️🐱",
+    "Purr.. posisi siaga waspada! Pengeluaran masih aman kalau dijaga miaw! ⚖️🐾",
+    "Si Oyen memantau waspada dari dekat miaw... Belanja yang perlu-perlu dulu aja ya! 👀🐱",
   ],
-  sad: [
-    "Meoong... (telinga turun sendu). Sisa uang tinggal sedikit, harus super irit! 🥺💧",
-    "Dompet sesak nafas meow... Tahan dulu jajan boba & kopi kekinian! 🌧️😿",
-    "Sedih banget meow... Prioritaskan makan & kebutuhan pokok dulu ya! 🌧️🐾",
+  sedih: [
+    "Meoong... (sedih sendu). Sisa uang tinggal sedikit, harus super irit! 🥺🌧️",
+    "Dompet mendung meow... Tahan dulu jajan boba & nongkrong kekinian! 🌧️😿",
+    "Sedih banget meow... Prioritaskan makan & kebutuhan pokok dulu ya! 💧🐾",
+    "Si Oyen sedih lihat anggaran menipis... Yuk tahan belanja impulsif! 🥺💧",
   ],
-  crying: [
-    "HUWAAA NGEONGGG! Anggaran jebol total! Dompetku nangis kejer! 😭⚡",
-    "Darurat meoow! Saldo sekarat, saatnya mode hemat ekstrem bertahan hidup! 🚨😿",
-    "STOP BELANJA MEOW! Limit harian sudah terlewati jauh! Darurat majikan! 🚨📦",
-  ],
-  neutral: [
-    "Miaw! Yuk atur anggaran pos belanjamu biar dompet tetap tenang! 📝🐱",
-    "Mulai rencanakan pos-pos belanjamu hari ini bareng Si Meong! 💡🐾",
+  pingsan: [
+    "KO NGEONGGG! Saldo habis total / overbudget! Meong tepar pingsan di lantai! 😵💥",
+    "Darurat meoow! Saldo sekarat sampai pingsan, saatnya mode bertahan hidup! 🚨😿",
+    "STOP BELANJA MEOW! Sudah terkapar pingsan nih, jangan dipaksa jajan lagi! 😵📦",
+    "Pingsan liat mutasi rekening! Segera evaluasi pengeluaran majikan! 🚨🐾",
   ],
 };
 
-const MOOD_TITLES: Record<BudgetMood, { title: string; badge: string; badgeColor: string }> = {
-  ecstatic: {
-    title: "Kucing Sultan Makmur",
-    badge: "Kondisi Prima 👑",
-    badgeColor: "bg-emerald-500/20 text-emerald-200 border-emerald-400/40",
+const MOOD_META: Record<
+  MascotMoodKey,
+  {
+    title: string;
+    badge: string;
+    badgeColor: string;
+    containerAnimation: string;
+  }
+> = {
+  bangga: {
+    title: "Si Oyen Sultan",
+    badge: "Sultan 👑",
+    badgeColor: "bg-amber-400/25 text-amber-200 border-amber-400/40",
+    containerAnimation: "animate-mascot-bounce",
   },
-  happy: {
-    title: "Meong Aman & Bahagia",
-    badge: "Kondisi Sehat ✨",
-    badgeColor: "bg-sky-500/20 text-sky-200 border-sky-400/40",
+  senang: {
+    title: "Si Oyen Senang & Bahagia",
+    badge: "Senang 😊",
+    badgeColor: "bg-emerald-500/25 text-emerald-200 border-emerald-400/40",
+    containerAnimation: "animate-mascot-bounce",
   },
-  warning: {
-    title: "Meong Mulai Waspada",
-    badge: "Kondisi Waspada ⚠️",
-    badgeColor: "bg-amber-500/20 text-amber-200 border-amber-400/40",
+  waspada: {
+    title: "Si Oyen Waspada",
+    badge: "Waspada 🐱",
+    badgeColor: "bg-blue-500/25 text-blue-200 border-blue-400/40",
+    containerAnimation: "animate-mascot-float",
   },
-  sad: {
-    title: "Meong Menipis Banget",
-    badge: "Kondisi Kritis 💧",
-    badgeColor: "bg-rose-500/20 text-rose-200 border-rose-400/40",
+  sedih: {
+    title: "Si Oyen Sedih",
+    badge: "Sedih 🥺",
+    badgeColor: "bg-rose-500/25 text-rose-200 border-rose-400/40",
+    containerAnimation: "animate-mascot-float",
   },
-  crying: {
-    title: "Meong Sekarat!",
-    badge: "Overbudget 🚨",
-    badgeColor: "bg-red-500/30 text-red-200 border-red-400/50 animate-pulse",
-  },
-  neutral: {
-    title: "Meong Siap Merencanakan",
-    badge: "Atur Anggaran 📝",
-    badgeColor: "bg-slate-500/20 text-slate-200 border-slate-400/40",
+  pingsan: {
+    title: "Si Oyen Nangis Pingsan!",
+    badge: "Nangis • Pingsan 😵",
+    badgeColor: "bg-red-500/35 text-red-200 border-red-400/50 animate-pulse",
+    containerAnimation: "animate-mascot-sob",
   },
 };
 
@@ -79,22 +123,89 @@ export const BudgetMascot: React.FC<BudgetMascotProps> = ({
   size = "md",
 }) => {
   const [quoteIndex, setQuoteIndex] = useState(0);
-  const [isWiggling, setIsWiggling] = useState(false);
+  const [isClicked, setIsClicked] = useState(false);
 
-  const quotes = QUOTES[mood] || QUOTES.neutral;
+  const moodKey = NORMALIZE_MOOD[mood] || "waspada";
+  const quotes = QUOTES[moodKey] || QUOTES.waspada;
   const currentQuote = quotes[quoteIndex % quotes.length];
-  const moodInfo = MOOD_TITLES[mood] || MOOD_TITLES.neutral;
+  const meta = MOOD_META[moodKey] || MOOD_META.waspada;
+
+  const playCuteMeow = () => {
+    try {
+      const AudioCtx =
+        window.AudioContext ||
+        (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+      if (!AudioCtx) return;
+      const ctx = new AudioCtx();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+
+      osc.type = "sine";
+      const now = ctx.currentTime;
+      osc.frequency.setValueAtTime(650, now);
+      osc.frequency.exponentialRampToValueAtTime(900, now + 0.08);
+      osc.frequency.exponentialRampToValueAtTime(580, now + 0.22);
+
+      gain.gain.setValueAtTime(0.09, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(now);
+      osc.stop(now + 0.23);
+    } catch {
+      // Audio playback silently ignored if browser denies without gesture
+    }
+  };
+
+  const playSultanSound = () => {
+    try {
+      const audio = new Audio("/sounds/anime-wow-sound-effect.mp3");
+      audio.volume = 0.9;
+      audio.play().catch(() => {
+        // Fallback to online CDN audio if local file is unavailable
+        const remoteAudio = new Audio("https://www.myinstants.com/media/sounds/anime-wow-sound-effect.mp3");
+        remoteAudio.volume = 0.9;
+        remoteAudio.play().catch(() => {});
+      });
+    } catch {
+      // Audio playback fallback
+    }
+  };
+
+  const playPingsanSound = () => {
+    try {
+      const audio = new Audio("/sounds/faaaa.mp3");
+      audio.volume = 0.9;
+      audio.play().catch(() => {
+        // Fallback to online CDN audio if local file is unavailable
+        const remoteAudio = new Audio("https://www.myinstants.com/media/sounds/faaaa.mp3");
+        remoteAudio.volume = 0.9;
+        remoteAudio.play().catch(() => {});
+      });
+    } catch {
+      // Audio playback fallback
+    }
+  };
 
   const handleMascotClick = () => {
-    setIsWiggling(true);
+    setIsClicked(true);
+    if (moodKey === "bangga") {
+      playSultanSound();
+    } else if (moodKey === "pingsan") {
+      playPingsanSound();
+    } else {
+      playCuteMeow();
+    }
     setQuoteIndex((prev) => prev + 1);
-    setTimeout(() => setIsWiggling(false), 600);
+
+    setTimeout(() => setIsClicked(false), 500);
   };
 
   const mascotSizes = {
     sm: "w-28 h-28 sm:w-32 sm:h-32",
     md: "w-36 h-36 sm:w-44 sm:h-44",
-    lg: "w-44 h-44 sm:w-52 sm:h-52",
+    lg: "w-48 h-48 sm:w-56 sm:h-56",
   };
 
   return (
@@ -102,729 +213,567 @@ export const BudgetMascot: React.FC<BudgetMascotProps> = ({
       {/* Speech Bubble */}
       <div
         onClick={handleMascotClick}
-        title="Klik Si Meong untuk dengar pesan lain!"
-        className="relative mb-3 max-w-[260px] sm:max-w-xs cursor-pointer group transition-transform hover:scale-105 active:scale-95"
+        title="Klik Si Oyen untuk dengar nasehat keuangan lainnya!"
+        className="relative mb-3 max-w-[270px] sm:max-w-xs cursor-pointer group transition-transform hover:scale-105 active:scale-95"
       >
         <div className="bg-white/95 backdrop-blur-md text-slate-800 rounded-2xl px-3.5 py-2.5 shadow-xl border border-white/40 text-xs sm:text-sm">
           <div className="flex items-center justify-between gap-1.5 mb-1">
             <span className="font-extrabold text-[11px] uppercase tracking-wider text-amber-700 flex items-center gap-1">
-              <span>🐱 Si Meong</span>
+              <span>🐱 Si Oyen</span>
               <span className="text-[10px] text-slate-400 font-normal">• tap me!</span>
             </span>
             <span
-              className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full border ${moodInfo.badgeColor}`}
+              className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full border ${meta.badgeColor}`}
             >
-              {moodInfo.badge}
+              {meta.badge}
             </span>
           </div>
           <p className="text-slate-700 leading-snug font-medium italic">
             "{currentQuote}"
           </p>
         </div>
-        {/* Tail */}
+        {/* Speech Bubble Tail */}
         <div className="w-0 h-0 border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent border-t-[8px] border-t-white/95 mx-auto -mt-[1px]"></div>
       </div>
 
-      {/* Mascot Cat Character SVG */}
+      {/* Mascot Animated Character Illustration Container */}
       <div
         onClick={handleMascotClick}
-        className={`relative cursor-pointer transition-transform duration-300 ${
+        className={`relative cursor-pointer transition-transform duration-200 flex items-center justify-center ${
           mascotSizes[size]
-        } ${
-          isWiggling
-            ? "animate-mascot-bounce"
-            : mood === "ecstatic"
-            ? "animate-mascot-bounce"
-            : mood === "crying"
-            ? "animate-mascot-sob"
-            : "animate-mascot-float"
-        }`}
-        title="Klik Si Meong!"
+        } ${isClicked ? "scale-110 -rotate-2" : meta.containerAnimation}`}
+        title="Klik Si Oyen untuk ajak berinteraksi!"
       >
+        {/* FULLY ANIMATED & EXPRESSIVE VECTOR SVG MASCOT */}
         <svg
           viewBox="0 0 200 200"
-          className="w-full h-full drop-shadow-2xl overflow-visible"
+          className="w-full h-full filter drop-shadow-2xl overflow-visible"
         >
           <defs>
-            {/* Fur Gradients per Mood */}
-            {/* Sultan / Ecstatic - Golden Champagne Luxury Fur */}
-            <radialGradient id="catFurEcstatic" cx="45%" cy="35%" r="65%">
-              <stop offset="0%" stopColor="#fef08a" />
-              <stop offset="45%" stopColor="#f59e0b" />
-              <stop offset="85%" stopColor="#d97706" />
-              <stop offset="100%" stopColor="#92400e" />
-            </radialGradient>
-
-            {/* Happy - Warm Butterscotch Tabby */}
-            <radialGradient id="catFurHappy" cx="45%" cy="35%" r="65%">
-              <stop offset="0%" stopColor="#fed7aa" />
-              <stop offset="50%" stopColor="#f97316" />
-              <stop offset="85%" stopColor="#ea580c" />
-              <stop offset="100%" stopColor="#9a3412" />
-            </radialGradient>
-
-            {/* Warning - Distressed Peach-Amber */}
-            <radialGradient id="catFurWarning" cx="45%" cy="35%" r="65%">
-              <stop offset="0%" stopColor="#fed7aa" />
-              <stop offset="50%" stopColor="#ea580c" />
-              <stop offset="85%" stopColor="#c2410c" />
-              <stop offset="100%" stopColor="#7c2d12" />
-            </radialGradient>
-
-            {/* Sad - Cool Melancholic Grayish Lavender Coat */}
-            <radialGradient id="catFurSad" cx="45%" cy="35%" r="65%">
-              <stop offset="0%" stopColor="#e2e8f0" />
-              <stop offset="50%" stopColor="#94a3b8" />
-              <stop offset="85%" stopColor="#64748b" />
-              <stop offset="100%" stopColor="#334155" />
-            </radialGradient>
-
-            {/* Crying - Flushed Distress Red/Rose Coat */}
-            <radialGradient id="catFurCrying" cx="45%" cy="35%" r="65%">
-              <stop offset="0%" stopColor="#fecdd3" />
-              <stop offset="45%" stopColor="#f43f5e" />
-              <stop offset="85%" stopColor="#be123c" />
-              <stop offset="100%" stopColor="#881337" />
-            </radialGradient>
-
-            {/* Neutral - Cream Golden Tabby */}
-            <radialGradient id="catFurNeutral" cx="45%" cy="35%" r="65%">
-              <stop offset="0%" stopColor="#fef3c7" />
-              <stop offset="50%" stopColor="#f59e0b" />
-              <stop offset="85%" stopColor="#d97706" />
-              <stop offset="100%" stopColor="#78350f" />
-            </radialGradient>
-
-            {/* Inner Ear Pink */}
-            <radialGradient id="earInnerPink" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="#fdf2f8" />
-              <stop offset="60%" stopColor="#f472b6" />
-              <stop offset="100%" stopColor="#db2777" />
-            </radialGradient>
-
-            {/* Cheek blush */}
-            <radialGradient id="blushGlow" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="#fb7185" stopOpacity="0.85" />
-              <stop offset="100%" stopColor="#fb7185" stopOpacity="0" />
-            </radialGradient>
-
-            {/* Collar Gradient */}
-            <linearGradient id="collarGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#ef4444" />
-              <stop offset="100%" stopColor="#991b1b" />
+            {/* Fur & Body Gradients */}
+            <linearGradient id="catFurGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stopColor="#FFA044" />
+              <stop offset="60%" stopColor="#F97316" />
+              <stop offset="100%" stopColor="#EA580C" />
             </linearGradient>
 
-            {/* Bell / Coin Charm Gradient */}
-            <radialGradient id="bellGold" cx="35%" cy="35%" r="65%">
-              <stop offset="0%" stopColor="#fffbeb" />
-              <stop offset="40%" stopColor="#facc15" />
-              <stop offset="85%" stopColor="#ca8a04" />
-              <stop offset="100%" stopColor="#854d0e" />
-            </radialGradient>
-
-            {/* Crown Gold */}
-            <linearGradient id="crownGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#fef08a" />
-              <stop offset="50%" stopColor="#eab308" />
-              <stop offset="100%" stopColor="#ca8a04" />
+            <linearGradient id="catBellyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stopColor="#FFFFFF" />
+              <stop offset="100%" stopColor="#FFEDD5" />
             </linearGradient>
 
-            {/* Tear Waterfall Gradient */}
-            <linearGradient id="tearStreamGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stopColor="#a5f3fc" stopOpacity="0.95" />
-              <stop offset="35%" stopColor="#38bdf8" stopOpacity="0.92" />
-              <stop offset="85%" stopColor="#0284c7" stopOpacity="0.88" />
-              <stop offset="100%" stopColor="#0369a1" stopOpacity="0.8" />
+            <linearGradient id="catEarGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stopColor="#FDA4AF" />
+              <stop offset="100%" stopColor="#F43F5E" />
+            </linearGradient>
+
+            <linearGradient id="goldCrownGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#FEF08A" />
+              <stop offset="45%" stopColor="#FACC15" />
+              <stop offset="100%" stopColor="#EAB308" />
+            </linearGradient>
+
+            <linearGradient id="coinGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#FFFBEB" />
+              <stop offset="40%" stopColor="#FBBF24" />
+              <stop offset="100%" stopColor="#D97706" />
+            </linearGradient>
+
+            <linearGradient id="tearFallGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stopColor="#BAE6FD" />
+              <stop offset="100%" stopColor="#38BDF8" />
             </linearGradient>
           </defs>
 
-          {/* BACK SCENERY / AMBIENT ACCESSORIES */}
-          {mood === "ecstatic" && (
-            <g className="animate-spin-sunburst origin-center">
-              {[0, 45, 90, 135, 180, 225, 270, 315].map((angle) => (
-                <line
-                  key={angle}
-                  x1="100"
-                  y1="100"
-                  x2={100 + 96 * Math.cos((angle * Math.PI) / 180)}
-                  y2={100 + 96 * Math.sin((angle * Math.PI) / 180)}
-                  stroke="#fbbf24"
-                  strokeWidth="3"
-                  strokeDasharray="4 6"
-                  opacity="0.4"
-                />
-              ))}
-            </g>
-          )}
-
-          {mood === "crying" && (
-            <g className="animate-sparkle-pulse">
-              {/* Rain cloud overhead */}
+          {/* 1. TAIL (Behind the body) */}
+          {moodKey === "bangga" && (
+            <g className="animate-cat-tail-proud">
               <path
-                d="M 50 30 Q 50 14 68 14 Q 78 4 95 10 Q 108 2 125 12 Q 142 8 148 24 Q 155 32 145 42 L 55 42 Q 45 42 50 30 Z"
-                fill="#475569"
-                opacity="0.95"
+                d="M 132 148 C 160 148 182 126 176 98 C 172 82 154 90 158 104 C 162 116 148 132 130 142 Z"
+                fill="url(#catFurGrad)"
+                stroke="#C2410C"
+                strokeWidth="1.2"
               />
-              {/* Lightning */}
-              <polygon
-                points="100,34 92,48 104,48 96,64 114,42 102,42"
-                fill="#facc15"
-                className="animate-sparkle-pulse"
-              />
-              {/* Falling rain drops */}
-              <line x1="65" y1="45" x2="60" y2="58" stroke="#38bdf8" strokeWidth="2.5" strokeLinecap="round" className="animate-rain-drop" />
-              <line x1="80" y1="45" x2="75" y2="60" stroke="#38bdf8" strokeWidth="2.5" strokeLinecap="round" className="animate-rain-drop" />
-              <line x1="125" y1="45" x2="120" y2="60" stroke="#38bdf8" strokeWidth="2.5" strokeLinecap="round" className="animate-rain-drop" />
-              <line x1="140" y1="45" x2="135" y2="58" stroke="#38bdf8" strokeWidth="2.5" strokeLinecap="round" className="animate-rain-drop" />
+              <path d="M 166 112 C 162 108 158 112 162 118" stroke="#9A3412" strokeWidth="2.5" strokeLinecap="round" />
             </g>
           )}
 
-          {/* CAT SHADOW */}
-          <ellipse cx="100" cy="184" rx="54" ry="10" fill="#000000" opacity="0.22" />
+          {moodKey === "senang" && (
+            <g className="animate-cat-tail-happy">
+              <path
+                d="M 132 148 C 160 148 182 126 176 98 C 172 82 154 90 158 104 C 162 116 148 132 130 142 Z"
+                fill="url(#catFurGrad)"
+                stroke="#C2410C"
+                strokeWidth="1.2"
+              />
+              <path d="M 166 112 C 162 108 158 112 162 118" stroke="#9A3412" strokeWidth="2.5" strokeLinecap="round" />
+            </g>
+          )}
 
-          {/* CAT FLUFFY TAIL (Behind body) */}
-          {mood === "ecstatic" ? (
+          {moodKey === "waspada" && (
+            <g className="animate-cat-tail-wag">
+              <path
+                d="M 132 148 C 160 148 182 126 176 98 C 172 82 154 90 158 104 C 162 116 148 132 130 142 Z"
+                fill="url(#catFurGrad)"
+                stroke="#C2410C"
+                strokeWidth="1.2"
+              />
+              <path d="M 166 112 C 162 108 158 112 162 118" stroke="#9A3412" strokeWidth="2.5" strokeLinecap="round" />
+            </g>
+          )}
+
+          {moodKey === "sedih" && (
+            <g className="animate-cat-tail-sad">
+              <path
+                d="M 132 156 C 158 158 178 152 182 144 C 185 138 174 135 168 140 C 158 147 146 150 130 152 Z"
+                fill="url(#catFurGrad)"
+                stroke="#C2410C"
+                strokeWidth="1.2"
+              />
+            </g>
+          )}
+
+          {moodKey === "pingsan" && (
             <g>
               <path
-                d="M 132 150 C 165 142 186 115 178 88 C 174 72 188 68 190 78 C 195 98 178 135 140 162 Z"
-                fill="url(#catFurEcstatic)"
-                stroke="#d97706"
-                strokeWidth="2"
+                d="M 132 162 C 160 168 182 165 186 160 C 188 154 178 152 172 156 C 158 160 146 160 130 160 Z"
+                fill="url(#catFurGrad)"
+                stroke="#C2410C"
+                strokeWidth="1.2"
               />
-              <polygon points="186,62 188,67 193,69 188,71 186,76 184,71 179,69 184,67" fill="#fef08a" />
             </g>
-          ) : mood === "happy" ? (
-            <path
-              d="M 132 152 C 164 146 182 124 174 98 C 170 86 182 82 185 90 C 190 110 174 142 140 162 Z"
-              fill="url(#catFurHappy)"
-              stroke="#ea580c"
-              strokeWidth="2"
-            />
-          ) : mood === "warning" ? (
-            <path
-              d="M 132 156 C 160 162 176 150 184 138 C 187 132 192 136 188 144 C 176 162 158 170 136 164 Z"
-              fill="url(#catFurWarning)"
-              stroke="#c2410c"
-              strokeWidth="2"
-            />
-          ) : mood === "sad" ? (
-            <path
-              d="M 132 158 C 155 168 172 176 186 182 C 182 186 168 184 150 178 C 136 172 130 165 132 158 Z"
-              fill="url(#catFurSad)"
-              stroke="#475569"
-              strokeWidth="2"
-            />
-          ) : mood === "crying" ? (
-            <path
-              d="M 132 155 L 148 142 L 144 148 L 162 136 L 158 144 L 178 130 L 172 142 L 186 138 C 188 148 170 166 136 164 Z"
-              fill="url(#catFurCrying)"
-              stroke="#9f1239"
-              strokeWidth="2"
-            />
-          ) : (
-            <path
-              d="M 132 154 C 162 148 178 128 172 108 C 168 98 178 95 181 101 C 185 116 172 144 138 163 Z"
-              fill="url(#catFurNeutral)"
-              stroke="#d97706"
-              strokeWidth="2"
-            />
           )}
 
-          {/* CAT BASE BODY, EARS, HEAD */}
-          {(() => {
-            const furGrad =
-              mood === "ecstatic"
-                ? "url(#catFurEcstatic)"
-                : mood === "happy"
-                ? "url(#catFurHappy)"
-                : mood === "warning"
-                ? "url(#catFurWarning)"
-                : mood === "sad"
-                ? "url(#catFurSad)"
-                : mood === "crying"
-                ? "url(#catFurCrying)"
-                : "url(#catFurNeutral)";
+          {/* 2. CHUBBY CAT BODY WITH ORGANIC BREATHING */}
+          <g className="animate-cat-breathe">
+            {/* Back Sitting Paws */}
+            <ellipse cx="64" cy="166" rx="14" ry="9" fill="url(#catFurGrad)" stroke="#C2410C" strokeWidth="1" />
+            <ellipse cx="136" cy="166" rx="14" ry="9" fill="url(#catFurGrad)" stroke="#C2410C" strokeWidth="1" />
+            <ellipse cx="62" cy="167" rx="10" ry="6" fill="#FFFFFF" opacity="0.9" />
+            <ellipse cx="138" cy="167" rx="10" ry="6" fill="#FFFFFF" opacity="0.9" />
 
-            return (
+            {/* Main Chubby Torso */}
+            <path
+              d="M 68 112 C 64 92 136 92 132 112 C 136 150 144 168 124 172 C 110 174 90 174 76 172 C 56 168 64 150 68 112 Z"
+              fill="url(#catFurGrad)"
+              stroke="#C2410C"
+              strokeWidth="1.5"
+            />
+
+            {/* Creamy Belly Patch */}
+            <path
+              d="M 78 120 C 76 106 124 106 122 120 C 124 156 76 156 78 120 Z"
+              fill="url(#catBellyGrad)"
+            />
+
+            {/* Tabby Side Body Stripes */}
+            <path d="M 66 130 Q 74 133 80 131" stroke="#9A3412" strokeWidth="3" strokeLinecap="round" />
+            <path d="M 67 142 Q 74 145 80 143" stroke="#9A3412" strokeWidth="3" strokeLinecap="round" />
+            <path d="M 134 130 Q 126 133 120 131" stroke="#9A3412" strokeWidth="3" strokeLinecap="round" />
+            <path d="M 133 142 Q 126 145 120 143" stroke="#9A3412" strokeWidth="3" strokeLinecap="round" />
+
+            {/* Front Paws Depending on Mood */}
+            {moodKey === "senang" ? (
+              // Excited waving paws up
+              <g className="animate-cat-paw-wave">
+                <ellipse cx="66" cy="120" rx="9" ry="9" fill="#FFFFFF" stroke="#FED7AA" strokeWidth="1.5" />
+                <ellipse cx="134" cy="120" rx="9" ry="9" fill="#FFFFFF" stroke="#FED7AA" strokeWidth="1.5" />
+                {/* Cute paw pads */}
+                <circle cx="66" cy="120" r="3.5" fill="#FDA4AF" />
+                <circle cx="134" cy="120" r="3.5" fill="#FDA4AF" />
+              </g>
+            ) : moodKey === "pingsan" ? (
+              // Limp flopped paws on ground
               <g>
-                {/* EARS */}
-                {mood === "sad" ? (
-                  // Droopy Sad Cat Ears
-                  <g>
-                    <path d="M 60 76 L 26 62 Q 36 48 72 58 Z" fill={furGrad} stroke="#ffffff" strokeWidth="2.5" strokeOpacity="0.6" />
-                    <path d="M 58 72 L 34 62 Q 42 52 68 60 Z" fill="url(#earInnerPink)" />
-                    <path d="M 140 76 L 174 62 Q 164 48 128 58 Z" fill={furGrad} stroke="#ffffff" strokeWidth="2.5" strokeOpacity="0.6" />
-                    <path d="M 142 72 L 166 62 Q 158 52 132 60 Z" fill="url(#earInnerPink)" />
-                  </g>
-                ) : mood === "crying" ? (
-                  // Flattened Fear/Distress Ears
-                  <g>
-                    <path d="M 58 80 L 22 72 Q 30 56 68 60 Z" fill={furGrad} stroke="#ffffff" strokeWidth="2.5" strokeOpacity="0.6" />
-                    <path d="M 56 76 L 28 70 Q 34 60 64 62 Z" fill="url(#earInnerPink)" />
-                    <path d="M 142 80 L 178 72 Q 170 56 132 60 Z" fill={furGrad} stroke="#ffffff" strokeWidth="2.5" strokeOpacity="0.6" />
-                    <path d="M 144 76 L 172 70 Q 166 60 136 62 Z" fill="url(#earInnerPink)" />
-                  </g>
-                ) : mood === "warning" ? (
-                  // Alert / Tilted Suspicious Ears
-                  <g>
-                    <path d="M 58 72 L 38 32 Q 54 26 80 52 Z" fill={furGrad} stroke="#ffffff" strokeWidth="2.5" strokeOpacity="0.6" />
-                    <path d="M 58 66 L 46 38 Q 56 34 74 52 Z" fill="url(#earInnerPink)" />
-                    <path d="M 140 74 L 168 46 Q 155 38 122 52 Z" fill={furGrad} stroke="#ffffff" strokeWidth="2.5" strokeOpacity="0.6" />
-                    <path d="M 138 70 L 160 50 Q 152 44 126 54 Z" fill="url(#earInnerPink)" />
-                  </g>
-                ) : (
-                  // Cute Perky Ears (Happy, Ecstatic, Neutral)
-                  <g>
-                    <path d="M 58 72 L 38 30 Q 54 26 80 52 Z" fill={furGrad} stroke="#ffffff" strokeWidth="2.5" strokeOpacity="0.6" />
-                    <path d="M 58 66 L 46 38 Q 56 34 74 52 Z" fill="url(#earInnerPink)" />
-                    <path d="M 54 56 L 62 50 L 56 46" fill="none" stroke="#ffffff" strokeWidth="1.5" strokeLinecap="round" opacity="0.8" />
-
-                    <path d="M 142 72 L 162 30 Q 146 26 120 52 Z" fill={furGrad} stroke="#ffffff" strokeWidth="2.5" strokeOpacity="0.6" />
-                    <path d="M 142 66 L 154 38 Q 144 34 126 52 Z" fill="url(#earInnerPink)" />
-                    <path d="M 146 56 L 138 50 L 144 46" fill="none" stroke="#ffffff" strokeWidth="1.5" strokeLinecap="round" opacity="0.8" />
+                <ellipse cx="60" cy="170" rx="10" ry="6" fill="#FFFFFF" stroke="#FED7AA" strokeWidth="1" transform="rotate(-15 60 170)" />
+                <ellipse cx="140" cy="170" rx="10" ry="6" fill="#FFFFFF" stroke="#FED7AA" strokeWidth="1" transform="rotate(15 140 170)" />
+              </g>
+            ) : (
+              // Sultan (Bangga), Waspada & Sedih: Neatly tucked cute stationary paws
+              <g>
+                {/* For Sultan: A shiny gold coin resting peacefully next to the paws */}
+                {moodKey === "bangga" && (
+                  <g transform="translate(140, 164)">
+                    <circle cx="0" cy="0" r="11" fill="url(#coinGrad)" stroke="#B45309" strokeWidth="1.4" />
+                    <circle cx="0" cy="0" r="8.5" fill="none" stroke="#FDE68A" strokeWidth="1" strokeDasharray="2.5,1.5" />
+                    <text x="0" y="3.5" textAnchor="middle" fontSize="8" fontWeight="extrabold" fill="#78350F">Rp</text>
                   </g>
                 )}
-
-                {/* CAT ROUND CHUBBY BODY */}
-                <ellipse
-                  cx="100"
-                  cy="142"
-                  rx="48"
-                  ry="38"
-                  fill={furGrad}
-                  stroke="#ffffff"
-                  strokeWidth="2.5"
-                  strokeOpacity="0.6"
-                />
-
-                {/* Soft Creamy Belly Patch */}
-                <ellipse
-                  cx="100"
-                  cy="146"
-                  rx="28"
-                  ry="22"
-                  fill="#ffffff"
-                  opacity="0.9"
-                />
-
-                {/* BACK PAWS / FEET WITH PINK TOE BEANS */}
-                <ellipse cx="74" cy="176" rx="14" ry="9" fill="#ffffff" stroke="#e2e8f0" strokeWidth="1.5" />
-                <ellipse cx="74" cy="177" rx="6" ry="4" fill="#fb7185" opacity="0.85" />
-                <circle cx="68" cy="172" r="2.2" fill="#fb7185" opacity="0.85" />
-                <circle cx="74" cy="170" r="2.2" fill="#fb7185" opacity="0.85" />
-                <circle cx="80" cy="172" r="2.2" fill="#fb7185" opacity="0.85" />
-
-                <ellipse cx="126" cy="176" rx="14" ry="9" fill="#ffffff" stroke="#e2e8f0" strokeWidth="1.5" />
-                <ellipse cx="126" cy="177" rx="6" ry="4" fill="#fb7185" opacity="0.85" />
-                <circle cx="120" cy="172" r="2.2" fill="#fb7185" opacity="0.85" />
-                <circle cx="126" cy="170" r="2.2" fill="#fb7185" opacity="0.85" />
-                <circle cx="132" cy="172" r="2.2" fill="#fb7185" opacity="0.85" />
-
-                {/* RED LUCKY COLLAR */}
-                <path
-                  d="M 66 125 Q 100 137 134 125 Q 132 133 100 143 Q 68 133 66 125 Z"
-                  fill="url(#collarGrad)"
-                  stroke="#7f1d1d"
-                  strokeWidth="1"
-                />
-
-                {/* GOLDEN LUCKY BELL / COIN CHARM */}
-                <g>
-                  <circle cx="100" cy="142" r="9.5" fill="url(#bellGold)" stroke="#b45309" strokeWidth="1.5" />
-                  <circle cx="100" cy="142" r="7" fill="none" stroke="#fef08a" strokeWidth="0.8" opacity="0.75" />
-                  <text x="100" y="145.5" textAnchor="middle" fontSize="7.5" fontWeight="900" fill="#78350f">Rp</text>
-                </g>
-
-                {/* CHUBBY KAWAII CAT HEAD */}
-                <ellipse
-                  cx="100"
-                  cy="92"
-                  rx="48"
-                  ry="42"
-                  fill={furGrad}
-                  stroke="#ffffff"
-                  strokeWidth="2.5"
-                  strokeOpacity="0.6"
-                />
-
-                {/* Glossy Head Highlight */}
-                <path
-                  d="M 68 70 A 38 38 0 0 1 126 56"
-                  fill="none"
-                  stroke="#ffffff"
-                  strokeWidth="3.5"
-                  strokeLinecap="round"
-                  opacity="0.6"
-                />
-
-                {/* Forehead Tabby Stripes */}
-                <path d="M 100 58 L 100 68" stroke="#78350f" strokeWidth="3" strokeLinecap="round" opacity="0.35" />
-                <path d="M 90 62 L 92 71" stroke="#78350f" strokeWidth="2.5" strokeLinecap="round" opacity="0.35" />
-                <path d="M 110 62 L 108 71" stroke="#78350f" strokeWidth="2.5" strokeLinecap="round" opacity="0.35" />
+                <ellipse cx="85" cy="166" rx="9" ry="7" fill="#FFFFFF" stroke="#FED7AA" strokeWidth="1" />
+                <ellipse cx="115" cy="166" rx="9" ry="7" fill="#FFFFFF" stroke="#FED7AA" strokeWidth="1" />
+                <path d="M 83 166 L 83 169 M 87 166 L 87 169" stroke="#E2E8F0" strokeWidth="1.2" />
+                <path d="M 113 166 L 113 169 M 117 166 L 117 169" stroke="#E2E8F0" strokeWidth="1.2" />
               </g>
-            );
-          })()}
+            )}
+          </g>
 
-          {/* FRONT PAWS / ARMS */}
-          {(() => {
-            const furGrad =
-              mood === "ecstatic"
-                ? "url(#catFurEcstatic)"
-                : mood === "happy"
-                ? "url(#catFurHappy)"
-                : mood === "warning"
-                ? "url(#catFurWarning)"
-                : mood === "sad"
-                ? "url(#catFurSad)"
-                : mood === "crying"
-                ? "url(#catFurCrying)"
-                : "url(#catFurNeutral)";
-
-            if (mood === "ecstatic") {
-              return (
-                <g>
-                  <path d="M 60 115 Q 36 90 42 66" fill="none" stroke={furGrad} strokeWidth="12" strokeLinecap="round" />
-                  <circle cx="42" cy="64" r="9" fill="#ffffff" stroke="#e2e8f0" strokeWidth="1.5" />
-                  <circle cx="36" cy="52" r="11" fill="url(#bellGold)" stroke="#d97706" strokeWidth="1.5" />
-                  <text x="36" y="56" textAnchor="middle" fontSize="9" fontWeight="900" fill="#78350f">Rp</text>
-
-                  <path d="M 140 115 Q 164 90 158 66" fill="none" stroke={furGrad} strokeWidth="12" strokeLinecap="round" />
-                  <circle cx="158" cy="64" r="9" fill="#ffffff" stroke="#e2e8f0" strokeWidth="1.5" />
-                  <circle cx="164" cy="52" r="11" fill="url(#bellGold)" stroke="#d97706" strokeWidth="1.5" />
-                  <text x="164" y="56" textAnchor="middle" fontSize="9" fontWeight="900" fill="#78350f">Rp</text>
-                </g>
-              );
-            }
-
-            if (mood === "happy") {
-              return (
-                <g>
-                  <circle cx="78" cy="132" r="9" fill="#ffffff" stroke="#e2e8f0" strokeWidth="1.5" />
-                  <circle cx="78" cy="132" r="4.5" fill="#fb7185" opacity="0.8" />
-
-                  <path d="M 138 120 Q 166 104 168 82" fill="none" stroke={furGrad} strokeWidth="12" strokeLinecap="round" />
-                  <circle cx="168" cy="78" r="10" fill="#ffffff" stroke="#e2e8f0" strokeWidth="1.5" />
-                  <circle cx="168" cy="79" r="5" fill="#fb7185" opacity="0.85" />
-                  <circle cx="163" cy="72" r="2" fill="#fb7185" opacity="0.85" />
-                  <circle cx="168" cy="71" r="2" fill="#fb7185" opacity="0.85" />
-                  <circle cx="173" cy="72" r="2" fill="#fb7185" opacity="0.85" />
-                  <polygon points="180,62 182,67 187,69 182,71 180,76 178,71 173,69 178,67" fill="#fef08a" />
-                </g>
-              );
-            }
-
-            if (mood === "warning") {
-              return (
-                <g>
-                  <circle cx="78" cy="132" r="9" fill="#ffffff" stroke="#e2e8f0" strokeWidth="1.5" />
-                  <path d="M 138 120 Q 164 100 150 74" fill="none" stroke={furGrad} strokeWidth="11" strokeLinecap="round" />
-                  <circle cx="148" cy="72" r="9" fill="#ffffff" stroke="#e2e8f0" strokeWidth="1.5" />
-                </g>
-              );
-            }
-
-            if (mood === "sad") {
-              return (
-                <g>
-                  <path d="M 64 125 Q 84 135 93 130" fill="none" stroke={furGrad} strokeWidth="10" strokeLinecap="round" />
-                  <path d="M 136 125 Q 116 135 107 130" fill="none" stroke={furGrad} strokeWidth="10" strokeLinecap="round" />
-                  <circle cx="95" cy="130" r="8" fill="#ffffff" stroke="#e2e8f0" strokeWidth="1.5" />
-                  <circle cx="105" cy="130" r="8" fill="#ffffff" stroke="#e2e8f0" strokeWidth="1.5" />
-                </g>
-              );
-            }
-
-            if (mood === "crying") {
-              // Both paws frame the cheeks just outside the tear streams
-              return (
-                <g>
-                  <path d="M 60 128 Q 50 108 56 100" fill="none" stroke={furGrad} strokeWidth="11" strokeLinecap="round" />
-                  <circle cx="56" cy="98" r="9" fill="#ffffff" stroke="#e2e8f0" strokeWidth="1.5" />
-                  <path d="M 140 128 Q 150 108 144 100" fill="none" stroke={furGrad} strokeWidth="11" strokeLinecap="round" />
-                  <circle cx="144" cy="98" r="9" fill="#ffffff" stroke="#e2e8f0" strokeWidth="1.5" />
-                </g>
-              );
-            }
-
-            return (
+          {/* 3. BIG CUTE KAWAII CAT HEAD */}
+          <g>
+            {/* EARS WITH ANIMATED TWITCH */}
+            {moodKey === "sedih" ? (
+              // Sad droopy folded ears
               <g>
-                <circle cx="82" cy="132" r="8.5" fill="#ffffff" stroke="#e2e8f0" strokeWidth="1.5" />
-                <circle cx="118" cy="132" r="8.5" fill="#ffffff" stroke="#e2e8f0" strokeWidth="1.5" />
+                {/* Left droopy ear */}
+                <path
+                  d="M 58 68 C 42 66 36 78 40 88 C 46 92 64 84 66 74 Z"
+                  fill="url(#catFurGrad)"
+                  stroke="#C2410C"
+                  strokeWidth="1.2"
+                />
+                <path d="M 54 72 C 44 72 42 78 44 84 C 48 86 58 80 58 74 Z" fill="url(#catEarGrad)" />
+
+                {/* Right droopy ear */}
+                <path
+                  d="M 142 68 C 158 66 164 78 160 88 C 154 92 136 84 134 74 Z"
+                  fill="url(#catFurGrad)"
+                  stroke="#C2410C"
+                  strokeWidth="1.2"
+                />
+                <path d="M 146 72 C 156 72 158 78 156 84 C 152 86 142 80 142 74 Z" fill="url(#catEarGrad)" />
               </g>
-            );
-          })()}
+            ) : (
+              // Waspada, Senang, Bangga, Pingsan: Upright Cute Ears with Periodic Twitch
+              <g>
+                {/* Left Ear */}
+                <g className="animate-cat-ear-left">
+                  <path
+                    d="M 56 68 Q 44 26 70 36 Q 80 50 76 66 Z"
+                    fill="url(#catFurGrad)"
+                    stroke="#C2410C"
+                    strokeWidth="1.2"
+                  />
+                  <path d="M 58 63 Q 50 36 68 42 Q 74 52 72 63 Z" fill="url(#catEarGrad)" />
+                </g>
 
-          {/* CAT WHISKERS & NOSE */}
-          {mood === "sad" || mood === "crying" ? (
-            <g>
-              <path d="M 62 104 Q 42 110 24 118" fill="none" stroke="#64748b" strokeWidth="1.8" strokeLinecap="round" />
-              <path d="M 60 109 Q 40 118 22 128" fill="none" stroke="#64748b" strokeWidth="1.8" strokeLinecap="round" />
-              <path d="M 62 114 Q 44 126 26 136" fill="none" stroke="#64748b" strokeWidth="1.8" strokeLinecap="round" />
-              <path d="M 138 104 Q 158 110 176 118" fill="none" stroke="#64748b" strokeWidth="1.8" strokeLinecap="round" />
-              <path d="M 140 109 Q 160 118 178 128" fill="none" stroke="#64748b" strokeWidth="1.8" strokeLinecap="round" />
-              <path d="M 138 114 Q 156 126 174 136" fill="none" stroke="#64748b" strokeWidth="1.8" strokeLinecap="round" />
+                {/* Right Ear */}
+                <g className="animate-cat-ear-right">
+                  <path
+                    d="M 144 68 Q 156 26 130 36 Q 120 50 124 66 Z"
+                    fill="url(#catFurGrad)"
+                    stroke="#C2410C"
+                    strokeWidth="1.2"
+                  />
+                  <path d="M 142 63 Q 150 36 132 42 Q 126 52 128 63 Z" fill="url(#catEarGrad)" />
+                </g>
+              </g>
+            )}
+
+            {/* Chubby Round Head Base */}
+            <path
+              d="M 54 86 C 48 64 62 48 100 48 C 138 48 152 64 146 86 C 154 96 150 114 138 120 C 122 126 78 126 62 120 C 50 114 46 96 54 86 Z"
+              fill="url(#catFurGrad)"
+              stroke="#C2410C"
+              strokeWidth="1.5"
+            />
+
+            {/* Forehead Tabby Stripes */}
+            <path d="M 100 50 L 100 64" stroke="#9A3412" strokeWidth="3" strokeLinecap="round" />
+            <path d="M 90 53 Q 92 61 95 66" stroke="#9A3412" strokeWidth="2.8" strokeLinecap="round" />
+            <path d="M 110 53 Q 108 61 105 66" stroke="#9A3412" strokeWidth="2.8" strokeLinecap="round" />
+
+            {/* Creamy White Muzzle Area */}
+            <path
+              d="M 72 92 C 72 78 128 78 128 92 C 128 114 72 114 72 92 Z"
+              fill="url(#catBellyGrad)"
+            />
+
+            {/* Cute Whiskers */}
+            <g stroke="#7C2D12" strokeWidth="1.8" strokeLinecap="round" opacity="0.85">
+              <path d="M 54 94 L 28 90" />
+              <path d="M 54 100 L 26 104" />
+              <path d="M 146 94 L 172 90" />
+              <path d="M 146 100 L 174 104" />
             </g>
-          ) : (
-            <g>
-              <path d="M 64 96 Q 42 90 24 94" fill="none" stroke="#64748b" strokeWidth="1.8" strokeLinecap="round" />
-              <path d="M 62 102 Q 40 102 22 106" fill="none" stroke="#64748b" strokeWidth="1.8" strokeLinecap="round" />
-              <path d="M 64 108 Q 44 114 26 120" fill="none" stroke="#64748b" strokeWidth="1.8" strokeLinecap="round" />
-              <path d="M 136 96 Q 158 90 176 94" fill="none" stroke="#64748b" strokeWidth="1.8" strokeLinecap="round" />
-              <path d="M 138 102 Q 160 102 178 106" fill="none" stroke="#64748b" strokeWidth="1.8" strokeLinecap="round" />
-              <path d="M 136 108 Q 156 114 174 120" fill="none" stroke="#64748b" strokeWidth="1.8" strokeLinecap="round" />
-            </g>
-          )}
 
-          {/* Cute Little Pink Nose */}
-          <path
-            d="M 96 101 Q 100 99 104 101 Q 103 106 100 108 Q 97 106 96 101 Z"
-            fill="#f43f5e"
-          />
+            {/* Tiny Soft Pink Nose */}
+            <path
+              d="M 97 88 Q 100 86 103 88 Q 100 93 97 88 Z"
+              fill="#F43F5E"
+            />
+            <circle cx="98.5" cy="88" r="0.8" fill="#FFFFFF" />
 
-          {/* EXPRESSIVE CAT FACES */}
-          {mood === "ecstatic" ? (
-            // SULTAN CAT: Golden Crown + Cool Cat Sunglasses + Big Meowing Grin
-            <g>
-              <g transform="translate(72, 14)">
+            {/* Rosy Blushing Cheeks */}
+            <ellipse
+              cx="68"
+              cy="98"
+              rx="8"
+              ry="5"
+              fill="#FB7185"
+              opacity={moodKey === "senang" ? 0.85 : 0.6}
+            />
+            <ellipse
+              cx="132"
+              cy="98"
+              rx="8"
+              ry="5"
+              fill="#FB7185"
+              opacity={moodKey === "senang" ? 0.85 : 0.6}
+            />
+
+            {/* ========================================================
+                4. MOOD SPECIFIC FACIAL EXPRESSIONS & ANIMATED DETAILS
+                ======================================================== */}
+
+            {/* MOOD: BANGGA (Sultan 👑) */}
+            {moodKey === "bangga" && (
+              <g>
+                {/* Floating Gold Crown with Jewels & Shimmer */}
+                <g className="animate-cat-crown">
+                  {/* Floating Golden Halo Sparkle behind crown */}
+                  <circle cx="100" cy="30" r="16" fill="#FEF08A" opacity="0.3" filter="blur(4px)" />
+                  <path
+                    d="M 82 40 L 85 20 L 93 30 L 100 14 L 107 30 L 115 20 L 118 40 Z"
+                    fill="url(#goldCrownGrad)"
+                    stroke="#B45309"
+                    strokeWidth="1.8"
+                    strokeLinejoin="round"
+                  />
+                  {/* Crown Jewels */}
+                  <circle cx="100" cy="16" r="3.2" fill="#EF4444" stroke="#7F1D1D" strokeWidth="0.8" />
+                  <circle cx="85" cy="22" r="2.5" fill="#10B981" stroke="#064E3B" strokeWidth="0.8" />
+                  <circle cx="115" cy="22" r="2.5" fill="#3B82F6" stroke="#1E3A8A" strokeWidth="0.8" />
+                  {/* Crown base velvet line */}
+                  <rect x="83" y="37" width="34" height="3" rx="1.5" fill="#991B1B" />
+                </g>
+
+                {/* Arched Confident Eyebrows */}
+                <path d="M 68 72 Q 78 68 86 72" fill="none" stroke="#7C2D12" strokeWidth="2.5" strokeLinecap="round" />
+                <path d="M 114 72 Q 122 68 132 72" fill="none" stroke="#7C2D12" strokeWidth="2.5" strokeLinecap="round" />
+
+                {/* Smug anime half-lids */}
+                {/* Left Eye */}
+                <path d="M 68 83 Q 78 77 88 82" fill="none" stroke="#451A03" strokeWidth="3.5" strokeLinecap="round" />
+                <ellipse cx="78" cy="87" rx="8" ry="6" fill="#291407" />
+                <circle cx="76" cy="85" r="2.5" fill="#FFFFFF" />
+                {/* Right Eye (with gleaming Star Sparkle!) */}
+                <path d="M 112 82 Q 122 76 132 81" fill="none" stroke="#451A03" strokeWidth="3.5" strokeLinecap="round" />
+                <ellipse cx="122" cy="86" rx="8" ry="6" fill="#291407" />
+                <circle cx="120" cy="84" r="2.5" fill="#FFFFFF" />
                 <polygon
-                  points="0,22 0,6 14,17 28,0 42,17 56,6 56,22"
-                  fill="url(#crownGrad)"
-                  stroke="#ca8a04"
-                  strokeWidth="2"
+                  points="132,77 134,81 138,83 134,85 132,89 130,85 126,83 130,81"
+                  fill="#FACC15"
+                  className="animate-sparkle-pulse"
                 />
-                <circle cx="0" cy="6" r="3" fill="#ef4444" />
-                <circle cx="28" cy="0" r="3.5" fill="#3b82f6" />
-                <circle cx="56" cy="6" r="3" fill="#ef4444" />
-                <rect x="0" y="21" width="56" height="5" rx="2" fill="#eab308" stroke="#ca8a04" strokeWidth="1" />
-              </g>
 
+                {/* Smug Smirk with cute tiny fang (:3) */}
+                <path
+                  d="M 92 94 Q 97 97 101 94 Q 107 100 114 92"
+                  fill="none"
+                  stroke="#5C2607"
+                  strokeWidth="2.6"
+                  strokeLinecap="round"
+                />
+                <polygon points="107,95 111,94 109,99" fill="#FFFFFF" />
+
+                {/* Floating Star Twinkles */}
+                <polygon points="45,45 47,49 51,51 47,53 45,57 43,53 39,51 43,49" fill="#FACC15" className="animate-sparkle-pulse" />
+                <polygon points="160,50 162,54 166,56 162,58 160,62 158,58 154,56 158,54" fill="#FACC15" className="animate-sparkle-pulse" />
+              </g>
+            )}
+
+            {/* MOOD: SENANG (Happy 😊) */}
+            {moodKey === "senang" && (
               <g>
+                {/* Cheerful Bouncing Crescent Eyes (^ ^) */}
                 <path
-                  d="M 64 80 Q 78 80 89 84 L 89 95 Q 82 104 68 103 Q 58 101 61 88 Z"
-                  fill="#0f172a"
-                  stroke="#334155"
-                  strokeWidth="1.5"
-                />
-                <path
-                  d="M 136 80 Q 122 80 111 84 L 111 95 Q 118 104 132 103 Q 142 101 139 88 Z"
-                  fill="#0f172a"
-                  stroke="#334155"
-                  strokeWidth="1.5"
-                />
-                <rect x="87" y="83" width="26" height="3.5" rx="1.5" fill="#0f172a" />
-                <line x1="66" y1="83" x2="76" y2="101" stroke="#ffffff" strokeWidth="2" opacity="0.85" />
-                <line x1="116" y1="83" x2="126" y2="101" stroke="#ffffff" strokeWidth="2" opacity="0.85" />
-              </g>
-
-              <path
-                d="M 82 110 Q 100 134 118 110 Z"
-                fill="#881337"
-                stroke="#4c0519"
-                strokeWidth="1.5"
-              />
-              <ellipse cx="100" cy="123" rx="8" ry="5" fill="#fb7185" />
-              <polygon points="87,110 90,110 88.5,114" fill="#ffffff" />
-              <polygon points="110,110 113,110 111.5,114" fill="#ffffff" />
-
-              <circle cx="58" cy="106" r="10" fill="url(#blushGlow)" />
-              <circle cx="142" cy="106" r="10" fill="url(#blushGlow)" />
-            </g>
-          ) : mood === "happy" ? (
-            // HAPPY CAT: Curved Eyes (^ ^) + Sweet Muzzle (ω) + Rosy Cheeks
-            <g>
-              <path
-                d="M 72 88 Q 82 74 92 88"
-                fill="none"
-                stroke="#1e293b"
-                strokeWidth="4.5"
-                strokeLinecap="round"
-              />
-              <path
-                d="M 108 88 Q 118 74 128 88"
-                fill="none"
-                stroke="#1e293b"
-                strokeWidth="4.5"
-                strokeLinecap="round"
-              />
-              <circle cx="60" cy="104" r="12" fill="url(#blushGlow)" />
-              <circle cx="140" cy="104" r="12" fill="url(#blushGlow)" />
-              <path
-                d="M 86 110 Q 93 117 100 110 Q 107 117 114 110"
-                fill="none"
-                stroke="#1e293b"
-                strokeWidth="3"
-                strokeLinecap="round"
-              />
-            </g>
-          ) : mood === "warning" ? (
-            // WARNING CAT: Nervous Eyes + Sweat Drop + Hesitant Wavy Mouth
-            <g>
-              <path d="M 68 76 Q 78 72 88 78" fill="none" stroke="#78350f" strokeWidth="2.5" strokeLinecap="round" />
-              <path d="M 112 78 Q 122 72 132 76" fill="none" stroke="#78350f" strokeWidth="2.5" strokeLinecap="round" />
-
-              <ellipse cx="80" cy="88" rx="8" ry="10" fill="#ffffff" stroke="#78350f" strokeWidth="2" />
-              <circle cx="83" cy="89" r="4.5" fill="#1e293b" />
-              <circle cx="85" cy="87" r="1.8" fill="#ffffff" />
-
-              <ellipse cx="120" cy="88" rx="8" ry="10" fill="#ffffff" stroke="#78350f" strokeWidth="2" />
-              <circle cx="123" cy="89" r="4.5" fill="#1e293b" />
-              <circle cx="125" cy="87" r="1.8" fill="#ffffff" />
-
-              <g className="animate-sweat-drop" transform="translate(138, 54)">
-                <path
-                  d="M 0 0 C -4 7 -8 13 -8 18 C -8 24 -2 28 5 28 C 12 28 18 24 18 18 C 18 13 14 7 0 0 Z"
-                  fill="#38bdf8"
-                  stroke="#0284c7"
-                  strokeWidth="1.5"
-                />
-                <ellipse cx="2" cy="20" rx="3" ry="5" fill="#ffffff" opacity="0.75" />
-              </g>
-
-              <path
-                d="M 84 112 Q 92 107 100 112 Q 108 117 116 110"
-                fill="none"
-                stroke="#78350f"
-                strokeWidth="3"
-                strokeLinecap="round"
-              />
-            </g>
-          ) : mood === "sad" ? (
-            // SAD CAT: Droopy Glossy Eyes + Downturned Quivering Mouth + Tear perfectly emerging from eye
-            <g>
-              <path d="M 66 78 Q 76 70 86 74" fill="none" stroke="#334155" strokeWidth="2.5" strokeLinecap="round" />
-              <path d="M 114 74 Q 124 70 134 78" fill="none" stroke="#334155" strokeWidth="2.5" strokeLinecap="round" />
-
-              {/* Big glossy sad eyes centered at (78, 90) and (122, 90) */}
-              <ellipse cx="78" cy="90" rx="10" ry="12" fill="#0f172a" />
-              <circle cx="75" cy="86" r="4.5" fill="#ffffff" />
-              <circle cx="80" cy="94" r="2.2" fill="#ffffff" />
-
-              <ellipse cx="122" cy="90" rx="10" ry="12" fill="#0f172a" />
-              <circle cx="119" cy="86" r="4.5" fill="#ffffff" />
-              <circle cx="124" cy="94" r="2.2" fill="#ffffff" />
-
-              {/* Trickling tear drop: emerging precisely from the bottom rim of the left eye (78, 101) */}
-              <g transform="translate(74, 100)" className="animate-tear-drip">
-                <path
-                  d="M 4 0 C 1.5 4 0 7 0 10 C 0 13 2 15 4.5 15 C 7 15 9 13 9 10 C 9 7 7.5 4 4 0 Z"
-                  fill="#60a5fa"
-                  stroke="#2563eb"
-                  strokeWidth="1"
-                />
-                <ellipse cx="3" cy="9" rx="1.5" ry="2" fill="#ffffff" opacity="0.85" />
-              </g>
-
-              {/* Downturned sad cat mouth */}
-              <path
-                d="M 88 116 Q 100 106 112 116"
-                fill="none"
-                stroke="#1e293b"
-                strokeWidth="3.2"
-                strokeLinecap="round"
-              />
-            </g>
-          ) : mood === "crying" ? (
-            // CRYING CAT: Tears positioned EXACTLY at the eyes (Y=89, X=76 & X=124)
-            <g>
-              {/* Worried furrowed eyebrows */}
-              <path d="M 64 78 L 78 84 L 88 80" fill="none" stroke="#4c0519" strokeWidth="3" strokeLinecap="round" />
-              <path d="M 112 80 L 122 84 L 136 78" fill="none" stroke="#4c0519" strokeWidth="3" strokeLinecap="round" />
-
-              {/* 1. Squeezed Crying Eyelid lines (Left eye centered at 76, Right eye centered at 124) */}
-              <path d="M 66 89 L 86 89" stroke="#4c0519" strokeWidth="4.5" strokeLinecap="round" />
-              <path d="M 114 89 L 134 89" stroke="#4c0519" strokeWidth="4.5" strokeLinecap="round" />
-
-              {/* 2. Shiny Tear Pools welled up directly on the eyes */}
-              <ellipse cx="76" cy="89" rx="8" ry="3.5" fill="#67e8f9" opacity="0.95" />
-              <ellipse cx="76" cy="88" rx="5" ry="1.8" fill="#ffffff" opacity="0.95" />
-              <ellipse cx="124" cy="89" rx="8" ry="3.5" fill="#67e8f9" opacity="0.95" />
-              <ellipse cx="124" cy="88" rx="5" ry="1.8" fill="#ffffff" opacity="0.95" />
-
-              {/* 3. WATERFALL TEAR STREAMS - Connected seamlessly right to the eyes at Y=89 */}
-              {/* Left Waterfall Stream (Emerges from X=70..82 at Y=89, pours down cheek) */}
-              <g className="animate-tear-drop origin-top">
-                <path
-                  d="M 70 89 C 67 104 65 125 68 142 C 71 152 81 152 79 142 C 76 125 79 104 82 89 Z"
-                  fill="url(#tearStreamGrad)"
-                  stroke="#38bdf8"
-                  strokeWidth="1.2"
-                />
-                {/* Shiny highlight stream */}
-                <path
-                  d="M 73 90 C 70 105 68 122 72 138"
+                  d="M 68 86 Q 78 72 88 86"
                   fill="none"
-                  stroke="#ffffff"
-                  strokeWidth="2"
+                  stroke="#451A03"
+                  strokeWidth="4.5"
                   strokeLinecap="round"
-                  opacity="0.85"
                 />
-              </g>
-
-              {/* Right Waterfall Stream (Emerges from X=118..130 at Y=89, pours down cheek) */}
-              <g className="animate-tear-drop origin-top">
                 <path
-                  d="M 118 89 C 121 104 124 125 121 142 C 119 152 129 152 132 142 C 135 125 133 104 130 89 Z"
-                  fill="url(#tearStreamGrad)"
-                  stroke="#38bdf8"
-                  strokeWidth="1.2"
-                />
-                {/* Shiny highlight stream */}
-                <path
-                  d="M 127 90 C 130 105 132 122 128 138"
+                  d="M 112 86 Q 122 72 132 86"
                   fill="none"
-                  stroke="#ffffff"
-                  strokeWidth="2"
+                  stroke="#451A03"
+                  strokeWidth="4.5"
                   strokeLinecap="round"
-                  opacity="0.85"
+                />
+
+                {/* Eyebrows */}
+                <path d="M 68 70 Q 78 65 86 70" fill="none" stroke="#7C2D12" strokeWidth="2.5" strokeLinecap="round" />
+                <path d="M 114 70 Q 122 65 132 70" fill="none" stroke="#7C2D12" strokeWidth="2.5" strokeLinecap="round" />
+
+                {/* Big Beaming Smiling Open Mouth with Tongue */}
+                <path
+                  d="M 88 94 Q 100 116 112 94 Z"
+                  fill="#9F1239"
+                  stroke="#451A03"
+                  strokeWidth="2.2"
+                />
+                <ellipse cx="100" cy="103" rx="7" ry="5" fill="#FB7185" />
+
+                {/* Cheerful Fluttering Music Notes / Hearts */}
+                <g className="animate-cat-float-heart" transform="translate(142, 38)">
+                  <path
+                    d="M 0 4 C -3 0 -8 0 -8 5 C -8 9 0 14 0 14 C 0 14 8 9 8 5 C 8 0 3 0 0 4 Z"
+                    fill="#F43F5E"
+                  />
+                </g>
+                <g className="animate-sparkle-pulse" transform="translate(48, 42)">
+                  <text fontSize="14" fill="#F59E0B">✨</text>
+                </g>
+              </g>
+            )}
+
+            {/* MOOD: WASPADA (Siaga • Waspada 🐱) */}
+            {moodKey === "waspada" && (
+              <g>
+                {/* Alert natural arched eyebrows */}
+                <path d="M 70 70 Q 78 66 86 70" fill="none" stroke="#7C2D12" strokeWidth="2.2" strokeLinecap="round" />
+                <path d="M 114 70 Q 122 66 130 70" fill="none" stroke="#7C2D12" strokeWidth="2.2" strokeLinecap="round" />
+
+                {/* Big chocolate anime eyes with natural 4s blinking */}
+                <g className="animate-cat-blink">
+                  {/* Left Eye */}
+                  <ellipse cx="78" cy="85" rx="10" ry="12" fill="#291407" />
+                  <circle cx="75" cy="81" r="4.5" fill="#FFFFFF" />
+                  <circle cx="81" cy="88" r="2.2" fill="#FFFFFF" />
+                  <circle cx="77" cy="90" r="1.2" fill="#FED7AA" />
+
+                  {/* Right Eye */}
+                  <ellipse cx="122" cy="85" rx="10" ry="12" fill="#291407" />
+                  <circle cx="119" cy="81" r="4.5" fill="#FFFFFF" />
+                  <circle cx="125" cy="88" r="2.2" fill="#FFFFFF" />
+                  <circle cx="121" cy="90" r="1.2" fill="#FED7AA" />
+                </g>
+
+                {/* Classic Cute Cat Muzzle (ω shape) */}
+                <path
+                  d="M 91 94 Q 96 98 100 94 Q 104 98 109 94"
+                  fill="none"
+                  stroke="#451A03"
+                  strokeWidth="2.6"
+                  strokeLinecap="round"
+                />
+
+                {/* Gentle float sparkles */}
+                <circle cx="46" cy="60" r="2" fill="#60A5FA" className="animate-sparkle-pulse" opacity="0.6" />
+                <circle cx="156" cy="62" r="2" fill="#60A5FA" className="animate-sparkle-pulse" opacity="0.6" />
+              </g>
+            )}
+
+            {/* MOOD: SEDIH (Sedih • Irit 🥺) */}
+            {moodKey === "sedih" && (
+              <g>
+                {/* Sad Worried Furrowed Eyebrows */}
+                <path d="M 68 70 Q 76 75 86 72" fill="none" stroke="#475569" strokeWidth="2.8" strokeLinecap="round" />
+                <path d="M 114 72 Q 124 75 132 70" fill="none" stroke="#475569" strokeWidth="2.8" strokeLinecap="round" />
+
+                {/* Big glossy puppy-eyes brimming with watery reflections */}
+                <ellipse cx="78" cy="87" rx="9" ry="11" fill="#0F172A" />
+                <circle cx="75" cy="84" r="4.5" fill="#FFFFFF" />
+                <circle cx="81" cy="92" r="2.6" fill="#FFFFFF" opacity="0.85" />
+
+                <ellipse cx="122" cy="87" rx="9" ry="11" fill="#0F172A" />
+                <circle cx="119" cy="84" r="4.5" fill="#FFFFFF" />
+                <circle cx="125" cy="92" r="2.6" fill="#FFFFFF" opacity="0.85" />
+
+                {/* Animated Tear Droplet trickling down from eye */}
+                <g className="animate-cat-tear-fall" transform="translate(125, 94)">
+                  <path
+                    d="M 0 0 C -2 3 -4 6 -4 9 C -4 12 -1 14 2 14 C 5 14 8 12 8 9 C 8 6 6 3 0 0 Z"
+                    fill="url(#tearFallGrad)"
+                    stroke="#0284C7"
+                    strokeWidth="0.8"
+                  />
+                  <ellipse cx="1" cy="9" rx="1.5" ry="2.5" fill="#FFFFFF" opacity="0.85" />
+                </g>
+
+                {/* Trembling downturned sad mouth */}
+                <path
+                  d="M 90 99 Q 100 93 110 99"
+                  fill="none"
+                  stroke="#334155"
+                  strokeWidth="2.8"
+                  strokeLinecap="round"
+                  className="animate-cat-mouth-quiver"
+                />
+
+                {/* Cartoon Gloomy Cloud Floating Overhead with Raindrops */}
+                <g transform="translate(74, 8)" className="animate-cloud-drift">
+                  <path
+                    d="M 12 24 C 6 24 2 20 2 14 C 2 9 6 6 11 6 C 13 2 18 0 24 0 C 31 0 37 4 38 10 C 42 10 46 14 46 18 C 46 22 43 24 38 24 Z"
+                    fill="#64748B"
+                    opacity="0.8"
+                  />
+                  {/* Dripping raindrops */}
+                  <circle cx="14" cy="30" r="1.5" fill="#38BDF8" className="animate-rain-drop" />
+                  <circle cx="26" cy="32" r="1.5" fill="#38BDF8" className="animate-rain-drop" />
+                  <circle cx="38" cy="29" r="1.5" fill="#38BDF8" className="animate-rain-drop" />
+                </g>
+              </g>
+            )}
+
+            {/* MOOD: PINGSAN (Nangis Pingsan / Tepar / Overbudget 😵) */}
+            {moodKey === "pingsan" && (
+              <g className="animate-cat-shiver">
+                {/* 3 Orbiting Dizzy Cartoon Stars in 3D Ellipse Overhead */}
+                <g className="animate-cat-orbit-1">
+                  <polygon
+                    points="100,32 102,38 108,38 103,42 105,48 100,44 95,48 97,42 92,38 98,38"
+                    fill="#FACC15"
+                    stroke="#B45309"
+                    strokeWidth="0.8"
+                  />
+                </g>
+                <g className="animate-cat-orbit-2">
+                  <polygon
+                    points="100,32 102,38 108,38 103,42 105,48 100,44 95,48 97,42 92,38 98,38"
+                    fill="#FACC15"
+                    stroke="#B45309"
+                    strokeWidth="0.8"
+                  />
+                </g>
+                <g className="animate-cat-orbit-3">
+                  <polygon
+                    points="100,32 102,38 108,38 103,42 105,48 100,44 95,48 97,42 92,38 98,38"
+                    fill="#FACC15"
+                    stroke="#B45309"
+                    strokeWidth="0.8"
+                  />
+                </g>
+
+                {/* Dizzy Hypnotic Spinning Spiral Eyes */}
+                {/* Left Spiral Eye */}
+                <g className="animate-cat-dizzy-spin" style={{ transformOrigin: "78px 85px" }}>
+                  <path
+                    d="M 78 85 m -10 0 a 10 10 0 1 0 20 0 a 7 7 0 1 0 -14 0 a 4 4 0 1 0 8 0"
+                    fill="none"
+                    stroke="#1E293B"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                  />
+                </g>
+
+                {/* Right Spiral Eye */}
+                <g className="animate-cat-dizzy-spin" style={{ transformOrigin: "122px 85px" }}>
+                  <path
+                    d="M 122 85 m -10 0 a 10 10 0 1 0 20 0 a 7 7 0 1 0 -14 0 a 4 4 0 1 0 8 0"
+                    fill="none"
+                    stroke="#1E293B"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                  />
+                </g>
+
+                {/* Dazed mouth with tongue lolling out */}
+                <ellipse cx="100" cy="100" rx="9" ry="7" fill="#4C0519" stroke="#1E293B" strokeWidth="1.5" />
+                <path
+                  d="M 98 101 Q 106 101 108 109 Q 103 114 96 106 Z"
+                  fill="#FB7185"
+                />
+
+                {/* Giant comic blue sweat bead */}
+                <path
+                  d="M 136 74 C 132 78 129 82 129 85 C 129 88 131 90 134 90 C 137 90 139 88 139 85 C 139 82 138 78 136 74 Z"
+                  fill="#38BDF8"
+                  stroke="#0284C7"
+                  strokeWidth="0.8"
                 />
               </g>
-
-              {/* 4. Splashing and Dripping Drops under the waterfall stream */}
-              <g className="animate-tear-drip">
-                <circle cx="75" cy="148" r="3.5" fill="#38bdf8" />
-                <circle cx="125" cy="148" r="3.5" fill="#38bdf8" />
-              </g>
-
-              {/* Splash droplets around bottom */}
-              <circle cx="68" cy="144" r="2.5" fill="#0284c7" />
-              <circle cx="82" cy="145" r="2" fill="#38bdf8" />
-              <circle cx="118" cy="145" r="2" fill="#38bdf8" />
-              <circle cx="132" cy="144" r="2.5" fill="#0284c7" />
-
-              {/* 5. Wide Open Screaming Cat Mouth with Fangs & Tongue */}
-              <path
-                d="M 84 110 Q 100 106 116 110 Q 120 130 100 132 Q 80 130 84 110 Z"
-                fill="#4c0519"
-                stroke="#1e293b"
-                strokeWidth="2"
-              />
-              <ellipse cx="100" cy="126" rx="8" ry="4.5" fill="#f43f5e" />
-              {/* Cute cat fangs */}
-              <polygon points="88,110 92,110 90,115" fill="#ffffff" />
-              <polygon points="108,110 112,110 110,115" fill="#ffffff" />
-            </g>
-          ) : (
-            // NEUTRAL CAT: Big curious eyes + Gentle muzzle smile (ω)
-            <g>
-              <circle cx="80" cy="88" r="8" fill="#1e293b" />
-              <circle cx="82" cy="86" r="3" fill="#ffffff" />
-              <circle cx="120" cy="88" r="8" fill="#1e293b" />
-              <circle cx="122" cy="86" r="3" fill="#ffffff" />
-
-              <path
-                d="M 88 110 Q 94 116 100 110 Q 106 116 112 110"
-                fill="none"
-                stroke="#1e293b"
-                strokeWidth="2.8"
-                strokeLinecap="round"
-              />
-
-              <g transform="translate(136, 38)" className="animate-sparkle-pulse">
-                <circle cx="11" cy="11" r="11" fill="#fef08a" stroke="#eab308" strokeWidth="1.8" />
-                <text x="11" y="15" textAnchor="middle" fontSize="13" fontWeight="bold" fill="#854d0e">?</text>
-              </g>
-            </g>
-          )}
+            )}
+          </g>
         </svg>
       </div>
     </div>

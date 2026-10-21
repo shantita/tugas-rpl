@@ -1,0 +1,125 @@
+import React from "react";
+
+interface MascotHeadLogoProps {
+  className?: string;
+  withCrown?: boolean;
+}
+
+export const MascotHeadLogo: React.FC<MascotHeadLogoProps> = ({
+  className = "w-8 h-8",
+  withCrown = false,
+}) => {
+  return (
+    <svg
+      viewBox="0 0 100 100"
+      className={`overflow-visible select-none filter drop-shadow-sm ${className}`}
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <defs>
+        <linearGradient id="budCatFurLogo" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stopColor="#FFA044" />
+          <stop offset="60%" stopColor="#F97316" />
+          <stop offset="100%" stopColor="#EA580C" />
+        </linearGradient>
+        <linearGradient id="budCatMuzzleLogo" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stopColor="#FFFFFF" />
+          <stop offset="100%" stopColor="#FFEDD5" />
+        </linearGradient>
+        <linearGradient id="budCatEarPinkLogo" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stopColor="#FDA4AF" />
+          <stop offset="100%" stopColor="#F43F5E" />
+        </linearGradient>
+        <linearGradient id="budCatCrownLogo" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#FEF08A" />
+          <stop offset="50%" stopColor="#FACC15" />
+          <stop offset="100%" stopColor="#EAB308" />
+        </linearGradient>
+      </defs>
+
+      {/* Left Ear */}
+      <path
+        d="M 22 45 Q 12 10 35 18 Q 44 32 40 44 Z"
+        fill="url(#budCatFurLogo)"
+        stroke="#C2410C"
+        strokeWidth="1.5"
+      />
+      <path d="M 24 40 Q 18 18 34 22 Q 39 30 37 40 Z" fill="url(#budCatEarPinkLogo)" />
+
+      {/* Right Ear */}
+      <path
+        d="M 78 45 Q 88 10 65 18 Q 56 32 60 44 Z"
+        fill="url(#budCatFurLogo)"
+        stroke="#C2410C"
+        strokeWidth="1.5"
+      />
+      <path d="M 76 40 Q 82 18 66 22 Q 61 30 63 40 Z" fill="url(#budCatEarPinkLogo)" />
+
+      {/* Optional Mini Crown */}
+      {withCrown && (
+        <g transform="translate(0, -4)">
+          <path
+            d="M 40 22 L 42 10 L 46 16 L 50 8 L 54 16 L 58 10 L 60 22 Z"
+            fill="url(#budCatCrownLogo)"
+            stroke="#B45309"
+            strokeWidth="1.2"
+            strokeLinejoin="round"
+          />
+          <circle cx="50" cy="9" r="1.5" fill="#EF4444" />
+        </g>
+      )}
+
+      {/* Chubby Head */}
+      <path
+        d="M 20 54 C 15 36 28 26 50 26 C 72 26 85 36 80 54 C 86 62 84 74 74 80 C 62 86 38 86 26 80 C 16 74 14 62 20 54 Z"
+        fill="url(#budCatFurLogo)"
+        stroke="#C2410C"
+        strokeWidth="1.8"
+      />
+
+      {/* Forehead Tabby Stripes */}
+      <path d="M 50 28 L 50 37" stroke="#9A3412" strokeWidth="2.5" strokeLinecap="round" />
+      <path d="M 43 30 Q 45 35 47 38" stroke="#9A3412" strokeWidth="2" strokeLinecap="round" />
+      <path d="M 57 30 Q 55 35 53 38" stroke="#9A3412" strokeWidth="2" strokeLinecap="round" />
+
+      {/* Creamy White Muzzle */}
+      <path
+        d="M 32 58 C 32 48 68 48 68 58 C 68 76 32 76 32 58 Z"
+        fill="url(#budCatMuzzleLogo)"
+      />
+
+      {/* Whiskers */}
+      <g stroke="#7C2D12" strokeWidth="1.5" strokeLinecap="round" opacity="0.8">
+        <path d="M 22 60 L 6 57" />
+        <path d="M 22 65 L 5 69" />
+        <path d="M 78 60 L 94 57" />
+        <path d="M 78 65 L 95 69" />
+      </g>
+
+      {/* Big Anime Eyes with Shiny Reflections */}
+      <ellipse cx="36" cy="52" rx="7" ry="8.5" fill="#291407" />
+      <circle cx="34" cy="49" r="3.2" fill="#FFFFFF" />
+      <circle cx="38" cy="54" r="1.5" fill="#FFFFFF" />
+
+      <ellipse cx="64" cy="52" rx="7" ry="8.5" fill="#291407" />
+      <circle cx="62" cy="49" r="3.2" fill="#FFFFFF" />
+      <circle cx="66" cy="54" r="1.5" fill="#FFFFFF" />
+
+      {/* Soft Pink Nose */}
+      <path d="M 48 55 Q 50 53 52 55 Q 50 59 48 55 Z" fill="#F43F5E" />
+
+      {/* Cute Cat Mouth (ω) */}
+      <path
+        d="M 43 60 Q 46.5 63 50 60 Q 53.5 63 57 60"
+        fill="none"
+        stroke="#451A03"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+
+      {/* Blushing Cheeks */}
+      <ellipse cx="28" cy="62" rx="5" ry="3" fill="#FB7185" opacity="0.75" />
+      <ellipse cx="72" cy="62" rx="5" ry="3" fill="#FB7185" opacity="0.75" />
+    </svg>
+  );
+};
