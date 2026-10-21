@@ -53,10 +53,11 @@ export const ReportsPage: React.FC = () => {
       {
         label: "Total Pengeluaran (Rp)",
         data: report?.ExpenseByCategory.map((c) => c.TotalAmount) || [],
-        backgroundColor: "rgba(99, 102, 241, 0.8)",
-        borderColor: "rgba(79, 70, 229, 1)",
-        borderWidth: 1,
-        borderRadius: 8,
+        backgroundColor: "rgba(249, 115, 22, 0.82)",
+        borderColor: "rgba(234, 88, 12, 1)",
+        hoverBackgroundColor: "rgba(251, 146, 60, 0.95)",
+        borderWidth: 1.5,
+        borderRadius: 10,
       },
     ],
   };
@@ -115,8 +116,8 @@ export const ReportsPage: React.FC = () => {
         <SummaryCard
           Title="Saldo Akhir"
           Amount={report?.Balance || 0}
-          Icon={<Wallet className="w-5 h-5 text-indigo-600" />}
-          ColorClass="bg-indigo-50"
+          Icon={<Wallet className="w-5 h-5 text-orange-600" />}
+          ColorClass="bg-orange-50"
           Description="Pemasukan - Pengeluaran"
         />
         <SummaryCard
@@ -134,7 +135,7 @@ export const ReportsPage: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+        <div className="bg-white rounded-3xl border border-slate-200/90 p-6 shadow-sm">
           <h2 className="text-base font-bold text-slate-900 mb-1">Grafik Pengeluaran per Kategori</h2>
           <p className="text-xs text-slate-500 mb-6">Visualisasi perbandingan total belanja antarkategori.</p>
 
@@ -153,7 +154,7 @@ export const ReportsPage: React.FC = () => {
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col">
+        <div className="bg-white rounded-3xl border border-slate-200/90 shadow-sm overflow-hidden flex flex-col">
           <div className="p-6 border-b border-slate-100">
             <h2 className="text-base font-bold text-slate-900">Rincian Pengeluaran per Kategori</h2>
             <p className="text-xs text-slate-500 mt-1">Persentase pengeluaran terhadap total belanja bulan ini.</p>

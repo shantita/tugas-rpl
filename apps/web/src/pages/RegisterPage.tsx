@@ -40,10 +40,14 @@ export const RegisterPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-slate-100">
-      <div className="bg-white rounded-3xl p-8 max-w-md w-full shadow-xl border border-slate-200">
+    <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-amber-50/60 via-slate-50 to-orange-50/50 relative overflow-hidden">
+      {/* Ambient background blur */}
+      <div className="absolute top-1/4 -left-20 w-80 h-80 bg-amber-400/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-1/4 -right-20 w-80 h-80 bg-orange-400/10 rounded-full blur-3xl pointer-events-none" />
+
+      <div className="bg-white/95 backdrop-blur-md rounded-3xl p-8 max-w-md w-full shadow-xl shadow-orange-500/5 border border-slate-200/90 relative z-10">
         <div className="flex flex-col items-center text-center">
-          <div className="p-3 bg-gradient-to-br from-amber-400 to-orange-500 rounded-3xl shadow-xl border border-amber-300/40 mb-3 animate-mascot-bounce">
+          <div className="p-3 bg-gradient-to-br from-amber-400 to-orange-500 rounded-3xl shadow-xl shadow-orange-500/20 border border-amber-300/40 mb-3 animate-mascot-bounce">
             <MascotHeadLogo className="w-12 h-12" withCrown />
           </div>
           <div className="flex items-center gap-1 mb-1">
@@ -74,7 +78,7 @@ export const RegisterPage: React.FC = () => {
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Budi Santoso"
-              className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none text-sm transition-all"
+              className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-orange-500/25 focus:border-orange-500 outline-none text-sm transition-all"
             />
           </div>
 
@@ -88,7 +92,7 @@ export const RegisterPage: React.FC = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="budi@mahasiswa.ac.id"
-              className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none text-sm transition-all"
+              className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-orange-500/25 focus:border-orange-500 outline-none text-sm transition-all"
             />
           </div>
 
@@ -102,14 +106,14 @@ export const RegisterPage: React.FC = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
-              className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none text-sm transition-all"
+              className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-orange-500/25 focus:border-orange-500 outline-none text-sm transition-all"
             />
           </div>
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full mt-2 flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-white font-semibold text-sm bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 disabled:opacity-50 transition-colors shadow-md"
+            className="w-full mt-2 flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-white font-bold text-sm bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 active:scale-[0.99] disabled:opacity-50 transition-all shadow-lg shadow-orange-500/25"
           >
             <span>{loading ? "Mendaftarkan..." : "Daftar Akun"}</span>
             <ArrowRight className="w-4 h-4" />
@@ -119,7 +123,7 @@ export const RegisterPage: React.FC = () => {
         <div className="mt-6 text-center">
           <p className="text-sm text-slate-600">
             Sudah memiliki akun?{" "}
-            <Link to="/login" className="font-semibold text-indigo-600 hover:text-indigo-700 hover:underline">
+            <Link to="/login" className="font-bold text-orange-600 hover:text-orange-700 hover:underline">
               Masuk di sini
             </Link>
           </p>

@@ -156,7 +156,7 @@ export const BudgetsPage: React.FC = () => {
           <button
             type="button"
             onClick={handleOpenAddModal}
-            className="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 rounded-xl transition-colors shadow-sm"
+            className="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-bold text-white bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 active:scale-95 rounded-xl shadow-md shadow-orange-500/20 transition-all"
           >
             <PlusCircle className="w-4 h-4" />
             <span>Tambah Anggaran</span>
@@ -166,17 +166,17 @@ export const BudgetsPage: React.FC = () => {
 
       {error && <AlertBox Type="error" Message={error} />}
 
-      <div className="bg-white rounded-2xl border border-slate-200 p-5 flex items-center justify-between shadow-sm">
+      <div className="bg-white rounded-3xl border border-slate-200/90 p-5 flex items-center justify-between shadow-sm">
         <div>
           <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Total Anggaran Periode Ini</span>
-          <p className="text-2xl font-bold text-amber-600 mt-1">{FormatRupiah(totalBudget)}</p>
+          <p className="text-2xl font-black text-amber-600 mt-1">{FormatRupiah(totalBudget)}</p>
         </div>
-        <div className="p-3 bg-amber-50 rounded-xl text-amber-600">
+        <div className="p-3 bg-amber-50 rounded-2xl text-amber-600">
           <PiggyBank className="w-6 h-6" />
         </div>
       </div>
 
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+      <div className="bg-white rounded-3xl border border-slate-200/90 shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm">
             <thead className="bg-slate-50 text-slate-600 text-xs uppercase font-semibold border-b border-slate-200">
@@ -218,7 +218,7 @@ export const BudgetsPage: React.FC = () => {
                         <button
                           type="button"
                           onClick={() => handleOpenEditModal(item)}
-                          className="p-1.5 text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"
+                          className="p-1.5 text-slate-500 hover:text-orange-600 hover:bg-orange-50 rounded-lg transition-colors"
                           title="Ubah"
                         >
                           <Edit2 className="w-4 h-4" />
@@ -243,7 +243,7 @@ export const BudgetsPage: React.FC = () => {
 
       {modalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm animate-fade-in">
-          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl border border-slate-100">
+          <div className="bg-white rounded-3xl max-w-md w-full p-6 shadow-xl border border-slate-100">
             <div className="flex items-center justify-between pb-4 border-b border-slate-100">
               <h3 className="text-lg font-bold text-slate-900">{editingId ? "Ubah Anggaran" : "Tambah Anggaran"}</h3>
               <button
@@ -270,7 +270,7 @@ export const BudgetsPage: React.FC = () => {
                   required
                   value={formCategoryId}
                   onChange={(e) => setFormCategoryId(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none text-sm bg-white cursor-pointer"
+                  className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-orange-500/25 focus:border-orange-500 outline-none text-sm bg-white cursor-pointer transition-all"
                 >
                   {categories.map((c) => (
                     <option key={c.Id} value={c.Id}>
@@ -292,7 +292,7 @@ export const BudgetsPage: React.FC = () => {
                   value={formAmount}
                   onChange={(e) => setFormAmount(e.target.value)}
                   placeholder="Contoh: 1000000"
-                  className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none text-sm transition-all"
+                  className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-orange-500/25 focus:border-orange-500 outline-none text-sm transition-all"
                 />
               </div>
 
@@ -304,7 +304,7 @@ export const BudgetsPage: React.FC = () => {
                   <select
                     value={formMonth}
                     onChange={(e) => setFormMonth(Number(e.target.value))}
-                    className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none text-sm bg-white cursor-pointer"
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-orange-500/25 focus:border-orange-500 outline-none text-sm bg-white cursor-pointer transition-all"
                   >
                     {MonthNames.map((name, idx) => (
                       <option key={name} value={idx + 1}>
@@ -322,7 +322,7 @@ export const BudgetsPage: React.FC = () => {
                     required
                     value={formYear}
                     onChange={(e) => setFormYear(Number(e.target.value))}
-                    className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none text-sm transition-all"
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-orange-500/25 focus:border-orange-500 outline-none text-sm transition-all"
                   />
                 </div>
               </div>
@@ -338,7 +338,7 @@ export const BudgetsPage: React.FC = () => {
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="px-4 py-2 text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl transition-colors disabled:opacity-50"
+                  className="px-5 py-2.5 text-sm font-bold text-white bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 rounded-xl shadow-md shadow-orange-500/20 transition-all disabled:opacity-50"
                 >
                   {submitting ? "Menyimpan..." : "Simpan"}
                 </button>

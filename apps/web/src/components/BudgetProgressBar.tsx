@@ -16,7 +16,7 @@ export const BudgetProgressBar: React.FC<BudgetProgressBarProps> = ({ Percentage
     [BudgetStatus.EXCEEDED]: "bg-rose-500",
   };
 
-  const barColor = barColorStyles[Status] || "bg-indigo-500";
+  const barColor = barColorStyles[Status] || "bg-orange-500";
 
   return (
     <div className="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">

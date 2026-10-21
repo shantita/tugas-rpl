@@ -77,7 +77,7 @@ export const DailyLimitCard: React.FC<DailyLimitCardProps> = ({ Item, Balance, T
         };
       case "senang":
         return {
-          gradient: "from-blue-950 via-sky-900 to-indigo-950",
+          gradient: "from-sky-950 via-blue-900 to-slate-950",
           cardBorder: "border-sky-500/30",
           glowColor: "bg-sky-500/20",
           accentColor: "text-sky-300",
@@ -87,13 +87,13 @@ export const DailyLimitCard: React.FC<DailyLimitCardProps> = ({ Item, Balance, T
         };
       case "waspada":
         return {
-          gradient: "from-slate-900 via-indigo-950 to-slate-950",
-          cardBorder: "border-blue-500/30",
-          glowColor: "bg-blue-500/15",
-          accentColor: "text-blue-300",
-          badgeBg: "bg-blue-400/20 text-blue-200 border-blue-400/40",
+          gradient: "from-slate-950 via-amber-950/70 to-slate-950",
+          cardBorder: "border-amber-500/30",
+          glowColor: "bg-amber-500/15",
+          accentColor: "text-amber-300",
+          badgeBg: "bg-amber-500/20 text-amber-200 border-amber-400/40",
           badgeText: "Waspada 🐱",
-          badgeIcon: <AlertTriangle className="w-3.5 h-3.5 text-blue-300" />,
+          badgeIcon: <AlertTriangle className="w-3.5 h-3.5 text-amber-300" />,
         };
       case "sedih":
         return {
@@ -182,7 +182,7 @@ export const DailyLimitCard: React.FC<DailyLimitCardProps> = ({ Item, Balance, T
         {normalizedMood === "waspada" && (
           <div className="absolute inset-0">
             <div className="absolute top-6 right-20 text-blue-200 text-2xl opacity-75 animate-mascot-float">🌙</div>
-            <div className="absolute top-12 left-1/4 text-indigo-300 text-sm opacity-60 animate-sparkle-pulse">⭐</div>
+            <div className="absolute top-12 left-1/4 text-amber-300 text-sm opacity-60 animate-sparkle-pulse">⭐</div>
             <div className="absolute bottom-12 right-1/3 text-sky-300 text-lg opacity-50 animate-sparkle-pulse">✨</div>
           </div>
         )}
