@@ -165,3 +165,370 @@
 .animate-rain-drop {
   animation: rain-fall 1s linear infinite;
 }
+
+/* ==========================================================================
+   MASCOT CAT DETAILED MOVEMENT & EXPRESSION ANIMATIONS
+   ========================================================================== */
+
+@keyframes cat-breathe {
+  0%, 100% {
+    transform: scale(1) translateY(0);
+  }
+  50% {
+    transform: scale(1.025, 0.98) translateY(-1px);
+  }
+}
+
+@keyframes cat-tail-wag {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(14deg);
+  }
+}
+
+@keyframes cat-tail-happy {
+  0%, 100% {
+    transform: rotate(-10deg);
+  }
+  50% {
+    transform: rotate(22deg);
+  }
+}
+
+@keyframes cat-tail-proud {
+  0%, 100% {
+    transform: rotate(-4deg);
+  }
+  50% {
+    transform: rotate(16deg);
+  }
+}
+
+@keyframes cat-tail-sad {
+  0%, 100% {
+    transform: rotate(5deg);
+  }
+  50% {
+    transform: rotate(-2deg);
+  }
+}
+
+@keyframes cat-tail-furious {
+  0%, 100% {
+    transform: rotate(-24deg);
+  }
+  50% {
+    transform: rotate(26deg);
+  }
+}
+
+@keyframes cat-blink {
+  0%, 90%, 100% {
+    transform: scaleY(1);
+  }
+  94%, 96% {
+    transform: scaleY(0.08);
+  }
+}
+
+@keyframes cat-ear-twitch-left {
+  0%, 82%, 100% {
+    transform: rotate(0deg);
+  }
+  85% {
+    transform: rotate(-9deg);
+  }
+  88% {
+    transform: rotate(4deg);
+  }
+}
+
+@keyframes cat-ear-twitch-right {
+  0%, 72%, 100% {
+    transform: rotate(0deg);
+  }
+  75% {
+    transform: rotate(9deg);
+  }
+  78% {
+    transform: rotate(-4deg);
+  }
+}
+
+@keyframes cat-paw-wave {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(-10deg);
+  }
+}
+
+@keyframes cat-crown-float {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-6px) rotate(3deg);
+  }
+}
+
+@keyframes cat-dizzy-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes cat-orbit-star {
+  0% {
+    transform: rotate(0deg) translateX(34px) rotate(0deg) scale(0.8);
+    opacity: 0.55;
+  }
+  50% {
+    transform: rotate(180deg) translateX(34px) rotate(-180deg) scale(1.15);
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(360deg) translateX(34px) rotate(-360deg) scale(0.8);
+    opacity: 0.55;
+  }
+}
+
+@keyframes cat-orbit-star-2 {
+  0% {
+    transform: rotate(120deg) translateX(34px) rotate(-120deg) scale(0.8);
+    opacity: 0.55;
+  }
+  50% {
+    transform: rotate(300deg) translateX(34px) rotate(-300deg) scale(1.15);
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(480deg) translateX(34px) rotate(-480deg) scale(0.8);
+    opacity: 0.55;
+  }
+}
+
+@keyframes cat-orbit-star-3 {
+  0% {
+    transform: rotate(240deg) translateX(34px) rotate(-240deg) scale(0.8);
+    opacity: 0.55;
+  }
+  50% {
+    transform: rotate(420deg) translateX(34px) rotate(-420deg) scale(1.15);
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(600deg) translateX(34px) rotate(-600deg) scale(0.8);
+    opacity: 0.55;
+  }
+}
+
+@keyframes cat-tear-fall-real {
+  0% {
+    transform: translateY(0) scale(0.4);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  65% {
+    transform: translateY(18px) scale(1.1);
+    opacity: 0.95;
+  }
+  85% {
+    transform: translateY(26px) scale(0.8);
+    opacity: 0.5;
+  }
+  100% {
+    transform: translateY(32px) scale(0.3);
+    opacity: 0;
+  }
+}
+
+@keyframes cat-steam-rise {
+  0% {
+    transform: translateY(0) scale(0.5);
+    opacity: 0;
+  }
+  25% {
+    opacity: 0.85;
+    transform: translateY(-8px) scale(0.85);
+  }
+  75% {
+    opacity: 0.6;
+    transform: translateY(-18px) scale(1.2);
+  }
+  100% {
+    transform: translateY(-28px) scale(1.4);
+    opacity: 0;
+  }
+}
+
+@keyframes cat-anger-pop {
+  0%, 100% {
+    transform: scale(1) rotate(0deg);
+  }
+  25% {
+    transform: scale(1.22) rotate(-5deg);
+  }
+  50% {
+    transform: scale(0.95) rotate(4deg);
+  }
+  75% {
+    transform: scale(1.18) rotate(-3deg);
+  }
+}
+
+@keyframes cat-float-heart {
+  0% {
+    transform: translateY(0) scale(0.5);
+    opacity: 0;
+  }
+  25% {
+    opacity: 0.95;
+    transform: translateY(-10px) scale(1);
+  }
+  75% {
+    opacity: 0.7;
+    transform: translateY(-24px) scale(1.1) translateX(5px);
+  }
+  100% {
+    transform: translateY(-38px) scale(0.7) translateX(-4px);
+    opacity: 0;
+  }
+}
+
+@keyframes cat-mouth-quiver {
+  0%, 100% {
+    transform: scaleY(1) translateY(0);
+  }
+  30% {
+    transform: scaleY(0.85) translateY(0.5px);
+  }
+  60% {
+    transform: scaleY(1.1) translateY(-0.5px);
+  }
+}
+
+@keyframes cat-shiver {
+  0%, 100% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(-1px, 0.5px);
+  }
+  50% {
+    transform: translate(1px, -0.5px);
+  }
+  75% {
+    transform: translate(-0.5px, -1px);
+  }
+}
+
+.animate-cat-breathe {
+  animation: cat-breathe 3.5s ease-in-out infinite;
+  transform-origin: center bottom;
+}
+
+.animate-cat-tail-wag {
+  animation: cat-tail-wag 3s ease-in-out infinite;
+  transform-origin: 142px 145px;
+}
+
+.animate-cat-tail-happy {
+  animation: cat-tail-happy 1.2s ease-in-out infinite;
+  transform-origin: 142px 145px;
+}
+
+.animate-cat-tail-proud {
+  animation: cat-tail-proud 2.2s ease-in-out infinite;
+  transform-origin: 142px 145px;
+}
+
+.animate-cat-tail-sad {
+  animation: cat-tail-sad 3.5s ease-in-out infinite;
+  transform-origin: 142px 145px;
+}
+
+.animate-cat-tail-furious {
+  animation: cat-tail-furious 0.5s ease-in-out infinite;
+  transform-origin: 142px 145px;
+}
+
+.animate-cat-blink {
+  animation: cat-blink 4s infinite ease-in-out;
+  transform-origin: center;
+}
+
+.animate-cat-ear-left {
+  animation: cat-ear-twitch-left 4.5s infinite ease-in-out;
+  transform-origin: 66px 65px;
+}
+
+.animate-cat-ear-right {
+  animation: cat-ear-twitch-right 5.2s infinite ease-in-out;
+  transform-origin: 134px 65px;
+}
+
+.animate-cat-paw-wave {
+  animation: cat-paw-wave 1.4s ease-in-out infinite;
+  transform-origin: center bottom;
+}
+
+.animate-cat-crown {
+  animation: cat-crown-float 2.8s ease-in-out infinite;
+  transform-origin: center bottom;
+}
+
+.animate-cat-dizzy-spin {
+  animation: cat-dizzy-spin 2s linear infinite;
+  transform-origin: center;
+}
+
+.animate-cat-orbit-1 {
+  animation: cat-orbit-star 3s linear infinite;
+  transform-origin: 100px 52px;
+}
+
+.animate-cat-orbit-2 {
+  animation: cat-orbit-star-2 3s linear infinite;
+  transform-origin: 100px 52px;
+}
+
+.animate-cat-orbit-3 {
+  animation: cat-orbit-star-3 3s linear infinite;
+  transform-origin: 100px 52px;
+}
+
+.animate-cat-tear-fall {
+  animation: cat-tear-fall-real 1.6s ease-in infinite;
+}
+
+.animate-cat-steam {
+  animation: cat-steam-rise 1.5s ease-out infinite;
+}
+
+.animate-cat-anger-pop {
+  animation: cat-anger-pop 1.2s ease-in-out infinite;
+  transform-origin: center;
+}
+
+.animate-cat-float-heart {
+  animation: cat-float-heart 2.2s ease-out infinite;
+}
+
+.animate-cat-mouth-quiver {
+  animation: cat-mouth-quiver 0.8s ease-in-out infinite;
+  transform-origin: center;
+}
+
+.animate-cat-shiver {
+  animation: cat-shiver 0.3s ease-in-out infinite;
+}

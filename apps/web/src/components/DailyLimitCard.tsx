@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { DailyLimitItem, DailyLimitStatus } from "@monthly-budgeting-app/shared";
 import { FormatRupiah } from "../utils/formatters";
 import { Sparkles, Calendar, Wallet, CheckCircle2, AlertTriangle, XCircle, SlidersHorizontal } from "lucide-react";
-import { BudgetMascot, BudgetMood } from "./BudgetMascot";
+import { BudgetMascot, BudgetMood, NORMALIZE_MOOD, MascotMoodKey } from "./BudgetMascot";
 
 interface DailyLimitCardProps {
   Item: DailyLimitItem;
@@ -15,9 +15,14 @@ export const DailyLimitCard: React.FC<DailyLimitCardProps> = ({ Item, Balance, T
   const [previewMood, setPreviewMood] = useState<BudgetMood | "auto">("auto");
 
   // Calculate automated mood from live financial data
+  // Mapped as requested:
+  // - sultan -> bangga
+  // - waspada -> waspada
+  // - sedih -> sedih
+  // - nangis -> pingsan
   const calculateAutoMood = (): BudgetMood => {
     if (Item.Status === DailyLimitStatus.NO_BUDGET || Item.Status === DailyLimitStatus.PERIOD_ENDED) {
-      return "neutral";
+      return "waspada";
     }
 
     if (
@@ -25,13 +30,13 @@ export const DailyLimitCard: React.FC<DailyLimitCardProps> = ({ Item, Balance, T
       Item.Status === DailyLimitStatus.BUDGET_EMPTY ||
       Item.RemainingBudget <= 0
     ) {
-      return "crying";
+      return "pingsan"; // Nangis yang pingsan
     }
 
     const remainingPercent =
       Item.BudgetAmount > 0 ? (Item.RemainingBudget / Item.BudgetAmount) * 100 : 0;
 
-    // Check if balance exceeds total budget (user prompt: "kalo masih banyak misal saldonya melebih semua anggaran ekspresi cartoonnya senang")
+    // Check if balance exceeds total budget
     const isBalanceExceedingBudget =
       Balance !== undefined &&
       TotalBudget !== undefined &&
@@ -40,90 +45,80 @@ export const DailyLimitCard: React.FC<DailyLimitCardProps> = ({ Item, Balance, T
       remainingPercent >= 30;
 
     if (isBalanceExceedingBudget || remainingPercent >= 70) {
-      return "ecstatic";
+      return "bangga"; // Sultan yang bangga
     }
 
     if (remainingPercent >= 40) {
-      return "happy";
+      return "senang"; // Senang
     }
 
     if (remainingPercent >= 15) {
-      return "warning";
+      return "waspada"; // Waspada
     }
 
-    return "sad";
+    return "sedih"; // Sedih
   };
 
   const currentMood: BudgetMood = previewMood === "auto" ? calculateAutoMood() : previewMood;
+  const normalizedMood: MascotMoodKey = NORMALIZE_MOOD[currentMood] || "waspada";
 
   // Background gradient and cartoon theme classes
-  const getThemeConfig = (mood: BudgetMood) => {
-    switch (mood) {
-      case "ecstatic":
+  const getThemeConfig = (moodKey: MascotMoodKey) => {
+    switch (moodKey) {
+      case "bangga":
         return {
-          gradient: "from-emerald-950 via-teal-900 to-slate-950",
-          cardBorder: "border-emerald-500/30",
-          glowColor: "bg-emerald-500/20",
-          accentColor: "text-emerald-300",
-          badgeBg: "bg-emerald-400/20 text-emerald-200 border-emerald-400/40",
-          badgeText: "Sultan • Saldo Melimpah 👑",
+          gradient: "from-amber-950 via-emerald-950 to-slate-950",
+          cardBorder: "border-amber-500/40",
+          glowColor: "bg-amber-500/20",
+          accentColor: "text-amber-300",
+          badgeBg: "bg-amber-400/20 text-amber-200 border-amber-400/40",
+          badgeText: "Sultan 👑",
           badgeIcon: <Sparkles className="w-3.5 h-3.5 text-amber-300" />,
         };
-      case "happy":
+      case "senang":
         return {
           gradient: "from-blue-950 via-sky-900 to-indigo-950",
           cardBorder: "border-sky-500/30",
           glowColor: "bg-sky-500/20",
           accentColor: "text-sky-300",
           badgeBg: "bg-emerald-400/20 text-emerald-200 border-emerald-400/40",
-          badgeText: "Budget Aman 😊",
+          badgeText: "Senang • Aman 😊",
           badgeIcon: <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />,
         };
-      case "warning":
+      case "waspada":
         return {
-          gradient: "from-amber-950 via-orange-950 to-stone-950",
-          cardBorder: "border-amber-500/30",
-          glowColor: "bg-amber-500/20",
-          accentColor: "text-amber-300",
-          badgeBg: "bg-amber-400/20 text-amber-200 border-amber-400/40",
-          badgeText: "Mulai Waspada 😅",
-          badgeIcon: <AlertTriangle className="w-3.5 h-3.5 text-amber-300" />,
+          gradient: "from-slate-900 via-indigo-950 to-slate-950",
+          cardBorder: "border-blue-500/30",
+          glowColor: "bg-blue-500/15",
+          accentColor: "text-blue-300",
+          badgeBg: "bg-blue-400/20 text-blue-200 border-blue-400/40",
+          badgeText: "Waspada 🐱",
+          badgeIcon: <AlertTriangle className="w-3.5 h-3.5 text-blue-300" />,
         };
-      case "sad":
+      case "sedih":
         return {
           gradient: "from-purple-950 via-slate-900 to-rose-950",
-          cardBorder: "border-rose-500/30",
-          glowColor: "bg-rose-500/20",
-          accentColor: "text-rose-300",
-          badgeBg: "bg-rose-400/20 text-rose-200 border-rose-400/40",
-          badgeText: "Budget Menipis 🥺",
+          cardBorder: "border-purple-500/30",
+          glowColor: "bg-purple-500/20",
+          accentColor: "text-purple-300",
+          badgeBg: "bg-purple-400/20 text-purple-200 border-purple-400/40",
+          badgeText: "Sedih 🥺",
           badgeIcon: <AlertTriangle className="w-3.5 h-3.5 text-rose-300" />,
         };
-      case "crying":
+      case "pingsan":
         return {
           gradient: "from-red-950 via-rose-950 to-neutral-950",
           cardBorder: "border-red-500/40",
           glowColor: "bg-red-500/25",
           accentColor: "text-red-300",
           badgeBg: "bg-red-500/30 text-red-100 border-red-400/50 animate-pulse",
-          badgeText: "Overbudget / Habis 😭",
+          badgeText: "Nangis • Pingsan 😵",
           badgeIcon: <XCircle className="w-3.5 h-3.5 text-red-400" />,
-        };
-      case "neutral":
-      default:
-        return {
-          gradient: "from-slate-900 via-indigo-950 to-slate-950",
-          cardBorder: "border-slate-700/50",
-          glowColor: "bg-indigo-500/15",
-          accentColor: "text-indigo-300",
-          badgeBg: "bg-slate-700/50 text-slate-200 border-slate-600",
-          badgeText: "Belum Ada Anggaran 📝",
-          badgeIcon: <Sparkles className="w-3.5 h-3.5 text-slate-400" />,
         };
     }
   };
 
-  const theme = getThemeConfig(currentMood);
+  const theme = getThemeConfig(normalizedMood);
 
   // Remaining percentage
   const remainingPercent =
@@ -145,8 +140,8 @@ export const DailyLimitCard: React.FC<DailyLimitCardProps> = ({ Item, Balance, T
           className={`absolute bottom-0 left-0 -ml-20 -mb-20 w-72 h-72 ${theme.glowColor} rounded-full blur-3xl opacity-50 transition-colors duration-700`}
         ></div>
 
-        {/* ECSTATIC / SULTAN: Confetti, Golden Coins, Sunburst */}
-        {currentMood === "ecstatic" && (
+        {/* BANGGA / SULTAN: Confetti, Golden Coins, Sunburst Sparkles */}
+        {normalizedMood === "bangga" && (
           <div className="absolute inset-0">
             {/* Cartoon Sparkles */}
             <div className="absolute top-6 left-1/4 animate-sparkle-pulse text-amber-300 text-lg opacity-75">✨</div>
@@ -165,8 +160,8 @@ export const DailyLimitCard: React.FC<DailyLimitCardProps> = ({ Item, Balance, T
           </div>
         )}
 
-        {/* HAPPY: Puffy White Cartoon Clouds & Sunshine */}
-        {currentMood === "happy" && (
+        {/* SENANG: Puffy White Cartoon Clouds & Sunshine Sparkles */}
+        {normalizedMood === "senang" && (
           <div className="absolute inset-0">
             {/* Floating Clouds SVG */}
             <div className="absolute top-4 right-1/4 opacity-25 animate-cloud-drift">
@@ -183,31 +178,31 @@ export const DailyLimitCard: React.FC<DailyLimitCardProps> = ({ Item, Balance, T
           </div>
         )}
 
-        {/* WARNING: Floating Autumn/Amber Breeze & Warning Orbs */}
-        {currentMood === "warning" && (
+        {/* WASPADA: Gentle Night/Indigo Breeze & Moon */}
+        {normalizedMood === "waspada" && (
           <div className="absolute inset-0">
-            <div className="absolute top-8 right-24 text-amber-400/40 text-2xl animate-mascot-float">🍃</div>
-            <div className="absolute bottom-12 right-1/3 text-orange-400/30 text-xl animate-mascot-float">🍂</div>
-            <div className="absolute top-1/3 left-1/4 text-amber-300/30 text-base animate-sparkle-pulse">⚠️</div>
+            <div className="absolute top-6 right-20 text-blue-200 text-2xl opacity-75 animate-mascot-float">🌙</div>
+            <div className="absolute top-12 left-1/4 text-indigo-300 text-sm opacity-60 animate-sparkle-pulse">⭐</div>
+            <div className="absolute bottom-12 right-1/3 text-sky-300 text-lg opacity-50 animate-sparkle-pulse">✨</div>
           </div>
         )}
 
-        {/* SAD: Gloomy Raindrops & Purple Clouds */}
-        {currentMood === "sad" && (
+        {/* SEDIH: Gloomy Raindrops & Purple Mist */}
+        {normalizedMood === "sedih" && (
           <div className="absolute inset-0">
             <div className="absolute top-4 right-1/3 opacity-30">
               <svg width="100" height="45" viewBox="0 0 100 45" fill="#64748b">
                 <path d="M 15 35 Q 15 18 32 18 Q 42 8 60 12 Q 78 5 85 18 Q 98 15 95 35 Z" />
               </svg>
             </div>
-            <div className="absolute top-16 left-1/4 text-blue-300 text-lg opacity-40 animate-rain-drop">💧</div>
-            <div className="absolute top-24 left-1/2 text-blue-300 text-sm opacity-35 animate-rain-drop">💧</div>
-            <div className="absolute top-12 right-20 text-blue-300 text-base opacity-40 animate-rain-drop">💧</div>
+            <div className="absolute top-16 left-1/4 text-purple-300 text-lg opacity-40 animate-rain-drop">💧</div>
+            <div className="absolute top-24 left-1/2 text-purple-300 text-sm opacity-35 animate-rain-drop">💧</div>
+            <div className="absolute top-12 right-20 text-purple-300 text-base opacity-40 animate-rain-drop">💧</div>
           </div>
         )}
 
-        {/* CRYING: Dramatic Storm, Lightning & Raindrops */}
-        {currentMood === "crying" && (
+        {/* PINGSAN / NANGIS: Dramatic Storm, Lightning & Raindrops */}
+        {normalizedMood === "pingsan" && (
           <div className="absolute inset-0">
             {/* Storm Clouds */}
             <div className="absolute top-2 right-16 opacity-40 animate-sparkle-pulse">
@@ -219,18 +214,9 @@ export const DailyLimitCard: React.FC<DailyLimitCardProps> = ({ Item, Balance, T
             <div className="absolute top-12 left-1/3 text-yellow-300 text-2xl animate-sparkle-pulse opacity-75">⚡</div>
             <div className="absolute bottom-16 right-1/4 text-yellow-300 text-xl animate-sparkle-pulse opacity-60">⚡</div>
             {/* Rain Streaks */}
-            <div className="absolute top-8 left-16 text-blue-400 text-xl opacity-60 animate-rain-drop">🌧️</div>
-            <div className="absolute top-20 right-1/3 text-sky-400 text-base opacity-50 animate-rain-drop">💧</div>
-            <div className="absolute bottom-10 left-1/3 text-sky-400 text-lg opacity-50 animate-rain-drop">💧</div>
-          </div>
-        )}
-
-        {/* NEUTRAL: Night Sky, Moon & Stars */}
-        {currentMood === "neutral" && (
-          <div className="absolute inset-0">
-            <div className="absolute top-6 right-20 text-yellow-200 text-2xl opacity-75 animate-mascot-float">🌙</div>
-            <div className="absolute top-12 left-1/4 text-indigo-300 text-sm opacity-60 animate-sparkle-pulse">⭐</div>
-            <div className="absolute bottom-12 right-1/3 text-indigo-300 text-lg opacity-50 animate-sparkle-pulse">✨</div>
+            <div className="absolute top-8 left-16 text-rose-400 text-xl opacity-60 animate-rain-drop">🌧️</div>
+            <div className="absolute top-20 right-1/3 text-red-400 text-base opacity-50 animate-rain-drop">💧</div>
+            <div className="absolute bottom-10 left-1/3 text-red-400 text-lg opacity-50 animate-rain-drop">💧</div>
           </div>
         )}
       </div>
@@ -253,7 +239,7 @@ export const DailyLimitCard: React.FC<DailyLimitCardProps> = ({ Item, Balance, T
           </div>
 
           {/* INTERACTIVE CARTOON MOOD PREVIEW SWITCHER */}
-          <div className="flex items-center gap-1 bg-black/30 backdrop-blur-md p-1 rounded-xl border border-white/10 text-[11px]">
+          <div className="flex flex-wrap items-center gap-1 bg-black/30 backdrop-blur-md p-1 rounded-xl border border-white/10 text-[11px]">
             <span className="text-white/60 px-1.5 font-medium flex items-center gap-1">
               <SlidersHorizontal className="w-3 h-3" />
               <span className="hidden sm:inline">Tes Mood:</span>
@@ -272,63 +258,63 @@ export const DailyLimitCard: React.FC<DailyLimitCardProps> = ({ Item, Balance, T
             </button>
             <button
               type="button"
-              onClick={() => setPreviewMood("ecstatic")}
+              onClick={() => setPreviewMood("bangga")}
               className={`px-1.5 py-0.5 rounded-lg transition-all ${
-                previewMood === "ecstatic"
-                  ? "bg-emerald-500 text-white font-bold shadow-sm"
+                normalizedMood === "bangga" && previewMood !== "auto"
+                  ? "bg-amber-500 text-white font-bold shadow-sm"
                   : "text-white/70 hover:text-white hover:bg-white/10"
               }`}
-              title="Ekspresi Kucing Sultan (Saldo Melimpah)"
+              title="Sultan (Saldo Melimpah)"
             >
               👑 Sultan
             </button>
             <button
               type="button"
-              onClick={() => setPreviewMood("happy")}
+              onClick={() => setPreviewMood("senang")}
               className={`px-1.5 py-0.5 rounded-lg transition-all ${
-                previewMood === "happy"
-                  ? "bg-sky-500 text-white font-bold shadow-sm"
+                normalizedMood === "senang" && previewMood !== "auto"
+                  ? "bg-emerald-500 text-white font-bold shadow-sm"
                   : "text-white/70 hover:text-white hover:bg-white/10"
               }`}
-              title="Ekspresi Kucing Senang (Budget Aman)"
+              title="Senang (Budget Aman)"
             >
-              😺 Senang
+              😊 Senang
             </button>
             <button
               type="button"
-              onClick={() => setPreviewMood("warning")}
+              onClick={() => setPreviewMood("waspada")}
               className={`px-1.5 py-0.5 rounded-lg transition-all ${
-                previewMood === "warning"
-                  ? "bg-amber-500 text-white font-bold shadow-sm"
+                normalizedMood === "waspada" && previewMood !== "auto"
+                  ? "bg-blue-500 text-white font-bold shadow-sm"
                   : "text-white/70 hover:text-white hover:bg-white/10"
               }`}
-              title="Ekspresi Kucing Waspada (Budget Mulai Irit)"
+              title="Waspada (Budget Mulai Diperhatikan)"
             >
-              😿 Waspada
+              🐱 Waspada
             </button>
             <button
               type="button"
-              onClick={() => setPreviewMood("sad")}
+              onClick={() => setPreviewMood("sedih")}
               className={`px-1.5 py-0.5 rounded-lg transition-all ${
-                previewMood === "sad"
-                  ? "bg-rose-500 text-white font-bold shadow-sm"
+                normalizedMood === "sedih" && previewMood !== "auto"
+                  ? "bg-purple-500 text-white font-bold shadow-sm"
                   : "text-white/70 hover:text-white hover:bg-white/10"
               }`}
-              title="Ekspresi Kucing Sedih (Budget Menipis)"
+              title="Sedih (Budget Menipis)"
             >
               🥺 Sedih
             </button>
             <button
               type="button"
-              onClick={() => setPreviewMood("crying")}
+              onClick={() => setPreviewMood("pingsan")}
               className={`px-1.5 py-0.5 rounded-lg transition-all ${
-                previewMood === "crying"
+                normalizedMood === "pingsan" && previewMood !== "auto"
                   ? "bg-red-600 text-white font-bold shadow-sm"
                   : "text-white/70 hover:text-white hover:bg-white/10"
               }`}
-              title="Ekspresi Kucing Nangis (Overbudget)"
+              title="Nangis yang Pingsan (Overbudget / Habis)"
             >
-              😭 Nangis
+              😵 Pingsan
             </button>
           </div>
         </div>

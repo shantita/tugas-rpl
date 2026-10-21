@@ -1,7 +1,8 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { LayoutDashboard, TrendingUp, TrendingDown, PiggyBank, BarChart3, LogOut, Wallet, User as UserIcon } from "lucide-react";
+import { LayoutDashboard, TrendingUp, TrendingDown, PiggyBank, BarChart3, LogOut, User as UserIcon } from "lucide-react";
 import { useAuth } from "../contexts/AuthContext";
+import { MascotHeadLogo } from "./MascotHeadLogo";
 
 export const Sidebar: React.FC = () => {
   const { User, Logout } = useAuth();
@@ -18,12 +19,15 @@ export const Sidebar: React.FC = () => {
   return (
     <aside className="w-64 bg-white border-r border-slate-200 flex flex-col h-screen sticky top-0">
       <div className="p-6 border-b border-slate-100 flex items-center gap-3">
-        <div className="p-2.5 bg-indigo-600 text-white rounded-xl shadow-md">
-          <Wallet className="w-6 h-6" />
+        <div className="p-1.5 bg-gradient-to-br from-amber-400 to-orange-500 rounded-2xl shadow-md border border-amber-300/40">
+          <MascotHeadLogo className="w-8 h-8" withCrown />
         </div>
         <div>
-          <h1 className="text-base font-bold text-slate-900 leading-tight">Monthly Budget</h1>
-          <p className="text-xs text-slate-400">Mahasiswa Edition</p>
+          <h1 className="text-lg font-black text-slate-900 leading-tight tracking-tight flex items-center gap-0.5">
+            <span>Bud</span>
+            <span className="text-orange-500">Cat</span>
+          </h1>
+          <p className="text-xs text-slate-400 font-medium">with Si Oyen 🐾</p>
         </div>
       </div>
 
