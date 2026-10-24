@@ -16,6 +16,10 @@ Desktop.ini
 *.tmp
 *.sublime-project
 *.sublime-workspace
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
 
 # Logs & Debugging
 *.log
@@ -38,6 +42,9 @@ build/
 **/build/
 .dist/
 **/.dist/
+out/
+.next/
+.turbo/
 
 # Bundler & Cache directories
 .vite/
@@ -46,12 +53,41 @@ build/
 *.tsbuildinfo
 .cache/
 
-# Environment Variables
+# Environment Variables & Secrets
 .env
-.env.local
-.env.*.local
 .env.*
+.env*.local
+*.env
+*.env.*
 !.env.example
+!**/.env.example
+!apps/**/.env.example
+
+# Secret keys, Certificates & Credentials
+*.pem
+*.key
+*.cert
+*.crt
+*.pfx
+*.p12
+*.pkcs12
+id_rsa
+id_rsa.pub
+id_ed25519
+id_ed25519.pub
+credentials.json
+client_secret*.json
+service-account*.json
+.npmrc
+.yarnrc
+
+# Database & SQLite files
+*.sqlite
+*.sqlite3
+*.db
+*.db-journal
+*.db-shm
+*.db-wal
 
 # Testing & Coverage
 coverage/
@@ -61,3 +97,4 @@ coverage/
 *.bak
 *.orig
 *.rej
+
