@@ -73,9 +73,9 @@ describe("US-02: Unit Test Aturan Bisnis Pemasukan Mahasiswa", () => {
       expect(balance).toBe(0);
     });
 
-    it("menghitung saldo negatif (defisit) saat pengeluaran melampaui pemasukan", () => {
+    it("menghitung saldo 0 (tidak minus) saat pengeluaran melampaui pemasukan", () => {
       const balance = CalculationService.CalculateBalance(1000000, 1400000);
-      expect(balance).toBe(-400000);
+      expect(balance).toBe(0);
     });
   });
 

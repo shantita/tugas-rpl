@@ -7,8 +7,8 @@ describe("CalculationService Unit Tests", () => {
     const balance = CalculationService.CalculateBalance(3000000, 1200000);
     expect(balance).toBe(1800000);
 
-    const negativeBalance = CalculationService.CalculateBalance(1000000, 1500000);
-    expect(negativeBalance).toBe(-500000);
+    const zeroBalance = CalculationService.CalculateBalance(1000000, 1500000);
+    expect(zeroBalance).toBe(0);
   });
 
   it("menghitung sisa anggaran (RemainingBudget) dengan benar", () => {
@@ -78,6 +78,23 @@ describe("CalculationService Unit Tests", () => {
     expect(result.RemainingBudget).toBe(0);
     expect(result.Status).toBe(DailyLimitStatus.BUDGET_EMPTY);
     expect(result.Message).toBe("Budget sudah habis.");
+  });
+
+  it("menghasilkan Daily Limit 0 saat saldo kas bernilai 0 meskipun ada sisa budget", () => {
+    // Sisa budget: 1.000.000 - 500.000 = 500.000, tapi saldo kas 0
+    const result = CalculationService.CalculateDailyLimit(1000000, 500000, 10, true, "Makanan", 1, 0);
+    expect(result.DailyLimit).toBe(0);
+    expect(result.RemainingBudget).toBe(0);
+    expect(result.Status).toBe(DailyLimitStatus.BUDGET_EMPTY);
+    expect(result.Message).toBe("Budget sudah habis.");
+  });
+
+  it("membatasi Daily Limit berdasarkan saldo kas jika saldo lebih kecil dari sisa budget", () => {
+    // Sisa budget: 1.000.000 - 500.000 = 500.000, tapi saldo kas 200.000, sisa 10 hari -> 20.000/hari
+    const result = CalculationService.CalculateDailyLimit(1000000, 500000, 10, true, "Makanan", 1, 200000);
+    expect(result.DailyLimit).toBe(20000);
+    expect(result.RemainingBudget).toBe(200000);
+    expect(result.Status).toBe(DailyLimitStatus.NORMAL);
   });
 
   it("menghitung sisa hari dengan injeksi tanggal tetap", () => {

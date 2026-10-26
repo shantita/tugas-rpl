@@ -60,6 +60,23 @@ describe("US-05: Unit Test Aturan Bisnis Daily Spending Limit (Fitur Utama)", ()
       expect(result.Status).toBe(DailyLimitStatus.BUDGET_EMPTY);
       expect(result.Message).toBe("Budget sudah habis.");
     });
+
+    it("Kasus Khusus 5: Saldo kas bernilai 0 mengembalikan limit 0 dengan status BUDGET_EMPTY", () => {
+      // Ada sisa budget 500.000, tapi saldo kas 0 karena habis terpakai pengeluaran (misal pengeluaran non-anggaran)
+      const result = CalculationService.CalculateDailyLimit(1000000, 500000, 10, true, "Total", undefined, 0);
+      expect(result.DailyLimit).toBe(0);
+      expect(result.RemainingBudget).toBe(0);
+      expect(result.Status).toBe(DailyLimitStatus.BUDGET_EMPTY);
+      expect(result.Message).toBe("Budget sudah habis.");
+    });
+
+    it("Kasus Khusus 6: Saldo kas lebih kecil dari sisa budget membatasi Daily Limit", () => {
+      // Sisa budget: 1.000.000 - 400.000 = 600.000. Tapi saldo kas tinggal 150.000. Sisa 5 hari -> limit 30.000/hari
+      const result = CalculationService.CalculateDailyLimit(1000000, 400000, 5, true, "Total", undefined, 150000);
+      expect(result.DailyLimit).toBe(30000);
+      expect(result.RemainingBudget).toBe(150000);
+      expect(result.Status).toBe(DailyLimitStatus.NORMAL);
+    });
   });
 
   describe("Aturan Perhitungan Sisa Hari (RemainingDays)", () => {

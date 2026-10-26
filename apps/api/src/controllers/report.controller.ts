@@ -45,13 +45,13 @@ export class ReportController {
       const totalExpense = expenses.reduce((sum, item) => sum + Number(item.Amount), 0);
       const balance = CalculationService.CalculateBalance(totalIncome, totalExpense);
 
-      const budgetedCategoryIds = new Set(budgets.map((b) => b.CategoryId));
       const totalBudget = budgets.reduce((sum, item) => sum + Number(item.Amount), 0);
-      const expenseInBudgeted = expenses
-        .filter((item) => budgetedCategoryIds.has(item.CategoryId))
-        .reduce((sum, item) => sum + Number(item.Amount), 0);
-
-      const remainingBudget = CalculationService.CalculateRemainingBudget(totalBudget, expenseInBudgeted);
+      let remainingBudget = CalculationService.CalculateRemainingBudget(totalBudget, totalExpense);
+      if (totalIncome > 0 && balance < remainingBudget) {
+        remainingBudget = Math.max(0, balance);
+      } else {
+        remainingBudget = Math.max(0, remainingBudget);
+      }
 
       const categoryTotals = new Map<number, { name: string; amount: number }>();
       for (const expense of expenses) {

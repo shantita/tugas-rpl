@@ -7,7 +7,7 @@ import {
 
 export class CalculationService {
   static CalculateBalance(totalIncome: number, totalExpense: number): number {
-    return totalIncome - totalExpense;
+    return Math.max(0, totalIncome - totalExpense);
   }
 
   static CalculateRemainingBudget(budgetAmount: number, expenseAmount: number): number {
@@ -68,9 +68,13 @@ export class CalculationService {
     remainingDays: number,
     hasBudget: boolean = true,
     categoryName?: string,
-    categoryId?: number
+    categoryId?: number,
+    balance?: number
   ): DailyLimitItem {
-    const remainingBudget = budgetAmount - expenseAmount;
+    let remainingBudget = budgetAmount - expenseAmount;
+    if (balance !== undefined && balance < remainingBudget) {
+      remainingBudget = Math.max(0, balance);
+    }
 
     // Aturan 1: Tidak ada budget yang diatur
     if (!hasBudget || budgetAmount <= 0) {
@@ -109,7 +113,7 @@ export class CalculationService {
         CategoryName: categoryName,
         BudgetAmount: budgetAmount,
         ExpenseAmount: expenseAmount,
-        RemainingBudget: remainingBudget,
+        RemainingBudget: budgetAmount - expenseAmount,
         RemainingDays: remainingDays,
         DailyLimit: 0,
         Status: DailyLimitStatus.BUDGET_EXCEEDED,
@@ -117,8 +121,8 @@ export class CalculationService {
       };
     }
 
-    // Aturan 4: Sisa budget sama dengan 0
-    if (remainingBudget === 0) {
+    // Aturan 4: Sisa budget sama dengan 0 ATAU Saldo kas habis (0)
+    if (remainingBudget <= 0 || (balance !== undefined && balance <= 0)) {
       return {
         CategoryId: categoryId,
         CategoryName: categoryName,

@@ -28,7 +28,8 @@ export const DailyLimitCard: React.FC<DailyLimitCardProps> = ({ Item, Balance, T
     if (
       Item.Status === DailyLimitStatus.BUDGET_EXCEEDED ||
       Item.Status === DailyLimitStatus.BUDGET_EMPTY ||
-      Item.RemainingBudget <= 0
+      Item.RemainingBudget <= 0 ||
+      (Balance !== undefined && Balance <= 0 && Item.BudgetAmount > 0)
     ) {
       return "pingsan"; // Nangis yang pingsan
     }

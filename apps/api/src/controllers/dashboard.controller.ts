@@ -49,17 +49,16 @@ export class DashboardController {
       const totalExpense = expenses.reduce((sum, item) => sum + Number(item.Amount), 0);
       const balance = CalculationService.CalculateBalance(totalIncome, totalExpense);
 
-      const budgetedCategoryIds = new Set(budgets.map((b) => b.CategoryId));
       const totalBudget = budgets.reduce((sum, item) => sum + Number(item.Amount), 0);
 
-      const expenseInBudgetedCategories = expenses
-        .filter((item) => budgetedCategoryIds.has(item.CategoryId))
-        .reduce((sum, item) => sum + Number(item.Amount), 0);
-
-      const remainingBudget = CalculationService.CalculateRemainingBudget(
-        totalBudget,
-        expenseInBudgetedCategories
-      );
+      // Sisa anggaran memperhitungkan seluruh pengeluaran (baik yang ber-anggaran maupun non-anggaran)
+      // dan tidak boleh melebihi sisa saldo kas riil pengguna jika pemasukan telah dicatat
+      let remainingBudget = CalculationService.CalculateRemainingBudget(totalBudget, totalExpense);
+      if (totalIncome > 0 && balance < remainingBudget) {
+        remainingBudget = Math.max(0, balance);
+      } else {
+        remainingBudget = Math.max(0, remainingBudget);
+      }
 
       const data: DashboardSummary = {
         TotalIncome: totalIncome,
@@ -166,12 +165,23 @@ export class DashboardController {
         orderBy: { Category: { Name: "asc" } },
       });
 
+      const incomes = await prisma.income.findMany({
+        where: {
+          UserId: userId,
+          Date: { gte: startDate, lt: endDate },
+        },
+      });
+
       const expenses = await prisma.expense.findMany({
         where: {
           UserId: userId,
           Date: { gte: startDate, lt: endDate },
         },
       });
+
+      const totalIncome = incomes.reduce((sum, item) => sum + Number(item.Amount), 0);
+      const totalExpense = expenses.reduce((sum, item) => sum + Number(item.Amount), 0);
+      const balance = CalculationService.CalculateBalance(totalIncome, totalExpense);
 
       const expenseMap = new Map<number, number>();
       for (const expense of expenses) {
@@ -180,20 +190,16 @@ export class DashboardController {
       }
 
       const remainingDays = CalculationService.CalculateRemainingDays(month, year, now);
-
-      const budgetedCategoryIds = new Set(budgets.map((b) => b.CategoryId));
       const totalBudget = budgets.reduce((sum, item) => sum + Number(item.Amount), 0);
-      const expenseInBudgetedCategories = expenses
-        .filter((item) => budgetedCategoryIds.has(item.CategoryId))
-        .reduce((sum, item) => sum + Number(item.Amount), 0);
 
       const totalItem = CalculationService.CalculateDailyLimit(
         totalBudget,
-        expenseInBudgetedCategories,
+        totalExpense,
         remainingDays,
         budgets.length > 0,
         "Total",
-        undefined
+        undefined,
+        totalIncome > 0 ? balance : undefined
       );
 
       const categoryItems: DailyLimitItem[] = budgets.map((b) => {
@@ -205,7 +211,8 @@ export class DashboardController {
           remainingDays,
           true,
           b.Category.Name,
-          b.CategoryId
+          b.CategoryId,
+          totalIncome > 0 ? balance : undefined
         );
       });
 
