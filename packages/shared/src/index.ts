@@ -6,6 +6,8 @@ export * from "./models/Expense";
 
 export * from "./enums/BudgetStatus";
 export * from "./enums/DailyLimitStatus";
+export { BudgetStatus, BudgetStatusLabels } from "./enums/BudgetStatus";
+export { DailyLimitStatus } from "./enums/DailyLimitStatus";
 
 export * from "./dto/ApiResponse";
 export * from "./dto/AuthResponse";
@@ -15,3 +17,5 @@ export * from "./dto/DailyLimitResponse";
 export * from "./dto/MonthlyReport";
 
 export * from "./constants/BudgetThresholds";
+export { BudgetThresholds } from "./constants/BudgetThresholds";
+
