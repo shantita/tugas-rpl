@@ -115,10 +115,11 @@ export const DashboardPage: React.FC = () => {
         />
         <SummaryCard
           Title="Saldo"
-          Amount={summary?.Balance || 0}
-          Icon={<Wallet className="w-5 h-5 text-orange-600" />}
-          ColorClass="bg-orange-50"
+          Amount={summary?.Balance ?? 0}
+          Icon={<Wallet className={`w-5 h-5 ${(summary?.Balance ?? 0) < 0 ? "text-rose-600" : "text-orange-600"}`} />}
+          ColorClass={(summary?.Balance ?? 0) < 0 ? "bg-rose-50" : "bg-orange-50"}
           Description="Pemasukan - Pengeluaran"
+          IsNegative={(summary?.Balance ?? 0) < 0}
         />
         <SummaryCard
           Title="Total Anggaran"
