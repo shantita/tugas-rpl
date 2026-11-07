@@ -41,3 +41,5 @@ if (fs.existsSync(distWebPath)) {
 }
 
 app.use(ErrorHandler);
+
+export default app;

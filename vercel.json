@@ -1,21 +1,29 @@
 {
-  "version": 2,
-  "buildCommand": "npm run prisma:generate && npm run build",
-  "outputDirectory": "apps/web/dist",
-  "functions": {
-    "api/index.js": {
-      "includeFiles": "apps/api/prisma/**",
-      "maxDuration": 15
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "services": {
+    "api": {
+      "root": "apps/api",
+      "framework": "express",
+      "entrypoint": "dist/server.js",
+      "buildCommand": "prisma generate && tsc"
+    },
+    "web": {
+      "root": "apps/web",
+      "framework": "vite"
     }
   },
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "/api/index.js"
+      "destination": {
+        "service": "api"
+      }
     },
     {
       "source": "/(.*)",
-      "destination": "/index.html"
+      "destination": {
+        "service": "web"
+      }
     }
   ]
 }

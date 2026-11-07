@@ -3,6 +3,10 @@ import { app } from "./app";
 
 const port = process.env.PORT || 5000;
 
-app.listen(port, () => {
-  console.log(`Server berjalan pada port ${port}`);
-});
+if (!process.env.VERCEL) {
+  app.listen(port, () => {
+    console.log(`Server berjalan pada port ${port}`);
+  });
+}
+
+export default app;
