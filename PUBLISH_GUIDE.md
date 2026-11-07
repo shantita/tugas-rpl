@@ -1,93 +1,63 @@
 # Panduan Publikasi Website (Publish / Deployment Guide)
 
-Dokumen ini menjelaskan langkah-langkah untuk mempublikasikan (deploy/publish) **Monthly Budgeting App** agar dapat diakses secara publik melalui internet sebagai **Website**.
+Dokumen ini menjelaskan langkah-langkah untuk mempublikasikan website **Monthly Budgeting App** secara **100% GRATIS dan TANPA KARTU KREDIT** menggunakan **TiDB Cloud** (Database MySQL) dan **Vercel** (Fullstack Frontend + Backend API).
 
 ---
 
-## 1. Persiapan yang Sudah Dikonfigurasi di Proyek
+## 🚀 OPSI UTAMA: Vercel + TiDB Cloud (100% Gratis & Tanpa Kartu Kredit)
 
-Proyek ini telah dikonfigurasi siap produksi (*production-ready*):
+Frontend (React Vite) dan Backend (Express API) berjalan bersama dalam **1 Proyek Vercel** di bawah satu domain yang sama (bebas masalah CORS), tersambung ke database MySQL gratis di **TiDB Cloud**.
 
-1. **Flexible API URL**: Frontend ([apps/web/src/services/api.service.ts](file:///c:/tugas-rpl/apps/web/src/services/api.service.ts)) mendukung variabel lingkungan `VITE_API_URL`.
-   - Jika frontend dan backend dipisah (misal Vercel + Railway), cukup isi `VITE_API_URL` dengan domain backend.
-   - Jika frontend dan backend di-hosting bersama pada 1 server, otomatis menggunakan `/api`.
-2. **SPA Routing Rewrite**: Telah ditambahkan [vercel.json](file:///c:/tugas-rpl/apps/web/vercel.json) dan [_redirects](file:///c:/tugas-rpl/apps/web/public/_redirects) agar saat halaman di-refresh (seperti `/budgets`, `/expenses`) tidak terjadi error 404.
-3. **Single-Service Support**: Backend Express ([apps/api/src/app.ts](file:///c:/tugas-rpl/apps/api/src/app.ts)) telah dikonfigurasi untuk otomatis menyajikan file static frontend (`apps/web/dist`) jika di-deploy dalam 1 server tunggal.
-4. **Build & Start Pipeline**: Perintah build di [package.json](file:///c:/tugas-rpl/package.json) telah diatur secara berurutan: `packages/shared` -> `apps/api` -> `apps/web`.
+### Langkah 1: Siapkan Database MySQL di TiDB Cloud
+1. Buka [https://tidbcloud.com](https://tidbcloud.com) dan login dengan akun GitHub atau Google.
+2. Buat cluster baru pada paket **Serverless (Free)**:
+   - Pilih Region terdekat (contoh: **Singapore / ap-southeast-1**).
+   - Klik **Create**.
+3. Setelah cluster aktif, klik tombol **Connect**:
+   - Pilih konektor: **Prisma**.
+   - Buat/generate password database baru.
+   - Salin connection string yang diberikan. Contoh:
+     ```
+     mysql://<username>:<password>@<host>:4000/<dbname>?sslaccept=strict
+     ```
 
----
+### Langkah 2: Deploy ke Vercel
+1. Buka [https://vercel.com](https://vercel.com) dan login menggunakan akun GitHub Anda.
+2. Klik tombol **Add New...** > **Project**.
+3. Cari repositori Anda (`shantita/tugas-rpl`) lalu klik **Import**.
+4. Di bagian konfigurasi proyek:
+   - **Framework Preset:** Pilih **Other** (atau biarkan default terdeteksi).
+   - **Root Directory:** Biarkan `./` (root direktori repositori).
+   - **Build and Output Settings:** Biarkan default (sudah otomatis diatur oleh file `vercel.json` proyek).
+5. Buka bagian **Environment Variables** (dropdown), lalu tambahkan 2 variabel berikut:
+   - **Variabel 1:**
+     - Key: `DATABASE_URL`
+     - Value: *(Tempel connection string TiDB Cloud dari Langkah 1)*
+   - **Variabel 2:**
+     - Key: `JWT_SECRET`
+     - Value: `kunci_rahasia_jwt_produksi_super_aman_123` *(buat teks acak bebas)*
+6. Klik tombol **Deploy**!
+7. Vercel akan otomatis meng-install dependensi, mem-build frontend dan backend, serta menghasilkan URL website publik Anda (contoh: `https://monthly-budgeting-app.vercel.app`).
 
-## 2. Pilihan Cara Publikasi
+### Langkah 3: Migrasi Tabel Database ke TiDB Cloud
+Agar tabel database (User, Budget, Expense, dll) terbuat di TiDB Cloud, Anda bisa menjalankannya dari terminal laptop Anda sekali saja:
+```bash
+# Ganti dengan DATABASE_URL TiDB Cloud Anda
+npx prisma migrate deploy --schema=apps/api/prisma/schema.prisma
+```
+*(Opsional) Masukkan data kategori default*:
+```bash
+npx tsx apps/api/prisma/seed.ts
+```
 
-### OPSI A — Terpisah: Vercel (Frontend) + Railway / Render (Backend & MySQL)
-*(Sangat disarankan untuk tugas kuliah karena gratis, cepat, dan mudah di-setup)*
-
-#### Langkah 1: Push Kode ke GitHub
-Pastikan seluruh kode proyek Anda sudah di-push ke repositori GitHub pribadi/publik.
-
-#### Langkah 2: Deploy Database MySQL & Backend ke Railway (atau Render)
-1. Buka [Railway.app](https://railway.app) dan login dengan akun GitHub Anda.
-2. Buat proyek baru: **New Project** > **Provision MySQL**.
-   - Salin connection string MySQL yang diberikan (`DATABASE_URL`).
-3. Tambahkan service backend: **New** > **GitHub Repo** > Pilih repositori ini.
-4. Pada menu **Settings** service backend di Railway:
-   - **Root Directory**: Biarkan `/` (root repositori).
-   - **Build Command**: `npm run build`
-   - **Start Command**: `npm start`
-5. Pada menu **Variables**, tambahkan:
-   ```env
-   NODE_ENV=production
-   PORT=5000
-   DATABASE_URL=<salin_url_mysql_dari_langkah_2>
-   JWT_SECRET=buat_kunci_acak_panjang_dan_aman_di_sini
-   CLIENT_URL=https://<domain-frontend-anda-di-vercel>.vercel.app
-   ```
-6. Jalankan migrasi database di Railway (buka tab CLI / terminal di Railway):
-   ```bash
-   npm run prisma:deploy
-   npm run prisma:seed
-   ```
-7. Generate domain publik untuk backend di tab **Settings** > **Networking** (contoh: `https://budget-api-production.up.railway.app`).
-
-#### Langkah 3: Deploy Frontend ke Vercel
-1. Buka [Vercel.com](https://vercel.com) dan login dengan akun GitHub.
-2. Klik **Add New** > **Project** > Pilih repositori ini.
-3. Konfigurasi proyek:
-   - **Framework Preset**: `Vite`
-   - **Root Directory**: klik edit, pilih folder `apps/web`
-4. Buka bagian **Environment Variables**, tambahkan:
-   - **Key**: `VITE_API_URL`
-   - **Value**: `https://budget-api-production.up.railway.app/api` *(sesuaikan dengan domain backend Railway Anda + akhiran `/api`)*
-5. Klik **Deploy**.
-6. Website Anda kini live dan dapat diakses publik!
+Website Anda kini sudah aktif dan bisa diakses publik dari mana saja!
 
 ---
 
-### OPSI B — Satu Server Tunggal (Single Service di Railway, Render, atau VPS)
-*(Praktis karena frontend dan backend berjalan di satu domain dan satu port)*
+## 📋 Ringkasan Variabel Lingkungan di Vercel
 
-1. Buat service baru dari repositori GitHub di Railway / Render / VPS.
-2. Konfigurasi environment variables:
-   ```env
-   NODE_ENV=production
-   PORT=5000
-   DATABASE_URL=<koneksi_mysql_anda>
-   JWT_SECRET=kunci_rahasia_acak
-   ```
-3. Script build: `npm run build` (akan mem-build shared, backend, dan frontend sekaligus).
-4. Script start: `npm start` (menjalankan backend, dan backend otomatis menampilkan website frontend).
-5. Buka domain yang dihasilkan; website langsung terbuka secara penuh.
-
----
-
-## 3. Ringkasan Variabel Lingkungan (Environment Variables)
-
-| Variabel | Digunakan Di | Keterangan |
+| Nama Variabel | Wajib? | Keterangan |
 |---|---|---|
-| `DATABASE_URL` | Backend | Connection string database MySQL produksi |
-| `JWT_SECRET` | Backend | String acak untuk signing autentikasi token JWT |
-| `PORT` | Backend | Port server (biasanya otomatis diatur oleh cloud provider) |
-| `NODE_ENV` | Backend | Set ke `production` |
-| `CLIENT_URL` | Backend *(Opsional)* | URL website frontend untuk whitelist CORS |
-| `VITE_API_URL` | Frontend *(Opsional)* | URL endpoint backend (misal: `https://api.domain.com/api`) jika frontend di-deploy terpisah |
-
+| `DATABASE_URL` | **Ya** | Connection string MySQL dari TiDB Cloud Serverless |
+| `JWT_SECRET` | **Ya** | String acak untuk signing token autentikasi login JWT |
+| `NODE_ENV` | Opsional | Nilai default `production` |
