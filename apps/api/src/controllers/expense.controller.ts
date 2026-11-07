@@ -34,7 +34,7 @@ export class ExpenseController {
         orderBy: { Date: "desc" },
       });
 
-      const data: Expense[] = expenses.map((item) => ({
+      const data: Expense[] = expenses.map((item: any) => ({
         Id: item.Id,
         UserId: item.UserId,
         CategoryId: item.CategoryId,

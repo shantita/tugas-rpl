@@ -43,11 +43,11 @@ export class ReportController {
         },
       });
 
-      const totalIncome = incomes.reduce((sum, item) => sum + Number(item.Amount), 0);
-      const totalExpense = expenses.reduce((sum, item) => sum + Number(item.Amount), 0);
+      const totalIncome = incomes.reduce((sum: number, item: any) => sum + Number(item.Amount), 0);
+      const totalExpense = expenses.reduce((sum: number, item: any) => sum + Number(item.Amount), 0);
       const balance = CalculationService.CalculateBalance(totalIncome, totalExpense);
 
-      const totalBudget = budgets.reduce((sum, item) => sum + Number(item.Amount), 0);
+      const totalBudget = budgets.reduce((sum: number, item: any) => sum + Number(item.Amount), 0);
       let remainingBudget = CalculationService.CalculateRemainingBudget(totalBudget, totalExpense);
       if (totalIncome > 0 && balance < remainingBudget) {
         remainingBudget = Math.max(0, balance);

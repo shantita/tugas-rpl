@@ -48,11 +48,11 @@ export class DashboardController {
         },
       });
 
-      const totalIncome = incomes.reduce((sum, item) => sum + Number(item.Amount), 0);
-      const totalExpense = expenses.reduce((sum, item) => sum + Number(item.Amount), 0);
+      const totalIncome = incomes.reduce((sum: number, item: any) => sum + Number(item.Amount), 0);
+      const totalExpense = expenses.reduce((sum: number, item: any) => sum + Number(item.Amount), 0);
       const balance = CalculationService.CalculateBalance(totalIncome, totalExpense);
 
-      const totalBudget = budgets.reduce((sum, item) => sum + Number(item.Amount), 0);
+      const totalBudget = budgets.reduce((sum: number, item: any) => sum + Number(item.Amount), 0);
 
       // Sisa anggaran memperhitungkan seluruh pengeluaran (baik yang ber-anggaran maupun non-anggaran)
       // dan tidak boleh melebihi sisa saldo kas riil pengguna jika pemasukan telah dicatat
@@ -118,7 +118,7 @@ export class DashboardController {
         expenseMap.set(expense.CategoryId, cur + Number(expense.Amount));
       }
 
-      const data: CategoryUsage[] = budgets.map((b) => {
+      const data: CategoryUsage[] = budgets.map((b: any) => {
         const budgetAmount = Number(b.Amount);
         const expenseAmount = expenseMap.get(b.CategoryId) || 0;
         const remainingBudget = CalculationService.CalculateRemainingBudget(budgetAmount, expenseAmount);
@@ -188,8 +188,8 @@ export class DashboardController {
         },
       });
 
-      const totalIncome = incomes.reduce((sum, item) => sum + Number(item.Amount), 0);
-      const totalExpense = expenses.reduce((sum, item) => sum + Number(item.Amount), 0);
+      const totalIncome = incomes.reduce((sum: number, item: any) => sum + Number(item.Amount), 0);
+      const totalExpense = expenses.reduce((sum: number, item: any) => sum + Number(item.Amount), 0);
       const balance = CalculationService.CalculateBalance(totalIncome, totalExpense);
 
       const expenseMap = new Map<number, number>();
@@ -199,7 +199,7 @@ export class DashboardController {
       }
 
       const remainingDays = CalculationService.CalculateRemainingDays(month, year, now);
-      const totalBudget = budgets.reduce((sum, item) => sum + Number(item.Amount), 0);
+      const totalBudget = budgets.reduce((sum: number, item: any) => sum + Number(item.Amount), 0);
 
       const totalItem = CalculationService.CalculateDailyLimit(
         totalBudget,
@@ -211,7 +211,7 @@ export class DashboardController {
         totalIncome > 0 ? balance : undefined
       );
 
-      const categoryItems: DailyLimitItem[] = budgets.map((b) => {
+      const categoryItems: DailyLimitItem[] = budgets.map((b: any) => {
         const budgetAmount = Number(b.Amount);
         const expenseAmount = expenseMap.get(b.CategoryId) || 0;
         return CalculationService.CalculateDailyLimit(

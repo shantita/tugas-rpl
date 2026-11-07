@@ -12,7 +12,7 @@ export class CategoryController {
         orderBy: { Name: "asc" },
       });
 
-      const data: Category[] = categories.map((c) => ({
+      const data: Category[] = categories.map((c: any) => ({
         Id: c.Id,
         Name: c.Name,
       }));

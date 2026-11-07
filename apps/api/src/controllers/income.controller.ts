@@ -33,7 +33,7 @@ export class IncomeController {
         orderBy: { Date: "desc" },
       });
 
-      const data: Income[] = incomes.map((item) => ({
+      const data: Income[] = incomes.map((item: any) => ({
         Id: item.Id,
         UserId: item.UserId,
         Amount: Number(item.Amount),

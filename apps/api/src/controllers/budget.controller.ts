@@ -40,7 +40,7 @@ export class BudgetController {
         orderBy: [{ Year: "desc" }, { Month: "desc" }, { Category: { Name: "asc" } }],
       });
 
-      const data: Budget[] = budgets.map((item) => {
+      const data: Budget[] = budgets.map((item: any) => {
         const isFixed = item.Month === 0 && item.Year === 0;
         return {
           Id: item.Id,
