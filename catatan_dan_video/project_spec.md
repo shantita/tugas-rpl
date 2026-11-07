@@ -1,10 +1,7 @@
-Aplikasi web full-stack sederhana bernama **Monthly Budgeting App**.
+Website full-stack responsif bernama **Monthly Budgeting App (Web App)**.
 
 Tujuan:
-Membantu mahasiswa mengatur uang saku bulanan. Mahasiswa mencatat pemasukan dan pengeluaran, menentukan anggaran (budget) per kategori
-untuk setiap bulan, memantau penggunaan anggaran, dan melihat **Daily Spending Limit** yang menunjukkan berapa uang yang aman
-dibelanjakan per hari sampai akhir bulan. Aplikasi ini adalah proyek mata kuliah Rekayasa Perangkat Lunak (RPL), sehingga kode harus
-tetap sederhana, mudah dibaca, dan mudah dijelaskan.
+Membantu mahasiswa mengatur uang saku bulanan melalui website yang mudah diakses dari browser laptop maupun smartphone. Mahasiswa mencatat pemasukan dan pengeluaran, menentukan 2 tipe anggaran (Anggaran Tetap bulanan dan Anggaran Sementara per bulan), memantau penggunaan anggaran, dan melihat **Daily Spending Limit** yang menunjukkan berapa uang yang aman dibelanjakan per hari sampai akhir bulan. Proyek ini adalah proyek mata kuliah Rekayasa Perangkat Lunak (RPL), sehingga kode tetap sederhana, mudah dibaca, dan mudah dijelaskan.
 
 Gunakan stack berikut:
 
@@ -50,8 +47,9 @@ Entitas utama:
    * UserId
    * CategoryId
    * Amount
-   * Month
-   * Year
+   * Month (0 untuk Anggaran Tetap, 1-12 untuk Anggaran Sementara)
+   * Year (0 untuk Anggaran Tetap, tahun kalender untuk Anggaran Sementara)
+   * Type (Enum / String: "FIXED" atau "TEMPORARY")
    * CreatedAt
 
 4. Income
@@ -114,10 +112,13 @@ Fitur backend:
    * Lihat daftar (filter opsional Month dan Year), detail, tambah, ubah, hapus.
    * Amount harus lebih dari 0. Date harus valid. CategoryId harus ada.
 
-5. CRUD Budget
+5. CRUD Budget & Manajemen Tipe Anggaran
 
    * Lihat daftar (filter opsional Month dan Year), detail, tambah, ubah, hapus.
-   * Amount harus lebih dari 0. Month harus 1 sampai 12. Year harus valid. CategoryId harus ada.
+   * Mendukung 2 Tipe Anggaran:
+     - `FIXED` (Anggaran Tetap): Berlaku otomatis sama di setiap bulan tanpa perlu input ulang tiap bulan (Month: 0, Year: 0).
+     - `TEMPORARY` (Anggaran Sementara): Hanya berlaku pada bulan dan tahun kalender spesifik.
+   * Amount harus lebih dari 0. Kategori harus dipilih atau dapat membuat kategori kustom baru.
    * Budget ganda untuk kategori dan periode yang sama mengembalikan 400 dengan pesan yang jelas.
 
 6. Service perhitungan budget (satu tempat untuk semua rumus)

@@ -1,4 +1,5 @@
 import { BudgetStatus } from "../enums/BudgetStatus";
+import { BudgetType } from "../enums/BudgetType";
 
 export interface CategoryUsage {
   CategoryId: number;
@@ -8,5 +9,6 @@ export interface CategoryUsage {
   RemainingBudget: number;
   UsagePercentage: number;
   Status: BudgetStatus;
+  BudgetType?: BudgetType;
   WarningMessage?: string;
 }

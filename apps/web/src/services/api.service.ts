@@ -6,6 +6,7 @@ import {
   Income,
   Expense,
   Budget,
+  BudgetType,
   DashboardSummary,
   CategoryUsage,
   DailyLimitResponse,
@@ -13,7 +14,7 @@ import {
 } from "@monthly-budgeting-app/shared";
 
 class ApiServiceClass {
-  private BaseUrl = "/api";
+  private BaseUrl = (import.meta.env.VITE_API_URL as string)?.replace(/\/$/, "") || "/api";
 
   private GetToken(): string | null {
     return localStorage.getItem("token");
@@ -208,8 +209,9 @@ class ApiServiceClass {
   public async CreateBudget(data: {
     CategoryId: number;
     Amount: number;
-    Month: number;
-    Year: number;
+    Month?: number;
+    Year?: number;
+    Type?: BudgetType;
   }): Promise<ApiResponse<Budget>> {
     return this.Request<Budget>("/budgets", {
       method: "POST",
@@ -219,7 +221,13 @@ class ApiServiceClass {
 
   public async UpdateBudget(
     id: number,
-    data: { CategoryId: number; Amount: number; Month: number; Year: number }
+    data: {
+      CategoryId: number;
+      Amount: number;
+      Month?: number;
+      Year?: number;
+      Type?: BudgetType;
+    }
   ): Promise<ApiResponse<Budget>> {
     return this.Request<Budget>(`/budgets/${id}`, {
       method: "PUT",

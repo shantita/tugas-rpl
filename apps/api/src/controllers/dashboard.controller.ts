@@ -8,6 +8,7 @@ import {
   CategoryUsage,
   DailyLimitResponse,
   DailyLimitItem,
+  BudgetType,
 } from "@monthly-budgeting-app/shared";
 
 export class DashboardController {
@@ -40,8 +41,10 @@ export class DashboardController {
       const budgets = await prisma.budget.findMany({
         where: {
           UserId: userId,
-          Month: month,
-          Year: year,
+          OR: [
+            { Month: 0, Year: 0 },
+            { Month: month, Year: year },
+          ],
         },
       });
 
@@ -93,8 +96,10 @@ export class DashboardController {
       const budgets = await prisma.budget.findMany({
         where: {
           UserId: userId,
-          Month: month,
-          Year: year,
+          OR: [
+            { Month: 0, Year: 0 },
+            { Month: month, Year: year },
+          ],
         },
         include: { Category: true },
         orderBy: { Category: { Name: "asc" } },
@@ -120,6 +125,7 @@ export class DashboardController {
         const usagePercentage = CalculationService.CalculateUsagePercentage(budgetAmount, expenseAmount);
         const status = CalculationService.DetermineBudgetStatus(usagePercentage);
         const warningMessage = CalculationService.GetWarningMessage(status, b.Category.Name, usagePercentage);
+        const isFixed = b.Month === 0 && b.Year === 0;
 
         return {
           CategoryId: b.CategoryId,
@@ -129,6 +135,7 @@ export class DashboardController {
           RemainingBudget: remainingBudget,
           UsagePercentage: usagePercentage,
           Status: status,
+          BudgetType: isFixed ? BudgetType.FIXED : BudgetType.TEMPORARY,
           WarningMessage: warningMessage,
         };
       });
@@ -158,8 +165,10 @@ export class DashboardController {
       const budgets = await prisma.budget.findMany({
         where: {
           UserId: userId,
-          Month: month,
-          Year: year,
+          OR: [
+            { Month: 0, Year: 0 },
+            { Month: month, Year: year },
+          ],
         },
         include: { Category: true },
         orderBy: { Category: { Name: "asc" } },

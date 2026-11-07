@@ -32,6 +32,37 @@ describe("US-04: Unit Test Aturan Bisnis Anggaran & Ambang Batas Status", () => 
       expect(BudgetSchema.safeParse({ CategoryId: 1, Amount: 0, Month: 5, Year: 2025 }).success).toBe(false);
       expect(BudgetSchema.safeParse({ CategoryId: 1, Amount: -100000, Month: 5, Year: 2025 }).success).toBe(false);
     });
+
+    it("menerima anggaran tetap (FIXED) yang berlaku rutin setiap bulan", () => {
+      const fixedBudget = {
+        CategoryId: 2,
+        Amount: 850000,
+        Type: "FIXED",
+      };
+      const result = BudgetSchema.safeParse(fixedBudget);
+      expect(result.success).toBe(true);
+      if (result.success) {
+        expect(result.data.Type).toBe("FIXED");
+        expect(result.data.Amount).toBe(850000);
+      }
+    });
+
+    it("menerima anggaran sementara (TEMPORARY) yang hanya berlaku di bulan tertentu", () => {
+      const tempBudget = {
+        CategoryId: 3,
+        Amount: 300000,
+        Month: 6,
+        Year: 2025,
+        Type: "TEMPORARY",
+      };
+      const result = BudgetSchema.safeParse(tempBudget);
+      expect(result.success).toBe(true);
+      if (result.success) {
+        expect(result.data.Type).toBe("TEMPORARY");
+        expect(result.data.Month).toBe(6);
+        expect(result.data.Year).toBe(2025);
+      }
+    });
   });
 
   describe("Aturan Perhitungan Sisa Anggaran & Persentase", () => {

@@ -1,31 +1,23 @@
 # Definisi Masalah dan Ruang Lingkup Proyek
 
-**Tema:** Pengelolaan Keuangan Pribadi Mahasiswa
-**Aplikasi:** Monthly Budgeting App
+**Tema:** Pengelolaan Keuangan Pribadi Mahasiswa  
+**Sistem / Produk:** Website Monthly Budgeting App (Web App)  
 
 ---
 
 ## 1. Deskripsi Masalah
 
-Mahasiswa yang tinggal jauh dari orang tua, terutama yang di kos atau kontrakan, biasanya menerima uang saku
-sekali dalam sebulan. Uang itu harus dibagi untuk makan, transportasi, sewa kos, hiburan, dan kebutuhan lain
-sampai penerimaan berikutnya. Masalah yang sering muncul:
+Mahasiswa yang tinggal jauh dari orang tua, terutama yang di kos atau kontrakan, biasanya menerima uang saku sekali dalam sebulan. Uang itu harus dibagi untuk makan, transportasi, sewa kos, hiburan, dan kebutuhan lain sampai penerimaan berikutnya. Masalah yang sering muncul:
 
-1. **Pengeluaran tidak tercatat.** Uang keluar dalam jumlah kecil dan sering (makan, ojek, jajan), sehingga
-   mahasiswa tidak tahu ke mana uangnya pergi.
-2. **Tidak ada batas per kategori.** Uang saku dipakai tanpa pembagian yang jelas, sehingga satu kategori
-   (misalnya hiburan) bisa menghabiskan jatah kategori lain.
-3. **Baru sadar setelah terlambat.** Mahasiswa baru tahu uangnya menipis ketika saldo hampir habis, padahal
-   masih ada belasan hari sebelum uang saku berikutnya.
-4. **Tidak tahu berapa yang boleh dipakai hari ini.** Angka total sisa uang belum cukup membantu keputusan
-   harian. Sisa Rp250.000 terasa banyak, tetapi belum tentu cukup untuk 10 hari.
+1. **Pengeluaran tidak tercatat.** Uang keluar dalam jumlah kecil dan sering (makan, ojek, jajan), sehingga mahasiswa tidak tahu ke mana uangnya pergi.
+2. **Tidak ada batas per kategori.** Uang saku dipakai tanpa pembagian yang jelas, sehingga satu kategori (misalnya hiburan) bisa menghabiskan jatah kategori lain.
+3. **Baru sadar setelah terlambat.** Mahasiswa baru tahu uangnya menipis ketika saldo hampir habis, padahal masih ada belasan hari sebelum uang saku berikutnya.
+4. **Tidak tahu berapa yang boleh dipakai hari ini.** Angka total sisa uang belum cukup membantu keputusan harian. Sisa Rp250.000 terasa banyak, tetapi belum tentu cukup untuk 10 hari.
 
-Aplikasi pencatat keuangan yang ada umumnya hanya menampilkan riwayat dan total. Masalah 3 dan 4 belum
-terjawab secara langsung, terutama dalam bentuk angka harian yang mudah dipahami.
+Website pencatat keuangan yang ada di pasaran umumnya hanya menampilkan riwayat dan total secara umum. Masalah 3 dan 4 belum terjawab secara langsung, terutama dalam bentuk angka harian yang mudah dipahami.
 
-**Rumusan masalah:**
-Bagaimana membantu mahasiswa mencatat keuangan bulanannya, memantau penggunaan anggaran per kategori, dan
-mengetahui batas belanja harian yang aman sampai akhir bulan?
+**Rumusan masalah:**  
+Bagaimana membangun website yang membantu mahasiswa mencatat keuangan bulanannya, memantau penggunaan anggaran per kategori (tetap maupun sementara), dan mengetahui batas belanja harian yang aman (**Daily Spending Limit**) sampai akhir bulan?
 
 ---
 
@@ -36,127 +28,73 @@ mengetahui batas belanja harian yang aman sampai akhir bulan?
 | Pengguna utama | Mahasiswa yang menerima uang saku atau pemasukan berkala |
 | Kondisi | Sering tinggal di kos/kontrakan, mengelola uang sendiri |
 | Usia | Sekitar 18 sampai 24 tahun |
-| Kemampuan teknis | Terbiasa memakai browser dan aplikasi web di ponsel atau laptop |
-| Pengalaman keuangan | Pemula, belum terbiasa membuat anggaran |
-| Kebutuhan | Pencatatan cepat, tampilan sederhana, dan angka yang langsung dipahami |
+| Kemampuan teknis | Terbiasa memakai web browser di laptop maupun smartphone (website responsif) |
+| Pengalaman keuangan | Pemula, belum terbiasa membuat anggaran terstruktur |
+| Kebutuhan | Akses website cepat tanpa perlu instalasi aplikasi rumit, pencatatan praktis, dan angka yang langsung dipahami |
 | Kendala | Waktu terbatas, malas mencatat jika prosesnya rumit |
 
 Jumlah aktor hanya satu, yaitu **mahasiswa (user)**. Tidak ada admin atau peran lain.
 
 ---
 
-## 3. Manfaat Aplikasi
+## 3. Manfaat Website
 
-1. **Kesadaran pengeluaran:** semua pemasukan dan pengeluaran tercatat per bulan.
-2. **Pengendalian per kategori:** anggaran ditentukan untuk setiap kategori, sehingga satu kategori tidak
-   menghabiskan jatah kategori lain.
-3. **Peringatan dini:** sistem memberi peringatan saat penggunaan anggaran mencapai 80% atau lebih, sebelum
-   anggaran benar-benar habis.
-4. **Panduan belanja harian (manfaat utama):** fitur **Daily Spending Limit** menghitung batas belanja yang
-   aman per hari dari sisa anggaran dan sisa hari.
-5. **Evaluasi bulanan:** laporan per bulan membantu mahasiswa melihat pola pengeluaran dan menyusun anggaran
-   yang lebih realistis di bulan berikutnya.
-6. **Kebiasaan finansial yang sehat:** membiasakan mahasiswa merencanakan dan mencatat keuangan sejak dini.
-
-**Daily Spending Limit** = Sisa Anggaran / Sisa Hari
-Contoh: sisa anggaran Rp250.000 dan sisa 10 hari, maka batas belanja Rp25.000 per hari.
+1. **Kesadaran pengeluaran:** Semua pemasukan dan pengeluaran tercatat per bulan secara real-time.
+2. **Pengendalian per kategori:** Anggaran ditentukan untuk setiap kategori (bisa menggunakan kategori bawaan maupun menambah kategori kustom sendiri).
+3. **Fleksibilitas 2 Tipe Anggaran:** 
+   - **Anggaran Tetap:** Pengeluaran rutin bulanan (kos, uang makan pokok, wifi) otomatis sama setiap bulannya tanpa repot input ulang.
+   - **Anggaran Sementara:** Alokasi insidental yang hanya berlaku khusus pada bulan yang ditentukan (misal servis motor, beli kado).
+4. **Peringatan dini:** Sistem memberi peringatan saat penggunaan anggaran mencapai 80% atau lebih, sebelum anggaran benar-benar habis.
+5. **Panduan belanja harian (manfaat utama):** Fitur **Daily Spending Limit** menghitung batas belanja yang aman per hari dari sisa anggaran dan sisa hari.
+6. **Evaluasi bulanan:** Laporan per bulan membantu mahasiswa melihat pola pengeluaran melalui grafik dan menyusun anggaran yang lebih realistis.
 
 ---
 
 ## 4. Daftar Fitur Inti
 
-Fitur di bawah ini dipilih karena bisa diselesaikan dalam sekitar 12 pertemuan.
-
 | No | Fitur | Deskripsi singkat | Prioritas |
 |---|---|---|---|
-| 1 | Register dan Login | Akun dengan password ter-hash dan autentikasi JWT | Wajib |
-| 2 | Kategori | Kategori bawaan: Makanan, Transportasi, Kos/Kontrakan, Hiburan, Lainnya | Wajib |
-| 3 | Pencatatan pemasukan | Tambah, ubah, hapus, dan lihat daftar pemasukan | Wajib |
-| 4 | Pencatatan pengeluaran | Tambah, ubah, hapus, dan lihat daftar pengeluaran per kategori | Wajib |
-| 5 | Pengaturan budget | Anggaran per kategori untuk bulan dan tahun tertentu | Wajib |
-| 6 | Pemantauan anggaran | Persentase penggunaan, progress bar, dan status (Aman, Perlu Perhatian, Mendekati Batas, Melebihi Anggaran) | Wajib |
-| 7 | Peringatan anggaran | Alert saat penggunaan mencapai 80% atau lebih | Wajib |
-| 8 | **Daily Spending Limit** | Batas belanja harian dari sisa anggaran dan sisa hari, termasuk penanganan kasus khusus | Wajib (fitur pembeda) |
-| 9 | Dashboard | Ringkasan pemasukan, pengeluaran, saldo, total anggaran, sisa anggaran | Wajib |
-| 10 | Laporan bulanan | Ringkasan per bulan, pengeluaran per kategori, dan satu bar chart sederhana | Wajib |
-| 11 | Pengujian | Unit test perhitungan dan API test dasar | Wajib |
-| 12 | Dokumentasi | README, spesifikasi, dan dokumen pendukung | Wajib |
-
-**Contoh rencana per fase (dapat disesuaikan jadwal kuliah):**
-
-| Pertemuan | Fokus |
-|---|---|
-| 1 sampai 2 | Analisis kebutuhan, definisi masalah, desain database |
-| 3 sampai 4 | Setup proyek, database, dan autentikasi |
-| 5 sampai 7 | CRUD pemasukan, pengeluaran, dan budget |
-| 8 sampai 9 | Perhitungan budget, status, dan Daily Spending Limit |
-| 10 | Dashboard dan laporan bulanan |
-| 11 | Pengujian dan perbaikan bug |
-| 12 | Dokumentasi, finalisasi, dan presentasi |
+| 1 | Register dan Login | Akun dengan password ter-hash (`bcrypt`) dan autentikasi `JWT` | Wajib |
+| 2 | Kategori Belanja | Kategori bawaan dan fitur kustomisasi kategori baru mandiri | Wajib |
+| 3 | Pencatatan Pemasukan | Tambah, ubah, hapus, dan filter daftar pemasukan bulanan | Wajib |
+| 4 | Pencatatan Pengeluaran | Tambah, ubah, hapus, dan filter daftar pengeluaran per kategori | Wajib |
+| 5 | Pengaturan Budget | Pengaturan 2 tipe anggaran: Anggaran Tetap (rutin) dan Anggaran Sementara | Wajib |
+| 6 | Pemantauan Anggaran | Persentase penggunaan, progress bar, dan 4 ambang batas status | Wajib |
+| 7 | Peringatan Anggaran | Pesan peringatan otomatis saat penggunaan mencapai 80% atau lebih | Wajib |
+| 8 | **Daily Spending Limit** | Batas belanja harian dari sisa anggaran dan sisa hari (fitur pembeda) | Wajib |
+| 9 | Dashboard | Ringkasan saldo kas, total anggaran, sisa anggaran, dan kartu maskot | Wajib |
+| 10 | Laporan Bulanan | Evaluasi bulanan dengan diagram batang per kategori (*Chart.js*) | Wajib |
+| 11 | Pengujian | Rangkaian unit test logika bisnis terotomatisasi (*Vitest*) | Wajib |
+| 12 | Dokumentasi & Publikasi | Panduan lokal (*HowToRun.md*) dan panduan deploy online (*PUBLISH_GUIDE.md*) | Wajib |
 
 ---
 
-## 5. Fitur yang Tidak Dikerjakan
+## 5. Fitur yang Sengaja Tidak Dikerjakan
 
-Fitur berikut sengaja tidak dikerjakan agar proyek tetap fokus dan selesai tepat waktu:
+Fitur berikut sengaja tidak dikerjakan agar website tetap fokus pada kebutuhan inti mahasiswa dan selesai tepat waktu:
 
-- Integrasi bank atau e-wallet (saldo dan transaksi diinput manual)
-- Pemisahan sumber dana (dompet digital, tunai, rekening) dan transfer antar dompet
-- Pembayaran online
-- Pemindaian struk (OCR)
-- Prediksi keuangan berbasis AI dan chatbot
-- Fitur investasi dan cryptocurrency
-- Notifikasi di luar aplikasi (WhatsApp, email, push notification)
-- Sinkronisasi multi-device secara real-time
-- Fitur sosial dan gamifikasi kompleks
-- Peran admin dan manajemen organisasi
-- Aplikasi mobile native
-- Kategori khusus per pengguna (kategori bersifat global)
-
-Fitur-fitur ini dapat dicatat sebagai **pengembangan selanjutnya** di README.
+- Aplikasi mobile native (proyek berfokus penuh pada **Website Responsif** yang dapat diakses langsung via browser)
+- Integrasi otomatis mutasi bank / e-wallet API (saldo dan transaksi diinput manual)
+- Pemindaian struk berbasis AI/OCR
+- Chatbot dan fitur investasi / crypto
+- Notifikasi push di luar browser (WhatsApp, SMS gateway)
+- Peran multi-admin / hirarki organisasi
 
 ---
 
-## 6. Kriteria Aplikasi Dinyatakan Berhasil
+## 6. Kriteria Website Dinyatakan Berhasil
 
-Aplikasi dinyatakan berhasil jika seluruh kriteria berikut terpenuhi.
+Website dinyatakan berhasil jika seluruh kriteria berikut terpenuhi:
 
 ### A. Fungsional
+1. Pengguna dapat register, login, dan logout. Halaman privat terlindungi middleware JWT.
+2. Pengguna dapat mengelola pemasukan, pengeluaran, kategori kustom, dan budget (tetap & sementara).
+3. Dashboard otomatis ter-update secara real-time saat terjadi perubahan data keuangan.
+4. Status anggaran tampil akurat sesuai 4 ambang batas: Aman (<60%), Perlu Perhatian (60-79.9%), Mendekati Batas (80-99.9%), dan Melebihi Anggaran (>=100%).
+5. Peringatan dini muncul saat anggaran mencapai 80% ke atas.
+6. Daily Spending Limit akurat untuk skenario baku: Budget Rp1.000.000, Pengeluaran Rp750.000, Sisa 10 hari menghasilkan limit tepat Rp25.000/hari.
 
-| No | Kriteria |
-|---|---|
-| 1 | Pengguna dapat register, login, dan logout. Halaman terlindungi tidak bisa dibuka tanpa login |
-| 2 | Pengguna dapat menambah, mengubah, menghapus, dan melihat pemasukan, pengeluaran, dan budget |
-| 3 | Dashboard otomatis ter-update setelah ada perubahan pemasukan, pengeluaran, atau budget |
-| 4 | Status anggaran tampil sesuai aturan: di bawah 60% Aman, 60% sampai 79% Perlu Perhatian, 80% sampai 99% Mendekati Batas, 100% atau lebih Melebihi Anggaran |
-| 5 | Peringatan muncul saat penggunaan anggaran mencapai 80% atau lebih |
-| 6 | Daily Spending Limit benar untuk contoh baku: budget Rp1.000.000, pengeluaran Rp750.000, sisa 10 hari, hasil Rp25.000 per hari |
-| 7 | Kasus khusus tertangani tanpa error: budget belum dibuat, budget habis, budget terlampaui, dan periode berakhir (tanpa pembagian dengan nol) |
-| 8 | Laporan bulanan hanya memuat data bulan yang dipilih. Laporan September tidak menyertakan data Agustus |
-
-### B. Kualitas dan Keamanan
-
-| No | Kriteria |
-|---|---|
-| 9 | Password tersimpan dalam bentuk hash, bukan teks asli |
-| 10 | Pengguna hanya dapat mengakses datanya sendiri |
-| 11 | Validasi dilakukan di backend (jumlah lebih dari 0, tanggal valid, kategori valid, budget tidak duplikat) |
-| 12 | Pesan error mudah dipahami pengguna dan seluruh antarmuka berbahasa Indonesia |
-
-### C. Teknis dan Dokumentasi
-
-| No | Kriteria |
-|---|---|
-| 13 | Seluruh unit test perhitungan dan API test lulus |
-| 14 | Aplikasi dapat di-build dan dijalankan dari nol mengikuti README (instalasi, migrasi, seed, start) |
-| 15 | README, spesifikasi, dan dokumen pendukung lengkap |
-| 16 | Aplikasi dapat didemonstrasikan dengan alur: Register, Login, Input Income, Set Budget, Input Expense, Peringatan, Daily Spending Limit, Laporan Bulanan |
-
-### D. Skenario Uji Penerimaan (untuk demo)
-
-1. Mahasiswa mencatat pemasukan Rp3.000.000.
-2. Mahasiswa mengatur budget: Makanan Rp1.000.000, Transportasi Rp500.000, Kos Rp1.000.000,
-   Hiburan Rp300.000, Lainnya Rp200.000.
-3. Mahasiswa mencatat pengeluaran makanan hingga total Rp820.000 (82%).
-4. **Hasil yang diharapkan:** status Makanan berubah menjadi Mendekati Batas, muncul peringatan,
-   dan Daily Spending Limit ter-update sesuai sisa anggaran dan sisa hari.
+### B. Teknis dan Publikasi
+1. Seluruh 61 unit test lolos verifikasi 100%.
+2. Website dapat di-build tanpa error (`npm run build`) dan siap dipublikasikan ke layanan hosting internet (seperti Vercel, Railway, atau VPS).
+3. Antarmuka web responsif, rapi, dan nyaman diakses baik dari laptop maupun smartphone.

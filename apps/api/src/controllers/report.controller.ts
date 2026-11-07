@@ -36,8 +36,10 @@ export class ReportController {
       const budgets = await prisma.budget.findMany({
         where: {
           UserId: userId,
-          Month: month,
-          Year: year,
+          OR: [
+            { Month: 0, Year: 0 },
+            { Month: month, Year: year },
+          ],
         },
       });
 

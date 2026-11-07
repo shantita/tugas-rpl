@@ -7,7 +7,8 @@
     "apps/*"
   ],
   "scripts": {
-    "build": "npm run build --workspaces",
+    "build": "npm run build --workspace=@monthly-budgeting-app/shared && npm run build --workspace=@monthly-budgeting-app/api && npm run build --workspace=@monthly-budgeting-app/web",
+    "start": "npm run start --workspace=@monthly-budgeting-app/api",
     "dev": "npm run dev --workspaces",
     "dev:api": "npm run dev --workspace=@monthly-budgeting-app/api",
     "dev:web": "npm run dev --workspace=@monthly-budgeting-app/web",
@@ -15,6 +16,7 @@
     "test:unit": "npm run test:unit --workspace=@monthly-budgeting-app/api",
     "prisma:generate": "npm run prisma:generate --workspace=@monthly-budgeting-app/api",
     "prisma:migrate": "npm run prisma:migrate --workspace=@monthly-budgeting-app/api",
+    "prisma:deploy": "npm run prisma:deploy --workspace=@monthly-budgeting-app/api",
     "prisma:seed": "npm run prisma:seed --workspace=@monthly-budgeting-app/api"
   }
 }

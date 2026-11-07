@@ -6,6 +6,7 @@ import {
   CategoryUsage,
   DailyLimitResponse,
   BudgetStatus,
+  BudgetType,
 } from "@monthly-budgeting-app/shared";
 import { MonthYearPicker } from "../components/MonthYearPicker";
 import { SummaryCard } from "../components/SummaryCard";
@@ -175,7 +176,18 @@ export const DashboardPage: React.FC = () => {
                 className="p-4 rounded-xl border border-slate-100 hover:border-slate-300 bg-slate-50/50 transition-all space-y-3"
               >
                 <div className="flex items-center justify-between">
-                  <span className="font-semibold text-slate-900 text-sm">{c.CategoryName}</span>
+                  <div className="flex items-center gap-2">
+                    <span className="font-semibold text-slate-900 text-sm">{c.CategoryName}</span>
+                    {c.BudgetType === BudgetType.FIXED ? (
+                      <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-md bg-indigo-50 text-indigo-700 border border-indigo-200">
+                        Tetap
+                      </span>
+                    ) : (
+                      <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-md bg-amber-50 text-amber-700 border border-amber-200">
+                        Sementara
+                      </span>
+                    )}
+                  </div>
                   <StatusBadge Status={c.Status} />
                 </div>
                 <BudgetProgressBar Percentage={c.UsagePercentage} Status={c.Status} />
