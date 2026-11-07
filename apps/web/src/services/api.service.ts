@@ -52,9 +52,12 @@ class ApiServiceClass {
         }
       }
 
-      const json = await response.json();
+      const json = await response.json().catch(() => ({}));
       if (!response.ok) {
-        throw new Error(json.Message || "Gagal memproses permintaan");
+        const errorMsg = json.Detail
+          ? `${json.Message || "Error"}: ${json.Detail}`
+          : json.Message || "Gagal memproses permintaan";
+        throw new Error(errorMsg);
       }
 
       return json;

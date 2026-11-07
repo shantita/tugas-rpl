@@ -18,6 +18,8 @@ export function ErrorHandler(
   res: Response,
   _next: NextFunction
 ) {
+  console.error("API Error encountered:", err);
+
   if (err instanceof HttpException) {
     return res.status(err.StatusCode).json({
       Success: false,
@@ -36,5 +38,6 @@ export function ErrorHandler(
   return res.status(500).json({
     Success: false,
     Message: "Terjadi kesalahan pada server",
+    Detail: err.message || String(err),
   });
 }
