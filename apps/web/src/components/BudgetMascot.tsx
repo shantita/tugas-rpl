@@ -43,6 +43,37 @@ interface BudgetMascotProps {
   size?: "sm" | "md" | "lg";
 }
 
+const SOUND_CONFIG: Record<
+  MascotMoodKey,
+  { local: string; remote: string; volume: number }
+> = {
+  bangga: {
+    local: "/sounds/mu-hehehe-cat-meme.mp3",
+    remote: "https://www.myinstants.com/media/sounds/mu-hehehe-cat-meme.mp3",
+    volume: 0.45,
+  },
+  senang: {
+    local: "/sounds/happy-happy-happy-cat-meme.mp3",
+    remote: "https://www.myinstants.com/media/sounds/happy-happy-happy-cat-meme.mp3",
+    volume: 0.4,
+  },
+  waspada: {
+    local: "/sounds/huh-cat-meme.mp3",
+    remote: "https://www.myinstants.com/media/sounds/huh-cat-meme.mp3",
+    volume: 0.35,
+  },
+  sedih: {
+    local: "/sounds/banana-cat-crying.mp3",
+    remote: "https://www.myinstants.com/media/sounds/banana-cat-crying.mp3",
+    volume: 0.4,
+  },
+  pingsan: {
+    local: "/sounds/cat-laugh-haha.mp3",
+    remote: "https://www.myinstants.com/media/sounds/cat-laugh-haha.mp3",
+    volume: 0.4,
+  },
+};
+
 const QUOTES: Record<MascotMoodKey, string[]> = {
   bangga: [
     "Miaww! Saldomu melimpah ruah! Kamu sultan paling keren bulan ini! 👑✨",
@@ -124,11 +155,30 @@ export const BudgetMascot: React.FC<BudgetMascotProps> = ({
 }) => {
   const [quoteIndex, setQuoteIndex] = useState(0);
   const [isClicked, setIsClicked] = useState(false);
+  const activeAudioRef = React.useRef<HTMLAudioElement | null>(null);
 
   const moodKey = NORMALIZE_MOOD[mood] || "waspada";
   const quotes = QUOTES[moodKey] || QUOTES.waspada;
   const currentQuote = quotes[quoteIndex % quotes.length];
   const meta = MOOD_META[moodKey] || MOOD_META.waspada;
+
+  const stopCurrentAudio = () => {
+    if (activeAudioRef.current) {
+      try {
+        activeAudioRef.current.pause();
+        activeAudioRef.current.currentTime = 0;
+      } catch {
+        // Audio pause error ignored
+      }
+      activeAudioRef.current = null;
+    }
+  };
+
+  React.useEffect(() => {
+    return () => {
+      stopCurrentAudio();
+    };
+  }, []);
 
   const playCuteMeow = () => {
     try {
@@ -146,7 +196,7 @@ export const BudgetMascot: React.FC<BudgetMascotProps> = ({
       osc.frequency.exponentialRampToValueAtTime(900, now + 0.08);
       osc.frequency.exponentialRampToValueAtTime(580, now + 0.22);
 
-      gain.gain.setValueAtTime(0.09, now);
+      gain.gain.setValueAtTime(0.06, now);
       gain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
 
       osc.connect(gain);
@@ -158,45 +208,40 @@ export const BudgetMascot: React.FC<BudgetMascotProps> = ({
     }
   };
 
-  const playSultanSound = () => {
+  const playMoodSound = (targetMood: MascotMoodKey) => {
     try {
-      const audio = new Audio("/sounds/anime-wow-sound-effect.mp3");
-      audio.volume = 0.9;
-      audio.play().catch(() => {
-        // Fallback to online CDN audio if local file is unavailable
-        const remoteAudio = new Audio("https://www.myinstants.com/media/sounds/anime-wow-sound-effect.mp3");
-        remoteAudio.volume = 0.9;
-        remoteAudio.play().catch(() => {});
-      });
-    } catch {
-      // Audio playback fallback
-    }
-  };
+      stopCurrentAudio();
+      const config = SOUND_CONFIG[targetMood];
+      if (!config) {
+        playCuteMeow();
+        return;
+      }
 
-  const playPingsanSound = () => {
-    try {
-      const audio = new Audio("/sounds/faaaa.mp3");
-      audio.volume = 0.9;
+      const audio = new Audio(config.local);
+      audio.volume = config.volume;
+      activeAudioRef.current = audio;
+
       audio.play().catch(() => {
-        // Fallback to online CDN audio if local file is unavailable
-        const remoteAudio = new Audio("https://www.myinstants.com/media/sounds/faaaa.mp3");
-        remoteAudio.volume = 0.9;
-        remoteAudio.play().catch(() => {});
+        // Fallback to online CDN audio if local file is unavailable or fails
+        try {
+          const remoteAudio = new Audio(config.remote);
+          remoteAudio.volume = config.volume;
+          activeAudioRef.current = remoteAudio;
+          remoteAudio.play().catch(() => {
+            playCuteMeow();
+          });
+        } catch {
+          playCuteMeow();
+        }
       });
     } catch {
-      // Audio playback fallback
+      playCuteMeow();
     }
   };
 
   const handleMascotClick = () => {
     setIsClicked(true);
-    if (moodKey === "bangga") {
-      playSultanSound();
-    } else if (moodKey === "pingsan") {
-      playPingsanSound();
-    } else {
-      playCuteMeow();
-    }
+    playMoodSound(moodKey);
     setQuoteIndex((prev) => prev + 1);
 
     setTimeout(() => setIsClicked(false), 500);
