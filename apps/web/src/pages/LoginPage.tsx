@@ -68,7 +68,7 @@ export const LoginPage: React.FC = () => {
           </div>
           <h2 className="text-base font-bold text-slate-700">Masuk ke Akun Anda</h2>
           <p className="mt-1 text-xs text-slate-500">
-            Kelola uang saku dan anggaran bulanan mahasiswa bersama Si Oyen.
+            Kelola uang saku dan anggaran bulanan bersama Si Oyen.
           </p>
         </div>
 
@@ -89,7 +89,7 @@ export const LoginPage: React.FC = () => {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="nama@mahasiswa.ac.id"
+              placeholder="nama@gmail.com"
               className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-orange-500/25 focus:border-orange-500 outline-none text-sm transition-all"
             />
           </div>

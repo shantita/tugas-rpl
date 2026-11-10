@@ -193,9 +193,25 @@ export const DashboardPage: React.FC = () => {
                 <BudgetProgressBar Percentage={c.UsagePercentage} Status={c.Status} />
                 <div className="flex items-center justify-between text-xs text-slate-500 font-medium pt-1">
                   <span>
-                    Terpakai: <strong className="text-slate-800">{FormatRupiah(c.ExpenseAmount)}</strong> / {FormatRupiah(c.BudgetAmount)}
+                    Sisa:{" "}
+                    <strong
+                      className={
+                        c.RemainingBudget < 0
+                          ? "text-rose-600 font-bold"
+                          : c.RemainingBudget === 0
+                          ? "text-amber-600 font-bold"
+                          : "text-emerald-700 font-bold"
+                      }
+                    >
+                      {FormatRupiah(c.RemainingBudget)}
+                    </strong>{" "}
+                    <span className="text-slate-400">/ Anggaran {FormatRupiah(c.BudgetAmount)}</span>
                   </span>
-                  <span className="font-semibold text-slate-700">{Math.round(c.UsagePercentage)}%</span>
+                  <span className="font-semibold text-slate-700">
+                    {c.RemainingBudget < 0
+                      ? `Lebih ${Math.round(c.UsagePercentage - 100)}%`
+                      : `${Math.round(100 - c.UsagePercentage)}% sisa`}
+                  </span>
                 </div>
               </div>
             ))}

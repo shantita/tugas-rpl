@@ -5,7 +5,7 @@ import { MonthYearPicker } from "../components/MonthYearPicker";
 import { ConfirmModal } from "../components/ConfirmModal";
 import { AlertBox } from "../components/AlertBox";
 import { FormatRupiah, FormatDate } from "../utils/formatters";
-import { PlusCircle, Edit2, Trash2, TrendingDown, X } from "lucide-react";
+import { PlusCircle, Edit2, Trash2, TrendingDown, X, Search, Filter } from "lucide-react";
 
 export const ExpensesPage: React.FC = () => {
   const now = new Date();
@@ -28,6 +28,10 @@ export const ExpensesPage: React.FC = () => {
 
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [deleteTargetId, setDeleteTargetId] = useState<number | null>(null);
+
+  // Filter & Search state
+  const [selectedCategoryTab, setSelectedCategoryTab] = useState<string>("all");
+  const [searchQuery, setSearchQuery] = useState("");
 
   // State untuk pengecekan saldo
   const [currentBalance, setCurrentBalance] = useState<number | null>(null);
@@ -211,6 +215,23 @@ export const ExpensesPage: React.FC = () => {
 
   const totalExpense = expenses.reduce((sum, item) => sum + item.Amount, 0);
 
+  // Filtered expenses based on category tab & search query
+  const filteredExpenses = expenses.filter((item) => {
+    const matchesCategory =
+      selectedCategoryTab === "all" ||
+      item.CategoryId.toString() === selectedCategoryTab;
+
+    const matchesSearch =
+      searchQuery.trim() === "" ||
+      item.Description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (item.Category?.Name &&
+        item.Category.Name.toLowerCase().includes(searchQuery.toLowerCase()));
+
+    return matchesCategory && matchesSearch;
+  });
+
+  const filteredTotal = filteredExpenses.reduce((sum, item) => sum + item.Amount, 0);
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
@@ -250,9 +271,77 @@ export const ExpensesPage: React.FC = () => {
             Total Pengeluaran Bulan Ini
           </span>
           <p className="text-2xl font-black text-rose-600 mt-1">{FormatRupiah(totalExpense)}</p>
+          {selectedCategoryTab !== "all" && (
+            <p className="text-xs text-slate-400 mt-0.5">
+              Filter kategori ini: <strong className="text-slate-600">{FormatRupiah(filteredTotal)}</strong>
+            </p>
+          )}
         </div>
         <div className="p-3 bg-rose-50 rounded-2xl text-rose-600">
           <TrendingDown className="w-6 h-6" />
+        </div>
+      </div>
+
+      {/* FILTER & TABS KATEGORI */}
+      <div className="bg-white rounded-3xl border border-slate-200/90 p-5 shadow-sm space-y-4">
+        {/* Search Input */}
+        <div className="relative">
+          <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+          <input
+            type="text"
+            placeholder="Cari transaksi pengeluaran (keterangan atau kategori)..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 focus:bg-white focus:ring-2 focus:ring-orange-500/25 focus:border-orange-500 outline-none text-sm transition-all placeholder:text-slate-400"
+          />
+          {searchQuery && (
+            <button
+              type="button"
+              onClick={() => setSearchQuery("")}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs bg-slate-100 hover:bg-slate-200 rounded-lg p-1"
+            >
+              <X className="w-3.5 h-3.5" />
+            </button>
+          )}
+        </div>
+
+        {/* Category Tabs */}
+        <div>
+          <div className="flex items-center gap-1.5 text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">
+            <Filter className="w-3.5 h-3.5" />
+            <span>Kategori</span>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <button
+              type="button"
+              onClick={() => setSelectedCategoryTab("all")}
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                selectedCategoryTab === "all"
+                  ? "bg-orange-500 text-white shadow-sm shadow-orange-500/20"
+                  : "bg-slate-100 text-slate-600 hover:bg-slate-200/70"
+              }`}
+            >
+              Semua ({expenses.length})
+            </button>
+            {categories.map((cat) => {
+              const count = expenses.filter((e) => e.CategoryId === cat.Id).length;
+              const isSelected = selectedCategoryTab === cat.Id.toString();
+              return (
+                <button
+                  key={cat.Id}
+                  type="button"
+                  onClick={() => setSelectedCategoryTab(cat.Id.toString())}
+                  className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                    isSelected
+                      ? "bg-orange-500 text-white shadow-sm shadow-orange-500/20"
+                      : "bg-slate-100 text-slate-600 hover:bg-slate-200/70"
+                  }`}
+                >
+                  {cat.Name} ({count})
+                </button>
+              );
+            })}
+          </div>
         </div>
       </div>
 
@@ -275,17 +364,23 @@ export const ExpensesPage: React.FC = () => {
                     Memuat data pengeluaran...
                   </td>
                 </tr>
-              ) : expenses.length === 0 ? (
+              ) : filteredExpenses.length === 0 ? (
                 <tr>
                   <td colSpan={5} className="px-6 py-12 text-center">
-                    <p className="font-semibold text-slate-700">Belum ada catatan pengeluaran</p>
+                    <p className="font-semibold text-slate-700">
+                      {expenses.length === 0
+                        ? "Belum ada catatan pengeluaran"
+                        : "Tidak ada pengeluaran yang sesuai dengan pencarian / kategori"}
+                    </p>
                     <p className="text-xs text-slate-400 mt-1">
-                      Gunakan tombol 'Tambah Pengeluaran' untuk mencatat transaksi.
+                      {expenses.length === 0
+                        ? "Gunakan tombol 'Tambah Pengeluaran' untuk mencatat transaksi."
+                        : "Coba ganti filter tab kategori atau bersihkan kata kunci pencarian."}
                     </p>
                   </td>
                 </tr>
               ) : (
-                expenses.map((item) => (
+                filteredExpenses.map((item) => (
                   <tr key={item.Id} className="hover:bg-slate-50/80 transition-colors">
                     <td className="px-6 py-4 whitespace-nowrap font-medium text-slate-700">
                       {FormatDate(item.Date)}

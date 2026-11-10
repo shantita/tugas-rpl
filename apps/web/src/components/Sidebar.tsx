@@ -58,7 +58,7 @@ export const Sidebar: React.FC = () => {
         >
           <div className="truncate">
             <p className="text-xs font-bold text-slate-900 group-hover:text-orange-600 truncate transition-colors">
-              {User?.Name || "Mahasiswa"}
+              {User?.Name || "Pengguna"}
             </p>
             <p className="text-[11px] text-slate-500 truncate">{User?.Email}</p>
           </div>
