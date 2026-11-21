@@ -6,6 +6,7 @@ export const AuthRouter = Router();
 
 AuthRouter.post("/register", AuthController.Register);
 AuthRouter.post("/login", AuthController.Login);
+AuthRouter.post("/demo-reset", AuthController.ResetDemo);
 AuthRouter.get("/me", AuthenticateToken, AuthController.GetMe);
 AuthRouter.put("/profile", AuthenticateToken, AuthController.UpdateProfile);
 AuthRouter.put("/password", AuthenticateToken, AuthController.ChangePassword);

@@ -7,6 +7,7 @@ import { RegisterSchema, LoginSchema, UpdateProfileSchema, ChangePasswordSchema 
 import { HttpException } from "../middlewares/error.middleware";
 import { AuthenticatedRequest } from "../middlewares/auth.middleware";
 import { AuthResponse, User } from "@monthly-budgeting-app/shared";
+import { DemoService } from "../services/demo.service";
 
 export class AuthController {
   static async Register(req: AuthenticatedRequest, res: Response, next: NextFunction) {
@@ -60,9 +61,16 @@ export class AuthController {
   static async Login(req: AuthenticatedRequest, res: Response, next: NextFunction) {
     try {
       const parsed = LoginSchema.parse(req.body);
-      const user = await prisma.user.findUnique({
-        where: { Email: parsed.Email },
-      });
+
+      // Jika login dengan akun demo, otomatis reset database akun demo ke kondisi awal yang lengkap
+      let user: any = null;
+      if (parsed.Email.toLowerCase() === DemoService.DEMO_EMAIL) {
+        user = await DemoService.ResetDemoAccount();
+      } else {
+        user = await prisma.user.findUnique({
+          where: { Email: parsed.Email },
+        });
+      }
 
       if (!user) {
         throw new HttpException(401, "Email atau password tidak sesuai");
@@ -195,6 +203,19 @@ export class AuthController {
       return res.status(200).json({
         Success: true,
         Message: "Password berhasil diubah",
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async ResetDemo(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+    try {
+      const user = await DemoService.ResetDemoAccount();
+      return res.status(200).json({
+        Success: true,
+        Message: "Akun demo berhasil di-reset",
+        Data: { Email: user.Email },
       });
     } catch (error) {
       next(error);
