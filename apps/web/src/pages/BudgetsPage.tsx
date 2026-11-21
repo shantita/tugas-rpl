@@ -856,31 +856,44 @@ export const BudgetsPage: React.FC = () => {
                       <div className="flex items-center gap-2">
                         <span className="w-2 h-2 rounded-full bg-slate-300" />
                         <span className="text-sm font-semibold text-slate-800">{c.Name}</span>
+                        {c.UserId ? (
+                          <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-orange-100 text-orange-700">
+                            Pribadi
+                          </span>
+                        ) : (
+                          <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-100 text-slate-500">
+                            Bawaan
+                          </span>
+                        )}
                       </div>
-                      <div className="flex items-center gap-1">
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setEditingCatId(c.Id);
-                            setEditingCatName(c.Name);
-                          }}
-                          className="p-1.5 text-slate-400 hover:text-orange-600 hover:bg-orange-50 rounded-lg transition-colors"
-                          title="Ubah nama"
-                        >
-                          <Edit2 className="w-3.5 h-3.5" />
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setDeleteCatTarget(c);
-                            setDeleteCatModalOpen(true);
-                          }}
-                          className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
-                          title="Hapus kategori"
-                        >
-                          <Trash2 className="w-3.5 h-3.5" />
-                        </button>
-                      </div>
+                      {c.UserId ? (
+                        <div className="flex items-center gap-1">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setEditingCatId(c.Id);
+                              setEditingCatName(c.Name);
+                            }}
+                            className="p-1.5 text-slate-400 hover:text-orange-600 hover:bg-orange-50 rounded-lg transition-colors"
+                            title="Ubah nama"
+                          >
+                            <Edit2 className="w-3.5 h-3.5" />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setDeleteCatTarget(c);
+                              setDeleteCatModalOpen(true);
+                            }}
+                            className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
+                            title="Hapus kategori"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      ) : (
+                        <span className="text-[11px] text-slate-400 font-medium italic">Terkunci</span>
+                      )}
                     </>
                   )}
                 </div>

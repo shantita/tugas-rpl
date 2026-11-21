@@ -37,7 +37,7 @@ export function ErrorHandler(
 
   return res.status(500).json({
     Success: false,
-    Message: "Terjadi kesalahan pada server",
-    Detail: err.message || String(err),
+    Message: "Terjadi kesalahan internal pada server. Silakan coba beberapa saat lagi.",
+    ...(process.env.NODE_ENV !== "production" && { Detail: err.message || String(err) }),
   });
 }

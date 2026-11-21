@@ -123,18 +123,21 @@ export const IncomesPage: React.FC = () => {
     const tag = formType === "FIXED" ? "[TETAP]" : "[SEMENTARA]";
     const finalDescription = `${tag} ${description.trim()}`;
 
+    const [y, m, d] = date.split("-").map(Number);
+    const localDate = new Date(y, m - 1, d, 12, 0, 0);
+
     setSubmitting(true);
     try {
       if (editingId) {
         await ApiService.UpdateIncome(editingId, {
           Amount: parsedAmount,
-          Date: new Date(date).toISOString(),
+          Date: localDate.toISOString(),
           Description: finalDescription,
         });
       } else {
         await ApiService.CreateIncome({
           Amount: parsedAmount,
-          Date: new Date(date).toISOString(),
+          Date: localDate.toISOString(),
           Description: finalDescription,
         });
       }

@@ -13,17 +13,23 @@ model User {
   Name         String
   Email        String    @unique
   PasswordHash String
-  CreatedAt    DateTime  @default(now())
+  CreatedAt    DateTime   @default(now())
   Budgets      Budget[]
   Incomes      Income[]
   Expenses     Expense[]
+  Categories   Category[]
 }
 
 model Category {
-  Id       Int       @id @default(autoincrement())
-  Name     String    @unique
-  Budgets  Budget[]
-  Expenses Expense[]
+  Id        Int       @id @default(autoincrement())
+  UserId    Int?
+  Name      String
+  CreatedAt DateTime  @default(now())
+  User      User?     @relation(fields: [UserId], references: [Id], onDelete: Cascade)
+  Budgets   Budget[]
+  Expenses  Expense[]
+
+  @@unique([UserId, Name])
 }
 
 model Budget {

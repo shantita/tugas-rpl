@@ -220,8 +220,7 @@ export class DashboardController {
           remainingDays,
           true,
           b.Category.Name,
-          b.CategoryId,
-          totalIncome > 0 ? balance : undefined
+          b.CategoryId
         );
       });
 

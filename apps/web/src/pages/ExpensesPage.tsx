@@ -143,10 +143,13 @@ export const ExpensesPage: React.FC = () => {
       ? description.trim()
       : selectedCategory?.Name || "Pengeluaran";
 
+    const [y, m, d] = date.split("-").map(Number);
+    const localDate = new Date(y, m - 1, d, 12, 0, 0);
+
     const submitData = {
       CategoryId: parsedCatId,
       Amount: parsedAmt,
-      Date: new Date(date).toISOString(),
+      Date: localDate.toISOString(),
       Description: finalDescription,
     };
 

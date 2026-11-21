@@ -13,11 +13,14 @@ async function main() {
   ];
 
   for (const name of defaultCategories) {
-    await prisma.category.upsert({
-      where: { Name: name },
-      update: {},
-      create: { Name: name },
+    const existing = await prisma.category.findFirst({
+      where: { Name: name, UserId: null },
     });
+    if (!existing) {
+      await prisma.category.create({
+        data: { Name: name, UserId: null },
+      });
+    }
   }
 
   const demoEmail = "demo@mahasiswa.ac.id";

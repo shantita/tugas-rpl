@@ -18,11 +18,13 @@ export class DemoService {
       "Lainnya",
     ];
 
-    for (const name of defaultCategories) {
-      await prisma.category.upsert({
-        where: { Name: name },
-        update: {},
-        create: { Name: name },
+    const existingCategories = await prisma.category.findMany();
+    const existingNames = new Set(existingCategories.map((c) => c.Name));
+    const missingCategories = defaultCategories.filter((name) => !existingNames.has(name));
+
+    for (const name of missingCategories) {
+      await prisma.category.create({
+        data: { Name: name, UserId: null },
       });
     }
 
@@ -63,7 +65,7 @@ export class DemoService {
     const currentMonth = now.getMonth() + 1;
     const currentYear = now.getFullYear();
 
-    // 5. Buat data pemasukan: Tetap (gaji) & Sementara (freelance & bonus)
+    // 5. Buat data pemasukan secara batch
     await prisma.income.createMany({
       data: [
         {
@@ -87,7 +89,7 @@ export class DemoService {
       ],
     });
 
-    // 6. Buat anggaran untuk SEMUA kategori (Fixed & Temporary)
+    // 6. Buat anggaran untuk SEMUA kategori (Fixed & Temporary) secara batch
     const budgetsData = [
       { name: "Makanan & Minuman", amount: 1500000, month: 0, year: 0 }, // FIXED
       { name: "Transportasi", amount: 500000, month: 0, year: 0 }, // FIXED
@@ -99,30 +101,27 @@ export class DemoService {
       { name: "Lainnya", amount: 200000, month: currentMonth, year: currentYear }, // TEMPORARY
     ];
 
-    for (const b of budgetsData) {
-      const catId = catMap.get(b.name);
-      if (catId) {
-        await prisma.budget.create({
-          data: {
-            UserId: user.Id,
-            CategoryId: catId,
-            Amount: b.amount,
-            Month: b.month,
-            Year: b.year,
-          },
-        });
-      }
+    const budgetRecords = budgetsData
+      .map((b) => {
+        const catId = catMap.get(b.name);
+        if (!catId) return null;
+        return {
+          UserId: user!.Id,
+          CategoryId: catId,
+          Amount: b.amount,
+          Month: b.month,
+          Year: b.year,
+        };
+      })
+      .filter((b): b is NonNullable<typeof b> => b !== null);
+
+    if (budgetRecords.length > 0) {
+      await prisma.budget.createMany({
+        data: budgetRecords,
+      });
     }
 
-    // 7. Buat pengeluaran untuk SEMUA kategori agar mencakup seluruh variasi status:
-    // - Makanan: 1.300.000 / 1.500.000 (87% - NEAR_LIMIT -> Muncul notifikasi peringatan)
-    // - Transportasi: 250.000 / 500.000 (50% - SAFE)
-    // - Kos/Tempat Tinggal: 1.200.000 / 1.200.000 (100% sisa 0 -> Muncul badge "Batas Anggaran")
-    // - Hiburan & Hobi: 460.000 / 400.000 (115% -> Muncul badge "Melebihi Anggaran")
-    // - Tagihan & Utilitas: 380.000 / 400.000 (95% - NEAR_LIMIT)
-    // - Belanja Bulanan: 350.000 / 800.000 (44% - SAFE)
-    // - Kesehatan: 120.000 / 300.000 (40% - SAFE)
-    // - Lainnya: 50.000 / 200.000 (25% - SAFE)
+    // 7. Buat pengeluaran secara batch
     const expensesData = [
       { name: "Makanan & Minuman", amount: 650000, day: 2, desc: "Belanja makan siang & mingguan" },
       { name: "Makanan & Minuman", amount: 650000, day: 8, desc: "Makan di luar bareng teman" },
@@ -138,19 +137,24 @@ export class DemoService {
       { name: "Lainnya", amount: 50000, day: 11, desc: "Biaya administrasi bank & transfer" },
     ];
 
-    for (const e of expensesData) {
-      const catId = catMap.get(e.name);
-      if (catId) {
-        await prisma.expense.create({
-          data: {
-            UserId: user.Id,
-            CategoryId: catId,
-            Amount: e.amount,
-            Date: new Date(Date.UTC(currentYear, currentMonth - 1, Math.min(e.day, 28), 12, 0, 0)),
-            Description: e.desc,
-          },
-        });
-      }
+    const expenseRecords = expensesData
+      .map((e) => {
+        const catId = catMap.get(e.name);
+        if (!catId) return null;
+        return {
+          UserId: user!.Id,
+          CategoryId: catId,
+          Amount: e.amount,
+          Date: new Date(Date.UTC(currentYear, currentMonth - 1, Math.min(e.day, 28), 12, 0, 0)),
+          Description: e.desc,
+        };
+      })
+      .filter((e): e is NonNullable<typeof e> => e !== null);
+
+    if (expenseRecords.length > 0) {
+      await prisma.expense.createMany({
+        data: expenseRecords,
+      });
     }
 
     return user;

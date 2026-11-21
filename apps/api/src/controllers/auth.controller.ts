@@ -62,10 +62,19 @@ export class AuthController {
     try {
       const parsed = LoginSchema.parse(req.body);
 
-      // Jika login dengan akun demo, otomatis reset database akun demo ke kondisi awal yang lengkap
+      // Jika login dengan akun demo, cek apakah sudah ada data awal. Jika belum ada, lakukan inisialisasi awal.
       let user: any = null;
       if (parsed.Email.toLowerCase() === DemoService.DEMO_EMAIL) {
-        user = await DemoService.ResetDemoAccount();
+        user = await prisma.user.findUnique({
+          where: { Email: DemoService.DEMO_EMAIL },
+        });
+        const hasExpenses = user
+          ? await prisma.expense.count({ where: { UserId: user.Id } })
+          : 0;
+
+        if (!user || hasExpenses === 0) {
+          user = await DemoService.ResetDemoAccount();
+        }
       } else {
         user = await prisma.user.findUnique({
           where: { Email: parsed.Email },
@@ -177,6 +186,10 @@ export class AuthController {
       const userId = req.User?.Id;
       if (!userId) {
         throw new HttpException(401, "Pengguna tidak terautentikasi");
+      }
+
+      if (req.User?.Email?.toLowerCase() === DemoService.DEMO_EMAIL) {
+        throw new HttpException(400, "Password akun demo tidak dapat diubah demi kenyamanan penguji lain");
       }
 
       const parsed = ChangePasswordSchema.parse(req.body);

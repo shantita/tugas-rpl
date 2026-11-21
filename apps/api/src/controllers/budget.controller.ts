@@ -143,6 +143,21 @@ export class BudgetController {
         if (existingFixed) {
           throw new HttpException(400, "Anggaran tetap untuk kategori tersebut sudah pernah dibuat");
         }
+
+        const existingTemp = await prisma.budget.findFirst({
+          where: {
+            UserId: userId,
+            CategoryId: parsed.CategoryId,
+            NOT: { Month: 0, Year: 0 },
+          },
+        });
+
+        if (existingTemp) {
+          throw new HttpException(
+            400,
+            "Kategori ini sudah memiliki anggaran sementara. Silakan hapus anggaran sementara tersebut terlebih dahulu sebelum membuat anggaran tetap."
+          );
+        }
       } else {
         // Cek apakah sudah ada anggaran tetap untuk kategori ini
         const existingFixed = await prisma.budget.findUnique({
@@ -263,6 +278,39 @@ export class BudgetController {
             ? "Anggaran tetap untuk kategori tersebut sudah pernah dibuat"
             : "Anggaran untuk kategori dan periode tersebut sudah pernah dibuat"
         );
+      }
+
+      if (isFixed) {
+        const existingTemp = await prisma.budget.findFirst({
+          where: {
+            UserId: userId,
+            CategoryId: parsed.CategoryId,
+            NOT: { Month: 0, Year: 0 },
+            Id: { not: id },
+          },
+        });
+        if (existingTemp) {
+          throw new HttpException(
+            400,
+            "Kategori ini sudah memiliki anggaran sementara. Silakan hapus anggaran sementara tersebut terlebih dahulu sebelum mengubah menjadi anggaran tetap."
+          );
+        }
+      } else {
+        const existingFixed = await prisma.budget.findFirst({
+          where: {
+            UserId: userId,
+            CategoryId: parsed.CategoryId,
+            Month: 0,
+            Year: 0,
+            Id: { not: id },
+          },
+        });
+        if (existingFixed) {
+          throw new HttpException(
+            400,
+            "Kategori ini sudah memiliki anggaran tetap. Silakan ubah anggaran tetap tersebut jika ingin menyesuaikan nominalnya."
+          );
+        }
       }
 
       const updated = await prisma.budget.update({

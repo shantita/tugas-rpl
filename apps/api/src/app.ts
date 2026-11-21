@@ -14,9 +14,27 @@ import { ErrorHandler } from "./middlewares/error.middleware";
 export const app = express();
 
 const clientUrl = process.env.CLIENT_URL;
+const allowedOrigins = [
+  clientUrl,
+  "https://tugas-rpl-chi.vercel.app",
+  "http://localhost:3000",
+  "http://127.0.0.1:3000",
+].filter(Boolean) as string[];
+
 app.use(
   cors({
-    origin: clientUrl ? [clientUrl, "http://localhost:3000", "http://127.0.0.1:3000"] : "*",
+    origin: (origin, callback) => {
+      // Izinkan request tanpa origin (seperti mobile app, postman, curl) atau domain yang diizinkan
+      if (
+        !origin ||
+        allowedOrigins.includes(origin) ||
+        origin.endsWith(".vercel.app")
+      ) {
+        callback(null, true);
+      } else {
+        callback(null, false);
+      }
+    },
     credentials: true,
   })
 );

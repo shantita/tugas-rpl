@@ -13,6 +13,7 @@ import {
   LogOut,
   Calendar,
   Lock,
+  RotateCcw,
 } from "lucide-react";
 
 export const ProfilePage: React.FC = () => {
@@ -35,6 +36,29 @@ export const ProfilePage: React.FC = () => {
   const [passwordLoading, setPasswordLoading] = useState(false);
   const [passwordSuccess, setPasswordSuccess] = useState<string | null>(null);
   const [passwordError, setPasswordError] = useState<string | null>(null);
+
+  // Demo reset state
+  const [resetLoading, setResetLoading] = useState(false);
+  const [resetSuccess, setResetSuccess] = useState<string | null>(null);
+  const [resetError, setResetError] = useState<string | null>(null);
+
+  const handleResetDemoData = async () => {
+    if (!window.confirm("Kembalikan data akun demo ke kondisi awal lengkap? Data transaksi yang baru diinput akan di-reset.")) {
+      return;
+    }
+    setResetLoading(true);
+    setResetSuccess(null);
+    setResetError(null);
+    try {
+      await ApiService.ResetDemo();
+      setResetSuccess("Data akun demo berhasil dikembalikan ke kondisi awal!");
+      setTimeout(() => setResetSuccess(null), 4000);
+    } catch {
+      setResetError("Gagal mereset data akun demo.");
+    } finally {
+      setResetLoading(false);
+    }
+  };
 
   // Format joined date
   const formatDate = (dateInput: string | Date | undefined) => {
@@ -353,6 +377,44 @@ export const ProfilePage: React.FC = () => {
               </div>
             </form>
           </div>
+
+          {/* TOMBOL KHUSUS AKUN DEMO: RESET DATA DEMO */}
+          {User?.Email?.toLowerCase() === "demo@mahasiswa.ac.id" && (
+            <div className="bg-amber-50/80 border border-amber-200/90 rounded-3xl p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="px-2 py-0.5 rounded-md bg-amber-200/70 text-amber-900 text-[10px] font-black uppercase tracking-wider">
+                    Fitur Khusus Demo
+                  </span>
+                  <p className="text-xs font-bold text-amber-950">Kembalikan Data Demo ke Kondisi Awal</p>
+                </div>
+                <p className="text-[11px] text-amber-800 mt-1">
+                  Kembalikan transaksi pemasukan, pengeluaran, dan anggaran akun demo ke sampel awal lengkap.
+                </p>
+                {resetSuccess && (
+                  <p className="text-xs font-bold text-emerald-600 mt-2 flex items-center gap-1">
+                    <CheckCircle2 className="w-3.5 h-3.5" />
+                    <span>{resetSuccess}</span>
+                  </p>
+                )}
+                {resetError && (
+                  <p className="text-xs font-bold text-rose-600 mt-2 flex items-center gap-1">
+                    <AlertCircle className="w-3.5 h-3.5" />
+                    <span>{resetError}</span>
+                  </p>
+                )}
+              </div>
+              <button
+                type="button"
+                disabled={resetLoading}
+                onClick={handleResetDemoData}
+                className="flex-shrink-0 flex items-center gap-1.5 px-4 py-2 bg-amber-500 hover:bg-amber-600 active:bg-amber-700 text-white rounded-xl text-xs font-bold shadow-sm transition-all disabled:opacity-50 cursor-pointer"
+              >
+                <RotateCcw className={`w-3.5 h-3.5 ${resetLoading ? "animate-spin" : ""}`} />
+                <span>{resetLoading ? "Mereset..." : "Reset Data Demo"}</span>
+              </button>
+            </div>
+          )}
 
           {/* LOGOUT QUICK BOX */}
           <div className="bg-rose-50/70 border border-rose-200/80 rounded-3xl p-5 flex items-center justify-between gap-4">
