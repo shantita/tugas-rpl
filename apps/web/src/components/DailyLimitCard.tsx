@@ -112,9 +112,9 @@ export const DailyLimitCard: React.FC<DailyLimitCardProps> = ({ Item, Balance, T
           cardBorder: "border-red-500/40",
           glowColor: "bg-red-500/25",
           accentColor: "text-red-300",
-          badgeBg: "bg-red-500/30 text-red-100 border-red-400/50 animate-pulse",
-          badgeText: "Nangis • Pingsan 😵",
-          badgeIcon: <XCircle className="w-3.5 h-3.5 text-red-400" />,
+          badgeBg: "bg-rose-500/30 text-rose-100 border-rose-400/50 animate-pulse font-bold",
+          badgeText: "Pingsan 😵",
+          badgeIcon: <XCircle className="w-3.5 h-3.5 text-rose-400" />,
         };
     }
   };
@@ -240,15 +240,15 @@ export const DailyLimitCard: React.FC<DailyLimitCardProps> = ({ Item, Balance, T
           </div>
 
           {/* INTERACTIVE CARTOON MOOD PREVIEW SWITCHER */}
-          <div className="flex flex-wrap items-center gap-1 bg-black/30 backdrop-blur-md p-1 rounded-xl border border-white/10 text-[11px]">
-            <span className="text-white/60 px-1.5 font-medium flex items-center gap-1">
+          <div className="flex items-center gap-1 bg-black/35 backdrop-blur-md p-1 rounded-xl border border-white/10 text-[11px] overflow-x-auto max-w-full scrollbar-none py-1">
+            <span className="text-white/60 px-1.5 font-medium shrink-0 flex items-center gap-1">
               <SlidersHorizontal className="w-3 h-3" />
-              <span className="hidden sm:inline">Tes Mood:</span>
+              <span className="inline">Mood:</span>
             </span>
             <button
               type="button"
               onClick={() => setPreviewMood("auto")}
-              className={`px-2 py-0.5 rounded-lg font-medium transition-all ${
+              className={`px-2 py-0.5 rounded-lg font-medium transition-all shrink-0 ${
                 previewMood === "auto"
                   ? "bg-white text-slate-900 shadow-sm font-bold"
                   : "text-white/70 hover:text-white hover:bg-white/10"
@@ -260,7 +260,7 @@ export const DailyLimitCard: React.FC<DailyLimitCardProps> = ({ Item, Balance, T
             <button
               type="button"
               onClick={() => setPreviewMood("bangga")}
-              className={`px-1.5 py-0.5 rounded-lg transition-all ${
+              className={`px-2 py-0.5 rounded-lg transition-all shrink-0 ${
                 normalizedMood === "bangga" && previewMood !== "auto"
                   ? "bg-amber-500 text-white font-bold shadow-sm"
                   : "text-white/70 hover:text-white hover:bg-white/10"
@@ -272,7 +272,7 @@ export const DailyLimitCard: React.FC<DailyLimitCardProps> = ({ Item, Balance, T
             <button
               type="button"
               onClick={() => setPreviewMood("senang")}
-              className={`px-1.5 py-0.5 rounded-lg transition-all ${
+              className={`px-2 py-0.5 rounded-lg transition-all shrink-0 ${
                 normalizedMood === "senang" && previewMood !== "auto"
                   ? "bg-emerald-500 text-white font-bold shadow-sm"
                   : "text-white/70 hover:text-white hover:bg-white/10"
@@ -284,7 +284,7 @@ export const DailyLimitCard: React.FC<DailyLimitCardProps> = ({ Item, Balance, T
             <button
               type="button"
               onClick={() => setPreviewMood("waspada")}
-              className={`px-1.5 py-0.5 rounded-lg transition-all ${
+              className={`px-2 py-0.5 rounded-lg transition-all shrink-0 ${
                 normalizedMood === "waspada" && previewMood !== "auto"
                   ? "bg-blue-500 text-white font-bold shadow-sm"
                   : "text-white/70 hover:text-white hover:bg-white/10"
@@ -296,7 +296,7 @@ export const DailyLimitCard: React.FC<DailyLimitCardProps> = ({ Item, Balance, T
             <button
               type="button"
               onClick={() => setPreviewMood("sedih")}
-              className={`px-1.5 py-0.5 rounded-lg transition-all ${
+              className={`px-2 py-0.5 rounded-lg transition-all shrink-0 ${
                 normalizedMood === "sedih" && previewMood !== "auto"
                   ? "bg-purple-500 text-white font-bold shadow-sm"
                   : "text-white/70 hover:text-white hover:bg-white/10"
@@ -308,7 +308,7 @@ export const DailyLimitCard: React.FC<DailyLimitCardProps> = ({ Item, Balance, T
             <button
               type="button"
               onClick={() => setPreviewMood("pingsan")}
-              className={`px-1.5 py-0.5 rounded-lg transition-all ${
+              className={`px-2 py-0.5 rounded-lg transition-all shrink-0 ${
                 normalizedMood === "pingsan" && previewMood !== "auto"
                   ? "bg-red-600 text-white font-bold shadow-sm"
                   : "text-white/70 hover:text-white hover:bg-white/10"

@@ -76,34 +76,34 @@ const SOUND_CONFIG: Record<
 
 const QUOTES: Record<MascotMoodKey, string[]> = {
   bangga: [
-    "Miaww! Saldomu melimpah ruah! Kamu sultan paling keren bulan ini! 👑✨",
-    "Purrr... Keuangan sultan! Dompet tebal, hati tenang, hidup santai! 🌟🐾",
-    "Ngeongg! Pengeluaran super terkendali, majikan sultan panutan! 💰🍣",
-    "Sultan mah bebas miaw, tapi tetap sisihkan buat cemilan Si Oyen ya! 👑🐱",
+    "Wah keren banget! Saldomu melimpah ruah, Oyen salut sama kamu! 👑✨",
+    "Purrr... Keuangan sultan nih! Dompet tebal, hati tenang, hidup santai! 🌟🐾",
+    "Mantap jiwa! Pengeluaran super terkendali, panutan banget pokoknya! 💰🍣",
+    "Keren parah! Tapi ingat ya, sisihkan dikit buat cemilan Oyen kesayangan! 👑🐱",
   ],
   senang: [
-    "Miaw~ Keuangan aman sentosa! Nikmati harimu santai sambil senyum riang! 😊🐾",
-    "Kondisi sehat walafiat! Belanja harian masih leluasa banget miaw! 🌟🐱",
-    "Purrr... Anggaranmu aman terkendali! Semangat terus meow! 👍✨",
-    "Senang banget lihat dompetmu sehat meong! Pertahankan ya! 🐾😸",
+    "Asyik~ Keuangan aman sentosa! Nikmati harimu dengan senyum riang! 😊🐾",
+    "Kondisi dompet sehat walafiat! Belanja harian masih aman terkendali bareng Oyen! 🌟🐱",
+    "Purrr... Anggaranmu terjaga rapi! Pertahankan gaya hemat pintarmu ya! 👍✨",
+    "Senang banget Oyen lihat dompetmu tetap sehat! Lanjutkan terus! 🐾😸",
   ],
   waspada: [
-    "Meong... Tetap waspada & cermat ya! Jaga ritme belanja harianmu. 🐱🐾",
-    "Waspada miaw! Anggaran mulai diperhatikan, tahan dulu checkout impulsif! ⚠️🐱",
-    "Purr.. posisi siaga waspada! Pengeluaran masih aman kalau dijaga miaw! ⚖️🐾",
-    "Si Oyen memantau waspada dari dekat miaw... Belanja yang perlu-perlu dulu aja ya! 👀🐱",
+    "Eits... Oyen ingetin ya, mulai cermat dan jaga ritme belanja harianmu! 🐱🐾",
+    "Waspada ya! Anggaran mulai menipis, tahan dulu godaan checkout impulsif! ⚠️🐱",
+    "Posisi siaga waspada! Pengeluaran masih aman kalau kamu bijak aturnya! ⚖️🐾",
+    "Oyen lagi mantau dari dekat nih... Belanja yang benar-benar perlu dulu aja ya! 👀🐱",
   ],
   sedih: [
-    "Meoong... (sedih sendu). Sisa uang tinggal sedikit, harus super irit! 🥺🌧️",
-    "Dompet mendung meow... Tahan dulu jajan boba & nongkrong kekinian! 🌧️😿",
-    "Sedih banget meow... Prioritaskan makan & kebutuhan pokok dulu ya! 💧🐾",
-    "Si Oyen sedih lihat anggaran menipis... Yuk tahan belanja impulsif! 🥺💧",
+    "Duh... Oyen sedih nih, sisa uang tinggal sedikit. Harus mode super irit! 🥺🌧️",
+    "Dompet lagi mendung... Tahan dulu jajan boba, kopi kekinian, atau nongkrong ya! 🌧️😿",
+    "Yuk fokus dulu ya! Prioritaskan makan pokok dan kebutuhan paling penting bareng Oyen! 💧🐾",
+    "Oyen sedih lihat anggaran kian menipis... Yuk tahan diri dari belanja dadakan! 🥺💧",
   ],
   pingsan: [
-    "KO NGEONGGG! Saldo habis total / overbudget! Meong tepar pingsan di lantai! 😵💥",
-    "Darurat meoow! Saldo sekarat sampai pingsan, saatnya mode bertahan hidup! 🚨😿",
-    "STOP BELANJA MEOW! Sudah terkapar pingsan nih, jangan dipaksa jajan lagi! 😵📦",
-    "Pingsan liat mutasi rekening! Segera evaluasi pengeluaran majikan! 🚨🐾",
+    "ASTAGA NAGA! Saldo habis total / overbudget! Oyen langsung tepar pingsan! 😵💥",
+    "Darurat level satu! Saldo sekarat sampai Oyen pingsan, saatnya mode bertahan hidup! 🚨😿",
+    "STOP BELANJA DULU! Oyen sudah terkapar di lantai nih, jangan dipaksa jajan lagi! 😵📦",
+    "Kena mental liat mutasi rekening! Segera evaluasi dan rem pengeluaran sekarang juga! 🚨🐾",
   ],
 };
 
@@ -119,31 +119,31 @@ const MOOD_META: Record<
   bangga: {
     title: "Si Oyen Sultan",
     badge: "Sultan 👑",
-    badgeColor: "bg-amber-400/25 text-amber-200 border-amber-400/40",
+    badgeColor: "bg-amber-100 text-amber-800 border-amber-300 font-black",
     containerAnimation: "animate-mascot-bounce",
   },
   senang: {
-    title: "Si Oyen Senang & Bahagia",
+    title: "Si Oyen Senang",
     badge: "Senang 😊",
-    badgeColor: "bg-emerald-500/25 text-emerald-200 border-emerald-400/40",
+    badgeColor: "bg-emerald-100 text-emerald-800 border-emerald-300 font-black",
     containerAnimation: "animate-mascot-bounce",
   },
   waspada: {
     title: "Si Oyen Waspada",
     badge: "Waspada 🐱",
-    badgeColor: "bg-blue-500/25 text-blue-200 border-blue-400/40",
+    badgeColor: "bg-sky-100 text-sky-800 border-sky-300 font-black",
     containerAnimation: "animate-mascot-float",
   },
   sedih: {
     title: "Si Oyen Sedih",
     badge: "Sedih 🥺",
-    badgeColor: "bg-rose-500/25 text-rose-200 border-rose-400/40",
+    badgeColor: "bg-purple-100 text-purple-800 border-purple-300 font-black",
     containerAnimation: "animate-mascot-float",
   },
   pingsan: {
-    title: "Si Oyen Nangis Pingsan!",
-    badge: "Nangis • Pingsan 😵",
-    badgeColor: "bg-red-500/35 text-red-200 border-red-400/50 animate-pulse",
+    title: "Si Oyen Pingsan",
+    badge: "Pingsan 😵",
+    badgeColor: "bg-rose-100 text-rose-800 border-rose-300 font-black",
     containerAnimation: "animate-mascot-sob",
   },
 };
@@ -261,19 +261,19 @@ export const BudgetMascot: React.FC<BudgetMascotProps> = ({
         title="Klik Si Oyen untuk dengar nasehat keuangan lainnya!"
         className="relative mb-3 max-w-[270px] sm:max-w-xs cursor-pointer group transition-transform hover:scale-105 active:scale-95"
       >
-        <div className="bg-white/95 backdrop-blur-md text-slate-800 rounded-2xl px-3.5 py-2.5 shadow-xl border border-white/40 text-xs sm:text-sm">
-          <div className="flex items-center justify-between gap-1.5 mb-1">
-            <span className="font-extrabold text-[11px] uppercase tracking-wider text-amber-700 flex items-center gap-1">
+        <div className="bg-white/95 backdrop-blur-md text-slate-900 rounded-2xl px-3.5 py-2.5 shadow-xl border border-white/60 text-xs sm:text-sm">
+          <div className="flex items-center justify-between gap-1.5 mb-1.5">
+            <span className="font-extrabold text-[11px] uppercase tracking-wider text-orange-700 flex items-center gap-1">
               <span>🐱 Si Oyen</span>
               <span className="text-[10px] text-slate-400 font-normal">• tap me!</span>
             </span>
             <span
-              className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full border ${meta.badgeColor}`}
+              className={`text-[11px] font-bold px-2 py-0.5 rounded-full border shadow-2xs ${meta.badgeColor}`}
             >
               {meta.badge}
             </span>
           </div>
-          <p className="text-slate-700 leading-snug font-medium italic">
+          <p className="text-slate-800 leading-snug font-semibold">
             "{currentQuote}"
           </p>
         </div>

@@ -5,7 +5,40 @@ import { MonthYearPicker } from "../components/MonthYearPicker";
 import { ConfirmModal } from "../components/ConfirmModal";
 import { AlertBox } from "../components/AlertBox";
 import { FormatRupiah, FormatDate } from "../utils/formatters";
-import { PlusCircle, Edit2, Trash2, TrendingUp, X } from "lucide-react";
+import {
+  PlusCircle,
+  Edit2,
+  Trash2,
+  TrendingUp,
+  X,
+  Repeat,
+  Sparkles,
+  Check,
+  Search,
+} from "lucide-react";
+
+type IncomeType = "FIXED" | "TEMPORARY";
+
+// Helper untuk mengekstrak tipe dan deskripsi bersih
+const parseIncomeDescription = (rawDesc: string): { type: IncomeType; cleanDesc: string } => {
+  if (rawDesc.startsWith("[TETAP]")) {
+    return {
+      type: "FIXED",
+      cleanDesc: rawDesc.replace(/^\[TETAP\]\s*/, ""),
+    };
+  }
+  if (rawDesc.startsWith("[SEMENTARA]")) {
+    return {
+      type: "TEMPORARY",
+      cleanDesc: rawDesc.replace(/^\[SEMENTARA\]\s*/, ""),
+    };
+  }
+  // Default / fallback jika belum ada tag
+  return {
+    type: "TEMPORARY",
+    cleanDesc: rawDesc,
+  };
+};
 
 export const IncomesPage: React.FC = () => {
   const now = new Date();
@@ -26,6 +59,13 @@ export const IncomesPage: React.FC = () => {
 
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [deleteTargetId, setDeleteTargetId] = useState<number | null>(null);
+
+  // Form State untuk Tipe Pemasukan (Tetap vs Sementara)
+  const [formType, setFormType] = useState<IncomeType>("FIXED");
+
+  // Filter & Search Tab
+  const [activeTab, setActiveTab] = useState<"ALL" | "FIXED" | "TEMPORARY">("ALL");
+  const [searchQuery, setSearchQuery] = useState("");
 
   const fetchIncomes = useCallback(async () => {
     setLoading(true);
@@ -49,6 +89,7 @@ export const IncomesPage: React.FC = () => {
     setAmount("");
     setDate(new Date().toISOString().split("T")[0]);
     setDescription("");
+    setFormType("FIXED");
     setFormError(null);
     setModalOpen(true);
   };
@@ -58,7 +99,9 @@ export const IncomesPage: React.FC = () => {
     setAmount(income.Amount.toString());
     const formattedDate = new Date(income.Date).toISOString().split("T")[0];
     setDate(formattedDate);
-    setDescription(income.Description);
+    const parsed = parseIncomeDescription(income.Description);
+    setFormType(parsed.type);
+    setDescription(parsed.cleanDesc);
     setFormError(null);
     setModalOpen(true);
   };
@@ -72,19 +115,27 @@ export const IncomesPage: React.FC = () => {
       return;
     }
 
+    if (!description.trim()) {
+      setFormError("Keterangan pemasukan wajib diisi.");
+      return;
+    }
+
+    const tag = formType === "FIXED" ? "[TETAP]" : "[SEMENTARA]";
+    const finalDescription = `${tag} ${description.trim()}`;
+
     setSubmitting(true);
     try {
       if (editingId) {
         await ApiService.UpdateIncome(editingId, {
           Amount: parsedAmount,
           Date: new Date(date).toISOString(),
-          Description: description,
+          Description: finalDescription,
         });
       } else {
         await ApiService.CreateIncome({
           Amount: parsedAmount,
           Date: new Date(date).toISOString(),
-          Description: description,
+          Description: finalDescription,
         });
       }
       setModalOpen(false);
@@ -119,21 +170,53 @@ export const IncomesPage: React.FC = () => {
 
   const totalIncome = incomes.reduce((sum, item) => sum + item.Amount, 0);
 
+  // Filter & Search calculations
+  const parsedIncomes = incomes.map((item) => {
+    const parsed = parseIncomeDescription(item.Description);
+    return {
+      ...item,
+      Type: parsed.type,
+      CleanDescription: parsed.cleanDesc,
+    };
+  });
+
+  const fixedIncomes = parsedIncomes.filter((i) => i.Type === "FIXED");
+  const tempIncomes = parsedIncomes.filter((i) => i.Type === "TEMPORARY");
+
+  const totalFixed = fixedIncomes.reduce((sum, item) => sum + item.Amount, 0);
+  const totalTemp = tempIncomes.reduce((sum, item) => sum + item.Amount, 0);
+
+  const displayedIncomes = parsedIncomes.filter((item) => {
+    const matchesTab =
+      activeTab === "ALL" ||
+      (activeTab === "FIXED" && item.Type === "FIXED") ||
+      (activeTab === "TEMPORARY" && item.Type === "TEMPORARY");
+
+    const matchesSearch =
+      searchQuery.trim() === "" ||
+      item.CleanDescription.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.Description.toLowerCase().includes(searchQuery.toLowerCase());
+
+    return matchesTab && matchesSearch;
+  });
+
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">Manajemen Pemasukan</h1>
-          <p className="text-sm text-slate-500 mt-1">Catat uang saku bulanan, kiriman orang tua, beasiswa, atau gaji paruh waktu.</p>
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 tracking-tight">Manajemen Pemasukan</h1>
+          <p className="text-xs sm:text-sm text-slate-500 mt-0.5">Catat pemasukan tetap (gaji karyawan, bulanan) maupun sementara (freelance, bonus, komisi).</p>
         </div>
-        <div className="flex flex-wrap items-center gap-3">
-          <MonthYearPicker Month={month} Year={year} OnChange={(m, y) => { setMonth(m); setYear(y); }} />
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 w-full sm:w-auto">
+          <div className="w-full sm:w-auto flex justify-between sm:justify-start">
+            <MonthYearPicker Month={month} Year={year} OnChange={(m, y) => { setMonth(m); setYear(y); }} />
+          </div>
           <button
             type="button"
             onClick={handleOpenAddModal}
-            className="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-bold text-white bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 active:scale-95 rounded-xl shadow-md shadow-orange-500/20 transition-all"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 text-xs sm:text-sm font-bold text-white bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 active:scale-95 rounded-xl shadow-md shadow-orange-500/20 transition-all"
           >
-            <PlusCircle className="w-4 h-4" />
+            <PlusCircle className="w-4 h-4 shrink-0" />
             <span>Tambah Pemasukan</span>
           </button>
         </div>
@@ -141,13 +224,105 @@ export const IncomesPage: React.FC = () => {
 
       {error && <AlertBox Type="error" Message={error} />}
 
-      <div className="bg-white rounded-3xl border border-slate-200/90 p-5 flex items-center justify-between shadow-sm">
-        <div>
-          <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Total Pemasukan Bulan Ini</span>
-          <p className="text-2xl font-black text-emerald-600 mt-1">{FormatRupiah(totalIncome)}</p>
+      {/* RINGKASAN PEMASUKAN: TOTAL, TETAP & SEMENTARA */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div className="bg-white rounded-3xl border border-slate-200/90 p-5 flex items-center justify-between shadow-sm">
+          <div>
+            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Total Pemasukan Bulan Ini</span>
+            <p className="text-2xl font-black text-emerald-600 mt-1">{FormatRupiah(totalIncome)}</p>
+          </div>
+          <div className="p-3 bg-emerald-50 rounded-2xl text-emerald-600">
+            <TrendingUp className="w-6 h-6" />
+          </div>
         </div>
-        <div className="p-3 bg-emerald-50 rounded-2xl text-emerald-600">
-          <TrendingUp className="w-6 h-6" />
+
+        <div className="bg-white rounded-3xl border border-slate-200/90 p-5 flex items-center justify-between shadow-sm">
+          <div>
+            <div className="flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-indigo-500" />
+              <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Pemasukan Tetap (Gaji/Rutin)</span>
+            </div>
+            <p className="text-2xl font-black text-indigo-600 mt-1">{FormatRupiah(totalFixed)}</p>
+            <p className="text-[11px] text-slate-400 mt-0.5">{fixedIncomes.length} transaksi tercatat</p>
+          </div>
+          <div className="p-3 bg-indigo-50 rounded-2xl text-indigo-600">
+            <Repeat className="w-6 h-6" />
+          </div>
+        </div>
+
+        <div className="bg-white rounded-3xl border border-slate-200/90 p-5 flex items-center justify-between shadow-sm">
+          <div>
+            <div className="flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-amber-500" />
+              <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Pemasukan Sementara (Freelance/Bonus)</span>
+            </div>
+            <p className="text-2xl font-black text-amber-600 mt-1">{FormatRupiah(totalTemp)}</p>
+            <p className="text-[11px] text-slate-400 mt-0.5">{tempIncomes.length} transaksi tercatat</p>
+          </div>
+          <div className="p-3 bg-amber-50 rounded-2xl text-amber-600">
+            <Sparkles className="w-6 h-6" />
+          </div>
+        </div>
+      </div>
+
+      {/* FILTER SEARCH & TABS (SEMUA, TETAP, SEMENTARA) */}
+      <div className="bg-white rounded-3xl border border-slate-200/90 p-5 shadow-sm space-y-4">
+        <div className="relative">
+          <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+          <input
+            type="text"
+            placeholder="Cari pemasukan berdasarkan keterangan (gaji, freelance, dsb)..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 focus:bg-white focus:ring-2 focus:ring-orange-500/25 focus:border-orange-500 outline-none text-sm transition-all placeholder:text-slate-400"
+          />
+          {searchQuery && (
+            <button
+              type="button"
+              onClick={() => setSearchQuery("")}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs bg-slate-100 hover:bg-slate-200 rounded-lg p-1"
+            >
+              <X className="w-3.5 h-3.5" />
+            </button>
+          )}
+        </div>
+
+        <div className="flex flex-wrap gap-2">
+          <button
+            type="button"
+            onClick={() => setActiveTab("ALL")}
+            className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
+              activeTab === "ALL"
+                ? "bg-orange-500 text-white shadow-xs"
+                : "bg-slate-100 text-slate-600 hover:bg-slate-200/70"
+            }`}
+          >
+            Semua Pemasukan ({incomes.length})
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveTab("FIXED")}
+            className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
+              activeTab === "FIXED"
+                ? "bg-indigo-600 text-white shadow-xs"
+                : "bg-indigo-50 text-indigo-700 hover:bg-indigo-100/80"
+            }`}
+          >
+            <Repeat className="w-3.5 h-3.5" />
+            <span>Pemasukan Tetap ({fixedIncomes.length})</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveTab("TEMPORARY")}
+            className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
+              activeTab === "TEMPORARY"
+                ? "bg-amber-600 text-white shadow-xs"
+                : "bg-amber-50 text-amber-700 hover:bg-amber-100/80"
+            }`}
+          >
+            <Sparkles className="w-3.5 h-3.5" />
+            <span>Pemasukan Sementara ({tempIncomes.length})</span>
+          </button>
         </div>
       </div>
 
@@ -157,6 +332,7 @@ export const IncomesPage: React.FC = () => {
             <thead className="bg-slate-50 text-slate-600 text-xs uppercase font-semibold border-b border-slate-200">
               <tr>
                 <th className="px-6 py-4">Tanggal</th>
+                <th className="px-6 py-4">Tipe</th>
                 <th className="px-6 py-4">Keterangan</th>
                 <th className="px-6 py-4">Jumlah</th>
                 <th className="px-6 py-4 text-right">Aksi</th>
@@ -165,22 +341,43 @@ export const IncomesPage: React.FC = () => {
             <tbody className="divide-y divide-slate-100">
               {loading ? (
                 <tr>
-                  <td colSpan={4} className="px-6 py-8 text-center text-slate-400">
+                  <td colSpan={5} className="px-6 py-8 text-center text-slate-400">
                     Memuat data pemasukan...
                   </td>
                 </tr>
-              ) : incomes.length === 0 ? (
+              ) : displayedIncomes.length === 0 ? (
                 <tr>
-                  <td colSpan={4} className="px-6 py-12 text-center">
-                    <p className="font-semibold text-slate-700">Belum ada catatan pemasukan</p>
-                    <p className="text-xs text-slate-400 mt-1">Klik tombol 'Tambah Pemasukan' untuk mencatat dana masuk.</p>
+                  <td colSpan={5} className="px-6 py-12 text-center">
+                    <p className="font-semibold text-slate-700">
+                      {incomes.length === 0
+                        ? "Belum ada catatan pemasukan"
+                        : "Tidak ada data pemasukan yang sesuai dengan filter"}
+                    </p>
+                    <p className="text-xs text-slate-400 mt-1">
+                      {incomes.length === 0
+                        ? "Klik tombol 'Tambah Pemasukan' untuk mencatat dana masuk."
+                        : "Coba ubah tab tipe atau hapus kata kunci pencarian."}
+                    </p>
                   </td>
                 </tr>
               ) : (
-                incomes.map((item) => (
+                displayedIncomes.map((item) => (
                   <tr key={item.Id} className="hover:bg-slate-50/80 transition-colors">
                     <td className="px-6 py-4 whitespace-nowrap font-medium text-slate-700">{FormatDate(item.Date)}</td>
-                    <td className="px-6 py-4 text-slate-900 font-medium">{item.Description}</td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {item.Type === "FIXED" ? (
+                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200">
+                          <Repeat className="w-3 h-3" />
+                          <span>Tetap</span>
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-50 text-amber-700 border border-amber-200">
+                          <Sparkles className="w-3 h-3" />
+                          <span>Sementara</span>
+                        </span>
+                      )}
+                    </td>
+                    <td className="px-6 py-4 text-slate-900 font-medium">{item.CleanDescription}</td>
                     <td className="px-6 py-4 whitespace-nowrap font-bold text-emerald-600">{FormatRupiah(item.Amount)}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-right">
                       <div className="inline-flex items-center gap-1">
@@ -231,6 +428,78 @@ export const IncomesPage: React.FC = () => {
             )}
 
             <form onSubmit={handleFormSubmit} className="mt-4 space-y-4">
+              {/* Pilihan Tipe Pemasukan: Tetap vs Sementara */}
+              <div>
+                <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">
+                  Tipe Pemasukan
+                </label>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div
+                    onClick={() => setFormType("FIXED")}
+                    className={`p-3.5 rounded-2xl border-2 cursor-pointer transition-all ${
+                      formType === "FIXED"
+                        ? "border-indigo-600 bg-indigo-50/50 shadow-xs"
+                        : "border-slate-200 hover:border-slate-300 bg-white"
+                    }`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <Repeat
+                          className={`w-4 h-4 ${
+                            formType === "FIXED" ? "text-indigo-600" : "text-slate-400"
+                          }`}
+                        />
+                        <span className="text-sm font-bold text-slate-900">Pemasukan Tetap</span>
+                      </div>
+                      <div
+                        className={`w-4 h-4 rounded-full border flex items-center justify-center ${
+                          formType === "FIXED"
+                            ? "border-indigo-600 bg-indigo-600 text-white"
+                            : "border-slate-300"
+                        }`}
+                      >
+                        {formType === "FIXED" && <Check className="w-3 h-3 stroke-[3]" />}
+                      </div>
+                    </div>
+                    <p className="text-xs text-slate-500 mt-1.5 leading-relaxed">
+                      Pemasukan rutin bulanan pasti (misal: Gaji Karyawan, Uang Bulanan Tetap).
+                    </p>
+                  </div>
+
+                  <div
+                    onClick={() => setFormType("TEMPORARY")}
+                    className={`p-3.5 rounded-2xl border-2 cursor-pointer transition-all ${
+                      formType === "TEMPORARY"
+                        ? "border-amber-500 bg-amber-50/50 shadow-xs"
+                        : "border-slate-200 hover:border-slate-300 bg-white"
+                    }`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <Sparkles
+                          className={`w-4 h-4 ${
+                            formType === "TEMPORARY" ? "text-amber-500" : "text-slate-400"
+                          }`}
+                        />
+                        <span className="text-sm font-bold text-slate-900">Pemasukan Sementara</span>
+                      </div>
+                      <div
+                        className={`w-4 h-4 rounded-full border flex items-center justify-center ${
+                          formType === "TEMPORARY"
+                            ? "border-amber-500 bg-amber-500 text-white"
+                            : "border-slate-300"
+                        }`}
+                      >
+                        {formType === "TEMPORARY" && <Check className="w-3 h-3 stroke-[3]" />}
+                      </div>
+                    </div>
+                    <p className="text-xs text-slate-500 mt-1.5 leading-relaxed">
+                      Pemasukan tidak tentu/insidental (misal: Project Freelance, Bonus, Komisi).
+                    </p>
+                  </div>
+                </div>
+              </div>
+
               <div>
                 <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
                   Jumlah (Rp)
@@ -269,7 +538,11 @@ export const IncomesPage: React.FC = () => {
                   required
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  placeholder="Contoh: Uang saku kiriman orang tua"
+                  placeholder={
+                    formType === "FIXED"
+                      ? "Contoh: Gaji Pokok Karyawan PT ABC"
+                      : "Contoh: Freelance Desain Grafis / Web Project"
+                  }
                   className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-orange-500/25 focus:border-orange-500 outline-none text-sm transition-all"
                 />
               </div>

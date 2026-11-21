@@ -5,7 +5,6 @@ import {
   User as UserIcon,
   Mail,
   KeyRound,
-  ShieldCheck,
   CheckCircle2,
   AlertCircle,
   Eye,
@@ -140,12 +139,6 @@ export const ProfilePage: React.FC = () => {
               <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
                 {User?.Name || "Pengguna"}
               </h1>
-              {User?.Email?.toLowerCase().endsWith(".ac.id") && (
-                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/25 text-emerald-100 border border-emerald-400/40">
-                  <ShieldCheck className="w-3.5 h-3.5" />
-                  Mahasiswa Terverifikasi
-                </span>
-              )}
             </div>
 
             <p className="text-sm text-orange-100 flex items-center justify-center sm:justify-start gap-1.5">

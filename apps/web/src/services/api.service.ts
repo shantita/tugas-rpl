@@ -101,6 +101,12 @@ class ApiServiceClass {
     });
   }
 
+  public async ResetDemo(): Promise<ApiResponse<{ Email: string }>> {
+    return this.Request<{ Email: string }>("/auth/demo-reset", {
+      method: "POST",
+    });
+  }
+
   public async GetCategories(): Promise<ApiResponse<Category[]>> {
     return this.Request<Category[]>("/categories");
   }

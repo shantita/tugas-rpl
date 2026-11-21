@@ -15,7 +15,19 @@ import { BudgetProgressBar } from "../components/BudgetProgressBar";
 import { StatusBadge } from "../components/StatusBadge";
 import { AlertBox } from "../components/AlertBox";
 import { FormatRupiah } from "../utils/formatters";
-import { TrendingUp, TrendingDown, Wallet, PiggyBank, PieChart, PlusCircle, RefreshCw } from "lucide-react";
+import {
+  TrendingUp,
+  TrendingDown,
+  Wallet,
+  PiggyBank,
+  PieChart,
+  PlusCircle,
+  RefreshCw,
+  Bell,
+  AlertTriangle,
+  AlertCircle,
+  X,
+} from "lucide-react";
 
 export const DashboardPage: React.FC = () => {
   const now = new Date();
@@ -28,6 +40,29 @@ export const DashboardPage: React.FC = () => {
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isNotifOpen, setIsNotifOpen] = useState(false);
+  const hasAutoOpenedNotif = React.useRef(false);
+  const notifDropdownRef = React.useRef<HTMLDivElement>(null);
+
+  // Tutup notifikasi ketika klik di luar dropdown
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        notifDropdownRef.current &&
+        !notifDropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsNotifOpen(false);
+      }
+    };
+
+    if (isNotifOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isNotifOpen]);
 
   const fetchData = useCallback(async () => {
     setLoading(true);
@@ -40,7 +75,19 @@ export const DashboardPage: React.FC = () => {
       ]);
 
       if (sumRes.Data) setSummary(sumRes.Data);
-      if (catRes.Data) setCategories(catRes.Data);
+      if (catRes.Data) {
+        setCategories(catRes.Data);
+        // Otomatis buka popup notifikasi saat pertama kali data termuat / setelah refresh / login jika ada budget yang mendekati atau habis
+        if (!hasAutoOpenedNotif.current) {
+          const hasWarnings = catRes.Data.some(
+            (c) => (c.Status === BudgetStatus.NEAR_LIMIT || c.Status === BudgetStatus.EXCEEDED) && c.WarningMessage
+          );
+          if (hasWarnings) {
+            setIsNotifOpen(true);
+          }
+          hasAutoOpenedNotif.current = true;
+        }
+      }
       if (dlRes.Data) setDailyLimit(dlRes.Data);
     } catch {
       setError("Gagal mengambil data. Silakan coba lagi.");
@@ -59,37 +106,108 @@ export const DashboardPage: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">Dashboard Keuangan</h1>
-          <p className="text-sm text-slate-500 mt-1">Pantau uang saku dan batas belanja harian Anda secara real-time.</p>
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 tracking-tight">Dashboard Keuangan</h1>
+          <p className="text-xs sm:text-sm text-slate-500 mt-0.5">Pantau uang saku dan batas belanja harian Anda secara real-time.</p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center justify-between sm:justify-end gap-2 sm:gap-3 w-full sm:w-auto">
           <MonthYearPicker Month={month} Year={year} OnChange={(m, y) => { setMonth(m); setYear(y); }} />
-          <button
-            type="button"
-            onClick={fetchData}
-            title="Muat ulang"
-            className="p-2.5 bg-white border border-slate-200 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors shadow-sm"
-          >
-            <RefreshCw className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} />
-          </button>
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            <button
+              type="button"
+              onClick={fetchData}
+              title="Muat ulang"
+              className="p-2 sm:p-2.5 bg-white border border-slate-200 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors shadow-xs"
+            >
+              <RefreshCw className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} />
+            </button>
+
+            {/* Tombol Notifikasi Peringatan Anggaran */}
+            <div ref={notifDropdownRef} className="relative">
+              <button
+                type="button"
+                onClick={() => setIsNotifOpen((prev) => !prev)}
+                title="Notifikasi Peringatan Anggaran"
+                className={`relative p-2 sm:p-2.5 rounded-xl border transition-all shadow-xs ${
+                  isNotifOpen
+                    ? "bg-orange-500 text-white border-orange-500 ring-2 ring-orange-500/30"
+                    : warningCategories.length > 0
+                    ? "bg-amber-50 border-amber-300 text-amber-700 hover:bg-amber-100"
+                    : "bg-white border-slate-200 text-slate-600 hover:text-slate-900 hover:bg-slate-50"
+                }`}
+              >
+                <Bell className="w-4 h-4" />
+                {warningCategories.length > 0 && (
+                  <span className="absolute -top-1 -right-1 flex h-4 min-w-4 px-1 items-center justify-center rounded-full bg-rose-500 text-[10px] font-black text-white shadow-sm animate-pulse">
+                    {warningCategories.length}
+                  </span>
+                )}
+              </button>
+
+              {/* Dropdown Notifikasi */}
+              {isNotifOpen && (
+                <div className="fixed inset-x-4 top-20 sm:absolute sm:inset-auto sm:right-0 sm:mt-2 sm:w-96 max-w-md mx-auto sm:mx-0 bg-white rounded-2xl shadow-2xl border border-slate-200/90 z-50 p-4 animate-fade-in">
+                  <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+                    <div className="flex items-center gap-2">
+                      <div className="p-1.5 rounded-lg bg-orange-100 text-orange-600">
+                        <Bell className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <h4 className="text-xs font-bold text-slate-900">Notifikasi Peringatan</h4>
+                        <p className="text-[11px] text-slate-400">Peringatan status limit & anggaran</p>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setIsNotifOpen(false)}
+                      className="p-1 text-slate-400 hover:text-slate-600 rounded-lg hover:bg-slate-100 transition-colors"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
+
+                  <div className="mt-3 space-y-2 max-h-72 overflow-y-auto pr-1">
+                    {warningCategories.length === 0 ? (
+                      <div className="py-6 text-center text-xs text-slate-500">
+                        <p className="font-semibold text-slate-700">Tidak ada peringatan baru 🎉</p>
+                        <p className="text-[11px] text-slate-400 mt-0.5">
+                          Semua kategori pengeluaran Anda masih aman terkendali.
+                        </p>
+                      </div>
+                    ) : (
+                      warningCategories.map((c) => (
+                        <div
+                          key={c.CategoryId}
+                          className={`p-3 rounded-xl border text-xs leading-relaxed flex items-start gap-2.5 transition-colors ${
+                            c.Status === BudgetStatus.EXCEEDED
+                              ? "bg-rose-50/80 border-rose-200 text-rose-800"
+                              : "bg-amber-50/80 border-amber-200 text-amber-800"
+                          }`}
+                        >
+                          {c.Status === BudgetStatus.EXCEEDED ? (
+                            <AlertCircle className="w-4 h-4 text-rose-600 flex-shrink-0 mt-0.5" />
+                          ) : (
+                            <AlertTriangle className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
+                          )}
+                          <div className="flex-1">
+                            <p className="font-semibold text-[11px] uppercase tracking-wide opacity-80 mb-0.5">
+                              {c.CategoryName}
+                            </p>
+                            <span>{c.WarningMessage}</span>
+                          </div>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
       </div>
 
       {error && <AlertBox Type="error" Message={error} />}
-
-      {warningCategories.length > 0 && (
-        <div className="space-y-2">
-          {warningCategories.map((c) => (
-            <AlertBox
-              key={c.CategoryId}
-              Type={c.Status === BudgetStatus.EXCEEDED ? "error" : "warning"}
-              Message={c.WarningMessage!}
-            />
-          ))}
-        </div>
-      )}
 
       {dailyLimit && (
         <div>
@@ -188,7 +306,7 @@ export const DashboardPage: React.FC = () => {
                       </span>
                     )}
                   </div>
-                  <StatusBadge Status={c.Status} />
+                  <StatusBadge Status={c.Status} RemainingBudget={c.RemainingBudget} />
                 </div>
                 <BudgetProgressBar Percentage={c.UsagePercentage} Status={c.Status} />
                 <div className="flex items-center justify-between text-xs text-slate-500 font-medium pt-1">
@@ -209,7 +327,9 @@ export const DashboardPage: React.FC = () => {
                   </span>
                   <span className="font-semibold text-slate-700">
                     {c.RemainingBudget < 0
-                      ? `Lebih ${Math.round(c.UsagePercentage - 100)}%`
+                      ? `Melebihi anggaran (${Math.round(c.UsagePercentage - 100)}%)`
+                      : c.RemainingBudget === 0
+                      ? "Batas anggaran (100%)"
                       : `${Math.round(100 - c.UsagePercentage)}% sisa`}
                   </span>
                 </div>

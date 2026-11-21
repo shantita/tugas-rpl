@@ -138,11 +138,16 @@ export const ExpensesPage: React.FC = () => {
       return;
     }
 
+    const selectedCategory = categories.find((c) => c.Id === parsedCatId);
+    const finalDescription = description.trim()
+      ? description.trim()
+      : selectedCategory?.Name || "Pengeluaran";
+
     const submitData = {
       CategoryId: parsedCatId,
       Amount: parsedAmt,
       Date: new Date(date).toISOString(),
-      Description: description,
+      Description: finalDescription,
     };
 
     // Tampilkan peringatan hanya saat tambah baru dan pemasukan sudah ada
@@ -234,30 +239,32 @@ export const ExpensesPage: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 tracking-tight">
             Manajemen Pengeluaran
           </h1>
-          <p className="text-sm text-slate-500 mt-1">
-            Catat setiap transaksi pengeluaran harian mahasiswa berdasarkan kategorinya.
+          <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
+            Catat setiap transaksi pengeluaran harian Anda berdasarkan kategorinya.
           </p>
         </div>
-        <div className="flex flex-wrap items-center gap-3">
-          <MonthYearPicker
-            Month={month}
-            Year={year}
-            OnChange={(m, y) => {
-              setMonth(m);
-              setYear(y);
-            }}
-          />
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 w-full sm:w-auto">
+          <div className="w-full sm:w-auto flex justify-between sm:justify-start">
+            <MonthYearPicker
+              Month={month}
+              Year={year}
+              OnChange={(m, y) => {
+                setMonth(m);
+                setYear(y);
+              }}
+            />
+          </div>
           <button
             type="button"
             onClick={handleOpenAddModal}
-            className="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-bold text-white bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 active:scale-95 rounded-xl shadow-md shadow-orange-500/20 transition-all"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 text-xs sm:text-sm font-bold text-white bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 active:scale-95 rounded-xl shadow-md shadow-orange-500/20 transition-all"
           >
-            <PlusCircle className="w-4 h-4" />
+            <PlusCircle className="w-4 h-4 shrink-0" />
             <span>Tambah Pengeluaran</span>
           </button>
         </div>
@@ -523,14 +530,15 @@ export const ExpensesPage: React.FC = () => {
 
               <div>
                 <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
-                  Keterangan
+                  Keterangan <span className="text-slate-400 font-normal lowercase">(opsional, default: nama kategori)</span>
                 </label>
                 <input
                   type="text"
-                  required
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  placeholder="Contoh: Makan siang di kantin kampus"
+                  placeholder={`Contoh: ${
+                    categories.find((c) => c.Id.toString() === categoryId)?.Name || "Makan siang"
+                  }`}
                   className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-orange-500/25 focus:border-orange-500 outline-none text-sm transition-all"
                 />
               </div>

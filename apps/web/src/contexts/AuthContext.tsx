@@ -72,6 +72,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   };
 
   const logout = () => {
+    if (user?.Email?.toLowerCase() === "demo@mahasiswa.ac.id") {
+      ApiService.ResetDemo().catch(() => {});
+    }
     setUser(null);
     setToken(null);
     ApiService.SetToken(null);
