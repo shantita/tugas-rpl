@@ -39,15 +39,16 @@ Frontend (React Vite) dan Backend (Express API) berjalan bersama dalam **1 Proye
 6. Klik tombol **Deploy**!
 7. Vercel akan otomatis meng-install dependensi, mem-build frontend dan backend, serta menghasilkan URL website publik Anda (contoh: `https://monthly-budgeting-app.vercel.app`).
 
-### Langkah 3: Migrasi Tabel Database ke TiDB Cloud
-Agar tabel database (User, Budget, Expense, dll) terbuat di TiDB Cloud, Anda bisa menjalankannya dari terminal laptop Anda sekali saja:
+### Langkah 3: Sinkronkan Tabel Database ke TiDB Cloud
+Agar tabel database (User, Budget, Expense, dll) terbuat di TiDB Cloud, jalankan dari terminal laptop Anda sekali saja:
 ```bash
-# Ganti dengan DATABASE_URL TiDB Cloud Anda
-npx prisma migrate deploy --schema=apps/api/prisma/schema.prisma
-```
-*(Opsional) Masukkan data kategori default*:
-```bash
-npx tsx apps/api/prisma/seed.ts
+# Set DATABASE_URL dengan connection string TiDB Cloud Anda
+# Di Windows PowerShell:
+$env:DATABASE_URL="<connection_string_tidb_anda>"
+npm run prisma:push
+
+# Masukkan data kategori default:
+npm run prisma:seed
 ```
 
 Website Anda kini sudah aktif dan bisa diakses publik dari mana saja!
