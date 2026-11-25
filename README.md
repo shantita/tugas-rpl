@@ -110,3 +110,27 @@ Dokumen analisis dan spesifikasi tugas Rekayasa Perangkat Lunak (RPL) dapat diak
 | [project_spec.md](catatan_dan_video/project_spec.md) | Spesifikasi teknis sistem, arsitektur, dan entitas data |
 | [user_stories_mvp.md](catatan_dan_video/user_stories_mvp.md) | 5 User Story inti MVP beserta Acceptance Criteria teruji |
 | [video_demo.md](catatan_dan_video/video_demo.md) | Tautan rekaman video demonstrasi aplikasi web |
+| [laporan_tugas_p11.md](catatan_dan_video/laporan_tugas_p11.md) | **Laporan Praktikum P11:** CI/CD Quality Gate & 200 Unit Tests |
+
+---
+
+## Tugas P11: CI/CD & Automated Testing (200 UT)
+
+Proyek ini telah mengimplementasikan pipeline pengujian otomatis (*Automated Testing*) sebanyak **200 Unit Test** dengan strategi percabangan Git:
+- **`v1.0`**: Versi baseline stabil awal.
+- **`v1.0_dev`**: Branch pengembangan fitur & perbaikan bug (*under testing*).
+- **`v1.1`**: Versi rilis baru setelah seluruh 200 pengujian lulus hijau.
+
+### Hasil Simulasi Quality Gate:
+1. 🔴 **Simulasi Gagal (Failed / Red):**  
+   Simulasi bug logika kalkulasi anggaran menyebabkan test gagal (`1 failed | 199 passed`). Pipeline CI/CD otomatis **dibatalkan (*aborted*)** dan memblokir deploy demi keamanan sistem produksi.  
+   👉 [Lihat Bukti Screenshot 1 (Failed/Red)](catatan_dan_video/screenshots_p11/screenshot_1_failed_red.png)
+
+2. 🟢 **Simulasi Berhasil (Passed / Green):**  
+   Bug diperbaiki, seluruh **200 Unit Test lulus** (`200 passed`). Pipeline CI/CD mengizinkan proses build & deploy dilanjutkan.  
+   👉 [Lihat Bukti Screenshot 2 (Passed/Green)](catatan_dan_video/screenshots_p11/screenshot_2_passed_green.png)
+
+3. 🚀 **Auto Build & Deploy:**  
+   Setelah test hijau, proses build artefak (`npm run build`) berhasil dibuat tanpa error (`0 errors`) dan siap live.  
+   👉 [Lihat Bukti Screenshot 3 (Auto Build)](catatan_dan_video/screenshots_p11/screenshot_3_build_live.png)
+
