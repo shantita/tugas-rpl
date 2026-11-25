@@ -1,7 +1,7 @@
 Website full-stack responsif bernama **Monthly Budgeting App (Web App)**.
 
 Tujuan:
-Membantu mahasiswa mengatur uang saku bulanan melalui website yang mudah diakses dari browser laptop maupun smartphone. Mahasiswa mencatat pemasukan dan pengeluaran, menentukan 2 tipe anggaran (Anggaran Tetap bulanan dan Anggaran Sementara per bulan), memantau penggunaan anggaran, dan melihat **Daily Spending Limit** yang menunjukkan berapa uang yang aman dibelanjakan per hari sampai akhir bulan. Proyek ini adalah proyek mata kuliah Rekayasa Perangkat Lunak (RPL), sehingga kode tetap sederhana, mudah dibaca, dan mudah dijelaskan.
+Membantu mahasiswa mengatur uang saku bulanan melalui website yang mudah diakses dari browser laptop maupun smartphone. Mahasiswa mencatat pemasukan dan pengeluaran, menentukan 2 tipe anggaran (Anggaran Tetap bulanan dan Anggaran Tidak Tetap per bulan), memantau penggunaan anggaran, dan melihat **Daily Spending Limit** yang menunjukkan berapa uang yang aman dibelanjakan per hari sampai akhir bulan. Proyek ini adalah proyek mata kuliah Rekayasa Perangkat Lunak (RPL), sehingga kode tetap sederhana, mudah dibaca, dan mudah dijelaskan.
 
 Gunakan stack berikut:
 
@@ -47,8 +47,8 @@ Entitas utama:
    * UserId
    * CategoryId
    * Amount
-   * Month (0 untuk Anggaran Tetap, 1-12 untuk Anggaran Sementara)
-   * Year (0 untuk Anggaran Tetap, tahun kalender untuk Anggaran Sementara)
+   * Month (0 untuk Anggaran Tetap, 1-12 untuk Anggaran Tidak Tetap)
+   * Year (0 untuk Anggaran Tetap, tahun kalender untuk Anggaran Tidak Tetap)
    * Type (Enum / String: "FIXED" atau "TEMPORARY")
    * CreatedAt
 
@@ -117,7 +117,7 @@ Fitur backend:
    * Lihat daftar (filter opsional Month dan Year), detail, tambah, ubah, hapus.
    * Mendukung 2 Tipe Anggaran:
      - `FIXED` (Anggaran Tetap): Berlaku otomatis sama di setiap bulan tanpa perlu input ulang tiap bulan (Month: 0, Year: 0).
-     - `TEMPORARY` (Anggaran Sementara): Hanya berlaku pada bulan dan tahun kalender spesifik.
+     - `TEMPORARY` (Anggaran Tidak Tetap): Hanya berlaku pada bulan dan tahun kalender spesifik.
    * Amount harus lebih dari 0. Kategori harus dipilih atau dapat membuat kategori kustom baru.
    * Budget ganda untuk kategori dan periode yang sama mengembalikan 400 dengan pesan yang jelas.
 

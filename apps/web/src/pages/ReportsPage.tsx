@@ -51,7 +51,7 @@ ChartJS.register(
   Legend
 );
 
-// Helper pembersih deskripsi pemasukan ([TETAP] vs [SEMENTARA])
+// Helper pembersih deskripsi pemasukan ([TETAP] vs [TIDAK TETAP] / [SEMENTARA])
 const parseIncomeTypeAndTitle = (desc: string) => {
   if (desc.startsWith("[TETAP]")) {
     return {
@@ -59,14 +59,20 @@ const parseIncomeTypeAndTitle = (desc: string) => {
       cleanTitle: desc.replace(/^\[TETAP\]\s*/, "") || "Pemasukan Tetap",
     };
   }
+  if (desc.startsWith("[TIDAK TETAP]")) {
+    return {
+      type: "TIDAK TETAP",
+      cleanTitle: desc.replace(/^\[TIDAK TETAP\]\s*/, "") || "Pemasukan Tidak Tetap",
+    };
+  }
   if (desc.startsWith("[SEMENTARA]")) {
     return {
-      type: "SEMENTARA",
-      cleanTitle: desc.replace(/^\[SEMENTARA\]\s*/, "") || "Pemasukan Sementara",
+      type: "TIDAK TETAP",
+      cleanTitle: desc.replace(/^\[SEMENTARA\]\s*/, "") || "Pemasukan Tidak Tetap",
     };
   }
   return {
-    type: "SEMENTARA",
+    type: "TIDAK TETAP",
     cleanTitle: desc || "Pemasukan Lainnya",
   };
 };
@@ -569,7 +575,7 @@ export const ReportsPage: React.FC = () => {
                   </div>
                 )}
 
-                {/* KOMPARASI TETAP VS SEMENTARA */}
+                {/* KOMPARASI TETAP VS TIDAK TETAP */}
                 <div className="mt-4 grid grid-cols-2 gap-3">
                   <div className="p-3 rounded-2xl border border-indigo-100 bg-indigo-50/50">
                     <div className="flex items-center gap-1.5 text-indigo-700 text-xs font-bold">
@@ -587,7 +593,7 @@ export const ReportsPage: React.FC = () => {
                   <div className="p-3 rounded-2xl border border-amber-100 bg-amber-50/50">
                     <div className="flex items-center gap-1.5 text-amber-700 text-xs font-bold">
                       <Sparkles className="w-3.5 h-3.5" />
-                      <span>Pemasukan Sementara</span>
+                      <span>Pemasukan Tidak Tetap</span>
                     </div>
                     <p className="text-base font-black text-amber-900 mt-1">
                       {FormatRupiah(tempIncomeSum)}

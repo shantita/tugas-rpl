@@ -22,7 +22,7 @@ export class BudgetController {
       };
 
       if (query.Month && query.Year) {
-        // Ambil anggaran tetap (Month: 0, Year: 0) dan anggaran sementara untuk bulan & tahun yang diminta
+        // Ambil anggaran tetap (Month: 0, Year: 0) dan anggaran tidak tetap untuk bulan & tahun yang diminta
         whereClause.OR = [
           { Month: 0, Year: 0 },
           { Month: query.Month, Year: query.Year },
@@ -155,7 +155,7 @@ export class BudgetController {
         if (existingTemp) {
           throw new HttpException(
             400,
-            "Kategori ini sudah memiliki anggaran sementara. Silakan hapus anggaran sementara tersebut terlebih dahulu sebelum membuat anggaran tetap."
+            "Kategori ini sudah memiliki anggaran tidak tetap. Silakan hapus anggaran tidak tetap tersebut terlebih dahulu sebelum membuat anggaran tetap."
           );
         }
       } else {
@@ -222,7 +222,7 @@ export class BudgetController {
 
       return res.status(201).json({
         Success: true,
-        Message: isFixed ? "Anggaran tetap berhasil ditambahkan" : "Anggaran sementara berhasil ditambahkan",
+        Message: isFixed ? "Anggaran tetap berhasil ditambahkan" : "Anggaran tidak tetap berhasil ditambahkan",
         Data: data,
       });
     } catch (error) {
@@ -292,7 +292,7 @@ export class BudgetController {
         if (existingTemp) {
           throw new HttpException(
             400,
-            "Kategori ini sudah memiliki anggaran sementara. Silakan hapus anggaran sementara tersebut terlebih dahulu sebelum mengubah menjadi anggaran tetap."
+            "Kategori ini sudah memiliki anggaran tidak tetap. Silakan hapus anggaran tidak tetap tersebut terlebih dahulu sebelum mengubah menjadi anggaran tetap."
           );
         }
       } else {

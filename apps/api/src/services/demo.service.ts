@@ -78,13 +78,13 @@ export class DemoService {
           UserId: user.Id,
           Amount: 1500000,
           Date: new Date(Date.UTC(currentYear, currentMonth - 1, 5, 10, 0, 0)),
-          Description: "[SEMENTARA] Project Freelance Web Design",
+          Description: "[TIDAK TETAP] Project Freelance Web Design",
         },
         {
           UserId: user.Id,
           Amount: 500000,
           Date: new Date(Date.UTC(currentYear, currentMonth - 1, 12, 14, 0, 0)),
-          Description: "[SEMENTARA] Bonus Kinerja & Komisi",
+          Description: "[TIDAK TETAP] Bonus Kinerja & Komisi",
         },
       ],
     });

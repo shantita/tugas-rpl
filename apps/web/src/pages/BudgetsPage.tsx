@@ -28,7 +28,7 @@ export const BudgetsPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Filter tab: Semua, Anggaran Tetap, Anggaran Sementara
+  // Filter tab: Semua, Anggaran Tetap, Anggaran Tidak Tetap
   const [activeTab, setActiveTab] = useState<"ALL" | "FIXED" | "TEMPORARY">("ALL");
 
   // Budget Modal State
@@ -314,7 +314,7 @@ export const BudgetsPage: React.FC = () => {
           </h1>
           <p className="text-xs sm:text-sm text-slate-500 mt-1 max-w-2xl">
             Kelola plafon belanja dengan <strong>Anggaran Tetap</strong> (rutin tiap bulan) dan{" "}
-            <strong>Anggaran Sementara</strong> (khusus bulan tertentu), serta kustomisasi kategori belanja Anda.
+            <strong>Anggaran Tidak Tetap</strong> (khusus bulan tertentu), serta kustomisasi kategori belanja Anda.
           </p>
           <div className="mt-2.5">
             <button
@@ -393,14 +393,14 @@ export const BudgetsPage: React.FC = () => {
           <div>
             <div className="flex items-center gap-1.5">
               <span className="text-xs font-semibold text-orange-700 uppercase tracking-wider">
-                Anggaran Sementara
+                Anggaran Tidak Tetap
               </span>
               <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-orange-100 text-orange-700 font-bold">
                 {MonthNames[month - 1]}
               </span>
             </div>
             <p className="text-2xl font-black text-orange-600 mt-1">{FormatRupiah(totalTemp)}</p>
-            <span className="text-xs text-slate-400 mt-0.5 block">{tempBudgets.length} pos sementara</span>
+            <span className="text-xs text-slate-400 mt-0.5 block">{tempBudgets.length} pos tidak tetap</span>
           </div>
           <div className="p-3 bg-orange-50 rounded-2xl text-orange-600">
             <Calendar className="w-6 h-6" />
@@ -443,7 +443,7 @@ export const BudgetsPage: React.FC = () => {
           }`}
         >
           <Calendar className="w-3.5 h-3.5" />
-          <span>Anggaran Sementara ({tempBudgets.length})</span>
+          <span>Anggaran Tidak Tetap ({tempBudgets.length})</span>
         </button>
       </div>
 
@@ -474,7 +474,7 @@ export const BudgetsPage: React.FC = () => {
                       {activeTab === "FIXED"
                         ? "Belum ada anggaran tetap yang diatur"
                         : activeTab === "TEMPORARY"
-                        ? `Belum ada anggaran sementara untuk ${MonthNames[month - 1]} ${year}`
+                        ? `Belum ada anggaran tidak tetap untuk ${MonthNames[month - 1]} ${year}`
                         : "Belum ada anggaran untuk bulan ini"}
                     </p>
                     <p className="text-xs text-slate-400 mt-1">
@@ -502,7 +502,7 @@ export const BudgetsPage: React.FC = () => {
                         ) : (
                           <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-700 border border-amber-200/80">
                             <Calendar className="w-3 h-3" />
-                            <span>Sementara</span>
+                            <span>Tidak Tetap</span>
                           </span>
                         )}
                       </td>
@@ -571,7 +571,7 @@ export const BudgetsPage: React.FC = () => {
             )}
 
             <form onSubmit={handleFormSubmit} className="mt-4 space-y-4">
-              {/* Tipe Anggaran: Tetap vs Sementara */}
+              {/* Tipe Anggaran: Tetap vs Tidak Tetap */}
               <div>
                 <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">
                   Tipe Anggaran
@@ -624,7 +624,7 @@ export const BudgetsPage: React.FC = () => {
                             formType === BudgetType.TEMPORARY ? "text-orange-500" : "text-slate-400"
                           }`}
                         />
-                        <span className="text-sm font-bold text-slate-900">Anggaran Sementara</span>
+                        <span className="text-sm font-bold text-slate-900">Anggaran Tidak Tetap</span>
                       </div>
                       <div
                         className={`w-4 h-4 rounded-full border flex items-center justify-center ${
@@ -709,7 +709,7 @@ export const BudgetsPage: React.FC = () => {
                 />
               </div>
 
-              {/* Periode Bulan & Tahun (Hanya jika tipe Sementara) */}
+              {/* Periode Bulan & Tahun (Hanya jika tipe Tidak Tetap) */}
               {formType === BudgetType.TEMPORARY ? (
                 <div className="grid grid-cols-2 gap-3 p-3 bg-orange-50/40 rounded-2xl border border-orange-100">
                   <div>

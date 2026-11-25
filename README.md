@@ -1,12 +1,12 @@
 # Monthly Budgeting Website (Web App)
 
-Website full-stack pengelola anggaran dan uang saku bulanan mahasiswa, dilengkapi fitur pembeda **Daily Spending Limit** serta pengelolaan **Anggaran Tetap** dan **Anggaran Sementara**.
+Website full-stack pengelola anggaran dan uang saku bulanan mahasiswa, dilengkapi fitur pembeda **Daily Spending Limit** serta pengelolaan **Anggaran Tetap** dan **Anggaran Tidak Tetap**.
 
 ---
 
 ## Deskripsi Proyek
 
-**Monthly Budgeting Web App** adalah platform website yang membantu mahasiswa mencatat pemasukan dan pengeluaran, menentukan anggaran per kategori (baik anggaran tetap bulanan maupun anggaran sementara), memantau realisasi anggaran, serta mengetahui batas belanja aman per hari (**Daily Spending Limit**) sampai akhir bulan. Website ini dapat diakses secara fleksibel melalui web browser baik di laptop/PC maupun browser ponsel pintar secara responsif.
+**Monthly Budgeting Web App** adalah platform website yang membantu mahasiswa mencatat pemasukan dan pengeluaran, menentukan anggaran per kategori (baik anggaran tetap bulanan maupun anggaran tidak tetap), memantau realisasi anggaran, serta mengetahui batas belanja aman per hari (**Daily Spending Limit**) sampai akhir bulan. Website ini dapat diakses secara fleksibel melalui web browser baik di laptop/PC maupun browser ponsel pintar secara responsif.
 
 ## Latar Belakang
 
@@ -16,7 +16,7 @@ Mahasiswa perantau umumnya menerima uang saku sebulan sekali. Pengeluaran kecil 
 
 1. Mencatat pemasukan dan pengeluaran bulanan mahasiswa secara terstruktur.
 2. Mengelompokkan pengeluaran berdasarkan kategori, termasuk dukungan kategori kustom.
-3. Mengatur 2 tipe anggaran: **Anggaran Tetap** (rutin tiap bulan) dan **Anggaran Sementara** (berlaku di bulan tertentu).
+3. Mengatur 2 tipe anggaran: **Anggaran Tetap** (rutin tiap bulan) dan **Anggaran Tidak Tetap** (berlaku di bulan tertentu).
 4. Memberikan peringatan dini (*warning threshold*) saat penggunaan anggaran mendekati atau melebihi batas.
 5. Menghitung **Daily Spending Limit** berdasarkan sisa anggaran dan sisa hari dalam bulan berjalan.
 6. Menyajikan dashboard interaktif dan laporan keuangan bulanan dengan visualisasi grafik.
@@ -27,7 +27,7 @@ Mahasiswa perantau umumnya menerima uang saku sebulan sekali. Pengeluaran kecil 
 - **Kustomisasi Kategori Belanja:** Kategori bawaan (*Makanan, Transportasi, Kos/Kontrakan, Hiburan, Lainnya*) serta kebebasan membuat dan mengelola kategori kustom baru.
 - **2 Tipe Anggaran (Budget):**
   - 📌 **Anggaran Tetap (Rutin):** Berlaku otomatis sama di setiap bulan tanpa perlu input ulang (misal: Kosan, Uang Makan Pokok, Internet).
-  - ⏳ **Anggaran Sementara:** Hanya berlaku khusus di bulan yang ditentukan (misal: Beli Kado, Servis Motor, Liburan).
+  - ⏳ **Anggaran Tidak Tetap:** Hanya berlaku khusus di bulan yang ditentukan (misal: Beli Kado, Servis Motor, Liburan).
 - **Pencatatan Transaksi:** Manajemen pemasukan dan pengeluaran harian lengkap dengan riwayat dan filter periode.
 - **Daily Spending Limit (Fitur Pembeda):** Rekomendasi batas pengeluaran aman harian yang dihitung secara dinamis.
 - **Dashboard Ringkasan:** Statistik keuangan real-time, progress bar status anggaran, dan maskot visual interaktif.

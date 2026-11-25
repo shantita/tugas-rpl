@@ -47,7 +47,7 @@ describe("US-04: Unit Test Aturan Bisnis Anggaran & Ambang Batas Status", () => 
       }
     });
 
-    it("menerima anggaran sementara (TEMPORARY) yang hanya berlaku di bulan tertentu", () => {
+    it("menerima anggaran tidak tetap (TEMPORARY) yang hanya berlaku di bulan tertentu", () => {
       const tempBudget = {
         CategoryId: 3,
         Amount: 300000,

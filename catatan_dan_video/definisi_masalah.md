@@ -17,7 +17,7 @@ Mahasiswa yang tinggal jauh dari orang tua, terutama yang di kos atau kontrakan,
 Website pencatat keuangan yang ada di pasaran umumnya hanya menampilkan riwayat dan total secara umum. Masalah 3 dan 4 belum terjawab secara langsung, terutama dalam bentuk angka harian yang mudah dipahami.
 
 **Rumusan masalah:**  
-Bagaimana membangun website yang membantu mahasiswa mencatat keuangan bulanannya, memantau penggunaan anggaran per kategori (tetap maupun sementara), dan mengetahui batas belanja harian yang aman (**Daily Spending Limit**) sampai akhir bulan?
+Bagaimana membangun website yang membantu mahasiswa mencatat keuangan bulanannya, memantau penggunaan anggaran per kategori (tetap maupun tidak tetap), dan mengetahui batas belanja harian yang aman (**Daily Spending Limit**) sampai akhir bulan?
 
 ---
 
@@ -43,7 +43,7 @@ Jumlah aktor hanya satu, yaitu **mahasiswa (user)**. Tidak ada admin atau peran 
 2. **Pengendalian per kategori:** Anggaran ditentukan untuk setiap kategori (bisa menggunakan kategori bawaan maupun menambah kategori kustom sendiri).
 3. **Fleksibilitas 2 Tipe Anggaran:** 
    - **Anggaran Tetap:** Pengeluaran rutin bulanan (kos, uang makan pokok, wifi) otomatis sama setiap bulannya tanpa repot input ulang.
-   - **Anggaran Sementara:** Alokasi insidental yang hanya berlaku khusus pada bulan yang ditentukan (misal servis motor, beli kado).
+   - **Anggaran Tidak Tetap:** Alokasi insidental yang hanya berlaku khusus pada bulan yang ditentukan (misal servis motor, beli kado).
 4. **Peringatan dini:** Sistem memberi peringatan saat penggunaan anggaran mencapai 80% atau lebih, sebelum anggaran benar-benar habis.
 5. **Panduan belanja harian (manfaat utama):** Fitur **Daily Spending Limit** menghitung batas belanja yang aman per hari dari sisa anggaran dan sisa hari.
 6. **Evaluasi bulanan:** Laporan per bulan membantu mahasiswa melihat pola pengeluaran melalui grafik dan menyusun anggaran yang lebih realistis.
@@ -58,7 +58,7 @@ Jumlah aktor hanya satu, yaitu **mahasiswa (user)**. Tidak ada admin atau peran 
 | 2 | Kategori Belanja | Kategori bawaan dan fitur kustomisasi kategori baru mandiri | Wajib |
 | 3 | Pencatatan Pemasukan | Tambah, ubah, hapus, dan filter daftar pemasukan bulanan | Wajib |
 | 4 | Pencatatan Pengeluaran | Tambah, ubah, hapus, dan filter daftar pengeluaran per kategori | Wajib |
-| 5 | Pengaturan Budget | Pengaturan 2 tipe anggaran: Anggaran Tetap (rutin) dan Anggaran Sementara | Wajib |
+| 5 | Pengaturan Budget | Pengaturan 2 tipe anggaran: Anggaran Tetap (rutin) dan Anggaran Tidak Tetap | Wajib |
 | 6 | Pemantauan Anggaran | Persentase penggunaan, progress bar, dan 4 ambang batas status | Wajib |
 | 7 | Peringatan Anggaran | Pesan peringatan otomatis saat penggunaan mencapai 80% atau lebih | Wajib |
 | 8 | **Daily Spending Limit** | Batas belanja harian dari sisa anggaran dan sisa hari (fitur pembeda) | Wajib |
@@ -88,7 +88,7 @@ Website dinyatakan berhasil jika seluruh kriteria berikut terpenuhi:
 
 ### A. Fungsional
 1. Pengguna dapat register, login, dan logout. Halaman privat terlindungi middleware JWT.
-2. Pengguna dapat mengelola pemasukan, pengeluaran, kategori kustom, dan budget (tetap & sementara).
+2. Pengguna dapat mengelola pemasukan, pengeluaran, kategori kustom, dan budget (tetap & tidak tetap).
 3. Dashboard otomatis ter-update secara real-time saat terjadi perubahan data keuangan.
 4. Status anggaran tampil akurat sesuai 4 ambang batas: Aman (<60%), Perlu Perhatian (60-79.9%), Mendekati Batas (80-99.9%), dan Melebihi Anggaran (>=100%).
 5. Peringatan dini muncul saat anggaran mencapai 80% ke atas.

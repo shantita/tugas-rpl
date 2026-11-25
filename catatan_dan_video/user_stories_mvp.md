@@ -65,7 +65,7 @@ Dokumen ini mendefinisikan 5 User Story inti yang menjadi ruang lingkup Minimum 
   Agar **satu pos kebutuhan tidak menghabiskan jatah pos kebutuhan lain dan saya memperoleh peringatan dini sebelum anggaran habis**.
 
 * **Kriteria Penerimaan (Acceptance Criteria):**
-  1. Pengguna dapat membuat anggaran baru dengan menentukan Tipe Anggaran: **Anggaran Tetap** (`FIXED` - otomatis berlaku rutin tiap bulan) atau **Anggaran Sementara** (`TEMPORARY` - khusus bulan & tahun terpilih), serta memilih Kategori (bawaan maupun kategori kustom) dengan Jumlah Anggaran (`Amount > 0`).
+  1. Pengguna dapat membuat anggaran baru dengan menentukan Tipe Anggaran: **Anggaran Tetap** (`FIXED` - otomatis berlaku rutin tiap bulan) atau **Anggaran Tidak Tetap** (`TEMPORARY` - khusus bulan & tahun terpilih), serta memilih Kategori (bawaan maupun kategori kustom) dengan Jumlah Anggaran (`Amount > 0`).
   2. Sistem menolak pembuatan anggaran duplikat untuk kategori, bulan, dan tahun yang sama oleh pengguna yang sama dengan mengembalikan pesan error informatif dan HTTP `400 Bad Request`.
   3. Sistem menghitung persentase penggunaan anggaran:  
      $$\text{UsagePercentage} = \frac{\text{Total Pengeluaran Kategori}}{\text{Jumlah Anggaran Kategori}} \times 100$$

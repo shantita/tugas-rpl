@@ -302,7 +302,7 @@ export const DashboardPage: React.FC = () => {
                       </span>
                     ) : (
                       <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-md bg-amber-50 text-amber-700 border border-amber-200">
-                        Sementara
+                        Tidak Tetap
                       </span>
                     )}
                   </div>

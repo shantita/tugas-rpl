@@ -5,6 +5,6 @@ export enum BudgetType {
 
 export const BudgetTypeLabels: Record<BudgetType, string> = {
   [BudgetType.FIXED]: "Anggaran Tetap",
-  [BudgetType.TEMPORARY]: "Anggaran Sementara",
+  [BudgetType.TEMPORARY]: "Anggaran Tidak Tetap",
 };
 

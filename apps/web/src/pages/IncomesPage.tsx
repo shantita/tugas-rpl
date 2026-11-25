@@ -27,6 +27,12 @@ const parseIncomeDescription = (rawDesc: string): { type: IncomeType; cleanDesc:
       cleanDesc: rawDesc.replace(/^\[TETAP\]\s*/, ""),
     };
   }
+  if (rawDesc.startsWith("[TIDAK TETAP]")) {
+    return {
+      type: "TEMPORARY",
+      cleanDesc: rawDesc.replace(/^\[TIDAK TETAP\]\s*/, ""),
+    };
+  }
   if (rawDesc.startsWith("[SEMENTARA]")) {
     return {
       type: "TEMPORARY",
@@ -60,7 +66,7 @@ export const IncomesPage: React.FC = () => {
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [deleteTargetId, setDeleteTargetId] = useState<number | null>(null);
 
-  // Form State untuk Tipe Pemasukan (Tetap vs Sementara)
+  // Form State untuk Tipe Pemasukan (Tetap vs Tidak Tetap)
   const [formType, setFormType] = useState<IncomeType>("FIXED");
 
   // Filter & Search Tab
@@ -120,7 +126,7 @@ export const IncomesPage: React.FC = () => {
       return;
     }
 
-    const tag = formType === "FIXED" ? "[TETAP]" : "[SEMENTARA]";
+    const tag = formType === "FIXED" ? "[TETAP]" : "[TIDAK TETAP]";
     const finalDescription = `${tag} ${description.trim()}`;
 
     const [y, m, d] = date.split("-").map(Number);
@@ -208,7 +214,7 @@ export const IncomesPage: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
         <div>
           <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 tracking-tight">Manajemen Pemasukan</h1>
-          <p className="text-xs sm:text-sm text-slate-500 mt-0.5">Catat pemasukan tetap (gaji karyawan, bulanan) maupun sementara (freelance, bonus, komisi).</p>
+          <p className="text-xs sm:text-sm text-slate-500 mt-0.5">Catat pemasukan tetap (gaji karyawan, bulanan) maupun tidak tetap (freelance, bonus, komisi).</p>
         </div>
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 w-full sm:w-auto">
           <div className="w-full sm:w-auto flex justify-between sm:justify-start">
@@ -227,7 +233,7 @@ export const IncomesPage: React.FC = () => {
 
       {error && <AlertBox Type="error" Message={error} />}
 
-      {/* RINGKASAN PEMASUKAN: TOTAL, TETAP & SEMENTARA */}
+      {/* RINGKASAN PEMASUKAN: TOTAL, TETAP & TIDAK TETAP */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="bg-white rounded-3xl border border-slate-200/90 p-5 flex items-center justify-between shadow-sm">
           <div>
@@ -257,7 +263,7 @@ export const IncomesPage: React.FC = () => {
           <div>
             <div className="flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full bg-amber-500" />
-              <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Pemasukan Sementara (Freelance/Bonus)</span>
+              <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Pemasukan Tidak Tetap (Freelance/Bonus)</span>
             </div>
             <p className="text-2xl font-black text-amber-600 mt-1">{FormatRupiah(totalTemp)}</p>
             <p className="text-[11px] text-slate-400 mt-0.5">{tempIncomes.length} transaksi tercatat</p>
@@ -268,7 +274,7 @@ export const IncomesPage: React.FC = () => {
         </div>
       </div>
 
-      {/* FILTER SEARCH & TABS (SEMUA, TETAP, SEMENTARA) */}
+      {/* FILTER SEARCH & TABS (SEMUA, TETAP, TIDAK TETAP) */}
       <div className="bg-white rounded-3xl border border-slate-200/90 p-5 shadow-sm space-y-4">
         <div className="relative">
           <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
@@ -324,7 +330,7 @@ export const IncomesPage: React.FC = () => {
             }`}
           >
             <Sparkles className="w-3.5 h-3.5" />
-            <span>Pemasukan Sementara ({tempIncomes.length})</span>
+            <span>Pemasukan Tidak Tetap ({tempIncomes.length})</span>
           </button>
         </div>
       </div>
@@ -376,7 +382,7 @@ export const IncomesPage: React.FC = () => {
                       ) : (
                         <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-50 text-amber-700 border border-amber-200">
                           <Sparkles className="w-3 h-3" />
-                          <span>Sementara</span>
+                          <span>Tidak Tetap</span>
                         </span>
                       )}
                     </td>
@@ -431,7 +437,7 @@ export const IncomesPage: React.FC = () => {
             )}
 
             <form onSubmit={handleFormSubmit} className="mt-4 space-y-4">
-              {/* Pilihan Tipe Pemasukan: Tetap vs Sementara */}
+              {/* Pilihan Tipe Pemasukan: Tetap vs Tidak Tetap */}
               <div>
                 <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">
                   Tipe Pemasukan
@@ -484,7 +490,7 @@ export const IncomesPage: React.FC = () => {
                             formType === "TEMPORARY" ? "text-amber-500" : "text-slate-400"
                           }`}
                         />
-                        <span className="text-sm font-bold text-slate-900">Pemasukan Sementara</span>
+                        <span className="text-sm font-bold text-slate-900">Pemasukan Tidak Tetap</span>
                       </div>
                       <div
                         className={`w-4 h-4 rounded-full border flex items-center justify-center ${
